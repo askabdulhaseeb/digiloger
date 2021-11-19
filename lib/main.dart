@@ -1,4 +1,7 @@
+import 'package:digiloger/screens/auth/business_registeration_screen.dart';
 import 'package:digiloger/screens/auth/login_screen.dart';
+import 'package:digiloger/screens/auth/personal_registeration_screen.dart';
+import 'package:digiloger/screens/auth/registeration_type_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -15,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: const ColorScheme(
           primary: _primary,
-          primaryVariant: Colors.white,
+          primaryVariant: _primary,
           secondary: _primary,
           secondaryVariant: Colors.white,
           surface: Colors.white,
@@ -30,10 +33,17 @@ class MyApp extends StatelessWidget {
         ),
         primaryColor: _primary,
         iconTheme: const IconThemeData(color: _primary),
+        splashColor: Colors.blue[300],
       ),
       home: const LoginScreen(),
       routes: <String, WidgetBuilder>{
         LoginScreen.routeName: (_) => const LoginScreen(),
+        RegisterationTypeScreen.routeName: (_) =>
+            const RegisterationTypeScreen(),
+        PersonalRegisterationScreen.routeName: (_) =>
+            const PersonalRegisterationScreen(),
+        BusinessRegisterationScreen.routeName: (_) =>
+            const BusinessRegisterationScreen(),
       },
     );
   }

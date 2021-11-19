@@ -1,3 +1,11 @@
+import 'package:digiloger/screens/auth/registeration_type_screen.dart';
+import 'package:digiloger/utilities/custom_image.dart';
+import 'package:digiloger/utilities/custom_validator.dart';
+import 'package:digiloger/utilities/utilities.dart';
+import 'package:digiloger/widgets/circular_icon_button.dart';
+import 'package:digiloger/widgets/custom_iconic_text_button.dart';
+import 'package:digiloger/widgets/custom_textformfield.dart';
+import 'package:digiloger/widgets/password_textformfield.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -8,11 +16,87 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final TextEditingController _email = TextEditingController();
+  final TextEditingController _password = TextEditingController();
+  final GlobalKey<FormState> _key = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text('Login Screen'),
+    return Scaffold(
+      body: Padding(
+        padding: EdgeInsets.all(Utilities.padding),
+        child: Column(
+          children: <Widget>[
+            const SizedBox(height: 100),
+            Padding(
+              padding: EdgeInsets.all(Utilities.padding * 2),
+              child: Image.asset(CustomImages.logo),
+            ),
+            CustomTextFormField(
+              title: 'Email',
+              controller: _email,
+              hint: 'test@test.com',
+              validator: (String? value) => CustomValidator.email(value),
+            ),
+            PasswordTextFormField(
+              controller: _password,
+            ),
+            Container(
+              alignment: Alignment.centerRight,
+              child: TextButton(
+                onPressed: () {},
+                child: const Text('Forget Password?'),
+              ),
+            ),
+            CircularIconButton(onTap: () {}),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: Utilities.padding * 2),
+              child: Row(
+                children: <Widget>[
+                  Container(
+                    height: 1,
+                    width: MediaQuery.of(context).size.width * 0.4,
+                    color: Colors.grey,
+                  ),
+                  const Text(' OR '),
+                  Container(
+                    height: 1,
+                    width: MediaQuery.of(context).size.width * 0.4,
+                    color: Colors.grey,
+                  ),
+                ],
+              ),
+            ),
+            CustomImageTextButton(
+              image: CustomImages.facebook,
+              text: 'Login with Facebook',
+              onTap: () {},
+            ),
+            const SizedBox(height: 10),
+            CustomImageTextButton(
+              image: CustomImages.google,
+              text: 'Login with Google',
+              onTap: () {},
+            ),
+            const Spacer(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                const Text(
+                  '''Don't have an account?''',
+                  style: TextStyle(color: Colors.grey),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context)
+                        .pushNamed(RegisterationTypeScreen.routeName);
+                  },
+                  child: const Text('Register'),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+          ],
+        ),
       ),
     );
   }

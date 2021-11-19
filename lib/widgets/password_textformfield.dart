@@ -52,7 +52,13 @@ class PasswordTextFormFieldState extends State<PasswordTextFormField> {
                 ? const Icon(CupertinoIcons.eye)
                 : const Icon(CupertinoIcons.eye_slash),
           ),
+          focusColor: Theme.of(context).primaryColor,
+          enabledBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: Colors.grey),
+            borderRadius: BorderRadius.circular(Utilities.borderRadius),
+          ),
           border: OutlineInputBorder(
+            borderSide: BorderSide(color: Theme.of(context).primaryColor),
             borderRadius: BorderRadius.circular(Utilities.borderRadius),
           ),
         ),

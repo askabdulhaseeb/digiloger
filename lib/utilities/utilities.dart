@@ -1,6 +1,6 @@
 class Utilities {
   static double get padding => 16;
-  static double get borderRadius => 24;
+  static double get borderRadius => 20;
   static String getGreetingsText() {
     int hour = DateTime.now().hour;
     if (hour < 12) {

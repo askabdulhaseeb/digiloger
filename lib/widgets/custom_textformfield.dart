@@ -70,6 +70,10 @@ class CustomTextFormFieldState extends State<CustomTextFormField> {
                   icon: const Icon(CupertinoIcons.clear, size: 18),
                 ),
           focusColor: Theme.of(context).primaryColor,
+          enabledBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: Colors.grey),
+            borderRadius: BorderRadius.circular(Utilities.borderRadius),
+          ),
           border: OutlineInputBorder(
             borderSide: BorderSide(color: Theme.of(context).primaryColor),
             borderRadius: BorderRadius.circular(Utilities.borderRadius),

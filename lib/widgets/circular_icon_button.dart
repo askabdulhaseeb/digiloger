@@ -20,7 +20,7 @@ class CircularIconButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       borderRadius: BorderRadius.circular(50),
-      onTap: () {},
+      onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
           shape: BoxShape.circle,

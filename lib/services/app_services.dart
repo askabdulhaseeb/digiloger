@@ -1,0 +1,3 @@
+class AppServices {
+  // Internet check
+}

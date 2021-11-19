@@ -1,3 +1,5 @@
+import 'package:digiloger/screens/main_screen/main_screen.dart';
+import 'package:digiloger/services/user_local_data.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'screens/auth/business_registeration_screen.dart';
@@ -9,6 +11,7 @@ import 'screens/auth/registeration_type_screen.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await UserLocalData.init();
   runApp(const MyApp());
 }
 
@@ -49,6 +52,7 @@ class MyApp extends StatelessWidget {
             const PersonalRegisterationScreen(),
         BusinessRegisterationScreen.routeName: (_) =>
             const BusinessRegisterationScreen(),
+        MainScreen.routeName: (_) => const MainScreen(),
       },
     );
   }

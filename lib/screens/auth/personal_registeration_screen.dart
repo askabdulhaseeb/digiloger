@@ -1,9 +1,15 @@
+import 'package:digiloger/database/auth_methods.dart';
+import 'package:digiloger/database/user_api.dart';
+import 'package:digiloger/models/app_user.dart';
 import 'package:digiloger/screens/auth/login_screen.dart';
 import 'package:digiloger/utilities/custom_validator.dart';
 import 'package:digiloger/utilities/utilities.dart';
 import 'package:digiloger/widgets/circular_icon_button.dart';
 import 'package:digiloger/widgets/custom_textformfield.dart';
+import 'package:digiloger/widgets/custom_toast.dart';
 import 'package:digiloger/widgets/password_textformfield.dart';
+import 'package:digiloger/widgets/show_loading.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class PersonalRegisterationScreen extends StatefulWidget {
@@ -97,9 +103,47 @@ class _PersonalRegisterationScreenState
                       },
                     ),
                     const SizedBox(height: 20),
-                    CircularIconButton(onTap: () {
-                      if (_key.currentState!.validate()) {}
-                    }),
+                    CircularIconButton(
+                      onTap: () async {
+                        if (_key.currentState!.validate()) {
+                          if (_password.text == _confPassword.text) {
+                            showLoadingDislog(context);
+                            final User? _user =
+                                await AuthMethods().signupWithEmailAndPassword(
+                              email: _email.text,
+                              password: _password.text,
+                            );
+                            if (_user != null) {
+                              final AppUser _appUser = AppUser(
+                                uid: _user.uid,
+                                name: '${_firstName.text} ${_lastName.text}',
+                                email: _email.text,
+                                isBuiness: false,
+                                gender: _gender,
+                                dob: '$_date-$_month-$_year',
+                              );
+                              final _okay = await UserAPI().addUser(_appUser);
+                              if (_okay) {
+                                CustomToast.successToast(
+                                  message: 'Register Successfully',
+                                );
+                                Navigator.of(context).pushNamedAndRemoveUntil(
+                                  LoginScreen.routeName,
+                                  (route) => false,
+                                );
+                              } else {
+                                Navigator.of(context).pop();
+                              }
+                            }
+                          } else {
+                            CustomToast.errorToast(
+                              message:
+                                  'Password and Repeat password are not same!!',
+                            );
+                          }
+                        }
+                      },
+                    ),
                     const SizedBox(height: 20),
                   ],
                 ),

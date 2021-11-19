@@ -1,4 +1,4 @@
-package eyezsoft.digiloger
+package com.eyezsoft.digiloger
 
 import io.flutter.embedding.android.FlutterActivity
 

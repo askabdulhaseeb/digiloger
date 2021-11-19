@@ -1,0 +1,98 @@
+{
+  "project_info": {
+    "project_number": "1006616461847",
+    "project_id": "digilogger-4424b",
+    "storage_bucket": "digilogger-4424b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1006616461847:android:cffcd5863c1a5ef2775252",
+        "android_client_info": {
+          "package_name": "com.example.digilogger"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1006616461847-s4tp2p5lfdkri9b3qd89s3gqnhp5q1ra.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.digilogger",
+            "certificate_hash": "5fa533901d9a7dc3df29efb5e654f5d364df2510"
+          }
+        },
+        {
+          "client_id": "1006616461847-nte8qbg489mjflkl8b3ppc4d9apvimtd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvqmhA60iod4vi6_rzG7ntL1LFx3H2q-4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1006616461847-nte8qbg489mjflkl8b3ppc4d9apvimtd.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1006616461847-61hneuumtl4ah14f4ijarromf0m708um.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.digilogger"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1006616461847:android:5af6553cad054915775252",
+        "android_client_info": {
+          "package_name": "com.eyezsoft.digiloger"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1006616461847-idldcti3jnbrvu923c398r43rdnn7bat.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.eyezsoft.digiloger",
+            "certificate_hash": "f63c6e073798d1378d8dad2b80be5e2c50ef71f9"
+          }
+        },
+        {
+          "client_id": "1006616461847-nte8qbg489mjflkl8b3ppc4d9apvimtd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvqmhA60iod4vi6_rzG7ntL1LFx3H2q-4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1006616461847-nte8qbg489mjflkl8b3ppc4d9apvimtd.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1006616461847-61hneuumtl4ah14f4ijarromf0m708um.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.digilogger"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

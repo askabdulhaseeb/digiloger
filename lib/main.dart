@@ -13,7 +13,23 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Digiloger',
       theme: ThemeData(
+        colorScheme: const ColorScheme(
+          primary: _primary,
+          primaryVariant: Colors.white,
+          secondary: _primary,
+          secondaryVariant: Colors.white,
+          surface: Colors.white,
+          background: Colors.white,
+          error: Colors.red,
+          onPrimary: _primary,
+          onSecondary: _primary,
+          onSurface: Colors.white,
+          onBackground: Colors.white,
+          onError: Colors.redAccent,
+          brightness: Brightness.light,
+        ),
         primaryColor: _primary,
+        iconTheme: const IconThemeData(color: _primary),
       ),
       home: const LoginScreen(),
       routes: <String, WidgetBuilder>{

@@ -7,12 +7,13 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
+  static const Color _primary = Color(0xFF3A5899);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Digiloger',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: _primary,
       ),
       home: const LoginScreen(),
       routes: <String, WidgetBuilder>{

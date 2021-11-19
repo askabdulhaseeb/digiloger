@@ -1,4 +1,5 @@
 import 'package:digiloger/screens/auth/business_registeration_screen.dart';
+import 'package:digiloger/screens/auth/forget_password_screen.dart';
 import 'package:digiloger/screens/auth/login_screen.dart';
 import 'package:digiloger/screens/auth/personal_registeration_screen.dart';
 import 'package:digiloger/screens/auth/registeration_type_screen.dart';
@@ -38,6 +39,7 @@ class MyApp extends StatelessWidget {
       home: const LoginScreen(),
       routes: <String, WidgetBuilder>{
         LoginScreen.routeName: (_) => const LoginScreen(),
+        ForgetPasswordScreen.routeName: (_) => ForgetPasswordScreen(),
         RegisterationTypeScreen.routeName: (_) =>
             const RegisterationTypeScreen(),
         PersonalRegisterationScreen.routeName: (_) =>

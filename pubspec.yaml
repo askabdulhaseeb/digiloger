@@ -18,7 +18,9 @@ dependencies:
 
   provider: ^6.0.1
   shared_preferences: ^2.0.8
+
   fluttertoast: ^8.0.8
+  intl_phone_field: ^2.1.0
   image_picker: ^0.8.4+4
 
 dev_dependencies:

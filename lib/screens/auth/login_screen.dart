@@ -1,3 +1,4 @@
+import 'package:digiloger/screens/auth/forget_password_screen.dart';
 import 'package:digiloger/screens/auth/registeration_type_screen.dart';
 import 'package:digiloger/utilities/custom_image.dart';
 import 'package:digiloger/utilities/custom_validator.dart';
@@ -24,78 +25,82 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.all(Utilities.padding),
-        child: Column(
-          children: <Widget>[
-            const SizedBox(height: 100),
-            Padding(
-              padding: EdgeInsets.all(Utilities.padding * 2),
-              child: Image.asset(CustomImages.logo),
-            ),
-            CustomTextFormField(
-              title: 'Email',
-              controller: _email,
-              hint: 'test@test.com',
-              validator: (String? value) => CustomValidator.email(value),
-            ),
-            PasswordTextFormField(
-              controller: _password,
-            ),
-            Container(
-              alignment: Alignment.centerRight,
-              child: TextButton(
-                onPressed: () {},
-                child: const Text('Forget Password?'),
+        child: Form(
+          key: _key,
+          child: Column(
+            children: <Widget>[
+              const SizedBox(height: 80),
+              Padding(
+                padding: EdgeInsets.all(Utilities.padding * 2),
+                child: Image.asset(CustomImages.logo),
               ),
-            ),
-            CircularIconButton(onTap: () {}),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: Utilities.padding * 2),
-              child: Row(
+              CustomTextFormField(
+                title: 'Email',
+                controller: _email,
+                hint: 'test@test.com',
+                validator: (String? value) => CustomValidator.email(value),
+              ),
+              PasswordTextFormField(
+                controller: _password,
+              ),
+              Container(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                  onPressed: () => Navigator.of(context)
+                      .pushNamed(ForgetPasswordScreen.routeName),
+                  child: const Text('Forget Password?'),
+                ),
+              ),
+              CircularIconButton(onTap: () {}),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: Utilities.padding * 2),
+                child: Row(
+                  children: <Widget>[
+                    Container(
+                      height: 1,
+                      width: MediaQuery.of(context).size.width * 0.4,
+                      color: Colors.grey,
+                    ),
+                    const Text(' OR '),
+                    Container(
+                      height: 1,
+                      width: MediaQuery.of(context).size.width * 0.4,
+                      color: Colors.grey,
+                    ),
+                  ],
+                ),
+              ),
+              CustomImageTextButton(
+                image: CustomImages.facebook,
+                text: 'Login with Facebook',
+                onTap: () {},
+              ),
+              const SizedBox(height: 10),
+              CustomImageTextButton(
+                image: CustomImages.google,
+                text: 'Login with Google',
+                onTap: () {},
+              ),
+              const Spacer(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Container(
-                    height: 1,
-                    width: MediaQuery.of(context).size.width * 0.4,
-                    color: Colors.grey,
+                  const Text(
+                    '''Don't have an account?''',
+                    style: TextStyle(color: Colors.grey),
                   ),
-                  const Text(' OR '),
-                  Container(
-                    height: 1,
-                    width: MediaQuery.of(context).size.width * 0.4,
-                    color: Colors.grey,
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context)
+                          .pushNamed(RegisterationTypeScreen.routeName);
+                    },
+                    child: const Text('Register'),
                   ),
                 ],
               ),
-            ),
-            CustomImageTextButton(
-              image: CustomImages.facebook,
-              text: 'Login with Facebook',
-              onTap: () {},
-            ),
-            const SizedBox(height: 10),
-            CustomImageTextButton(
-              image: CustomImages.google,
-              text: 'Login with Google',
-              onTap: () {},
-            ),
-            const Spacer(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                const Text(
-                  '''Don't have an account?''',
-                  style: TextStyle(color: Colors.grey),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context)
-                        .pushNamed(RegisterationTypeScreen.routeName);
-                  },
-                  child: const Text('Register'),
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-          ],
+              const SizedBox(height: 8),
+            ],
+          ),
         ),
       ),
     );

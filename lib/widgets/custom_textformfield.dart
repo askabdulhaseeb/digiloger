@@ -19,7 +19,7 @@ class CustomTextFormField extends StatefulWidget {
         super(key: key);
   final TextEditingController _controller;
   final TextInputType? keyboardType;
-  final String? Function(String?)? validator;
+  final String? Function(String? value)? validator;
   final String? initialValue;
   final String title;
   final String? hint;

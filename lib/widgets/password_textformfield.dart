@@ -38,6 +38,7 @@ class PasswordTextFormFieldState extends State<PasswordTextFormField> {
       child: TextFormField(
         controller: widget._controller,
         obscureText: _notVisible,
+        textInputAction: TextInputAction.done,
         cursorColor: Theme.of(context).colorScheme.secondary,
         validator: (String? value) => CustomValidator.password(value),
         decoration: InputDecoration(

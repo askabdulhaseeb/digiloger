@@ -5,6 +5,7 @@ class AppUser {
   final String name;
   final String email;
   final bool? status;
+  final bool? isVerified;
   final bool? isBuiness;
   final String? phoneNumber;
   final String? dob;
@@ -21,6 +22,7 @@ class AppUser {
     required this.uid,
     required this.name,
     required this.email,
+    this.isVerified = false,
     this.status = true,
     this.isBuiness = false,
     this.phoneNumber,
@@ -41,6 +43,7 @@ class AppUser {
         'uid': uid,
         'name': name.trim(),
         'email': email.trim(),
+        'isVerified': isVerified ?? false,
         'status': status ?? true,
         'isBuiness': true,
         'location': location ?? '',
@@ -57,6 +60,7 @@ class AppUser {
         'uid': uid,
         'name': name.trim(),
         'email': email.trim(),
+        'isVerified': isVerified ?? false,
         'status': status ?? true,
         'isBuiness': false,
         'dob': dob,
@@ -76,6 +80,7 @@ class AppUser {
         uid: doc.data()!['uid'].toString(),
         name: doc.data()!['name'].toString(),
         email: doc.data()!['email'].toString(),
+        isVerified: doc.data()!['isVerified'] ?? false,
         status: doc.data()!['status'] ?? true,
         isBuiness: true,
         location: doc.data()!['location'] ?? '',
@@ -92,6 +97,7 @@ class AppUser {
         uid: doc.data()!['uid'],
         name: doc.data()!['name'],
         email: doc.data()!['email'],
+        isVerified: doc.data()!['isVerified'] ?? false,
         status: doc.data()!['status'] ?? true,
         isBuiness: false,
         dob: doc.data()!['dob'] ?? '',

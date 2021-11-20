@@ -1,7 +1,9 @@
+import 'package:digiloger/providers/main_bottom_nav_bar_provider.dart';
 import 'package:digiloger/screens/main_screen/main_screen.dart';
 import 'package:digiloger/services/user_local_data.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
 import 'screens/auth/business_registeration_screen.dart';
 import 'screens/auth/forget_password_screen.dart';
 import 'screens/auth/login_screen.dart';
@@ -20,40 +22,49 @@ class MyApp extends StatelessWidget {
   static const Color _primary = Color(0xFF3A5899);
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Digiloger',
-      theme: ThemeData(
-        colorScheme: const ColorScheme(
-          primary: _primary,
-          primaryVariant: _primary,
-          secondary: _primary,
-          secondaryVariant: Colors.white,
-          surface: Colors.white,
-          background: Colors.white,
-          error: Colors.red,
-          onPrimary: _primary,
-          onSecondary: _primary,
-          onSurface: Colors.white,
-          onBackground: Colors.white,
-          onError: Colors.redAccent,
-          brightness: Brightness.light,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<MainBottomNavBarProvider>(
+          create: (BuildContext context) => MainBottomNavBarProvider(),
         ),
-        primaryColor: _primary,
-        iconTheme: const IconThemeData(color: _primary),
-        splashColor: Colors.blue[300],
+      ],
+      child: MaterialApp(
+        title: 'Digiloger',
+        theme: ThemeData(
+          colorScheme: const ColorScheme(
+            primary: _primary,
+            primaryVariant: _primary,
+            secondary: _primary,
+            secondaryVariant: Colors.white,
+            surface: Colors.white,
+            background: Colors.white,
+            error: Colors.red,
+            onPrimary: _primary,
+            onSecondary: _primary,
+            onSurface: Colors.white,
+            onBackground: Colors.white,
+            onError: Colors.redAccent,
+            brightness: Brightness.light,
+          ),
+          primaryColor: _primary,
+          iconTheme: const IconThemeData(color: _primary),
+          splashColor: Colors.blue[300],
+        ),
+        home: (UserLocalData.getUID.isEmpty)
+            ? const LoginScreen()
+            : const MainScreen(),
+        routes: <String, WidgetBuilder>{
+          LoginScreen.routeName: (_) => const LoginScreen(),
+          ForgetPasswordScreen.routeName: (_) => ForgetPasswordScreen(),
+          RegisterationTypeScreen.routeName: (_) =>
+              const RegisterationTypeScreen(),
+          PersonalRegisterationScreen.routeName: (_) =>
+              const PersonalRegisterationScreen(),
+          BusinessRegisterationScreen.routeName: (_) =>
+              const BusinessRegisterationScreen(),
+          MainScreen.routeName: (_) => const MainScreen(),
+        },
       ),
-      home: const LoginScreen(),
-      routes: <String, WidgetBuilder>{
-        LoginScreen.routeName: (_) => const LoginScreen(),
-        ForgetPasswordScreen.routeName: (_) => ForgetPasswordScreen(),
-        RegisterationTypeScreen.routeName: (_) =>
-            const RegisterationTypeScreen(),
-        PersonalRegisterationScreen.routeName: (_) =>
-            const PersonalRegisterationScreen(),
-        BusinessRegisterationScreen.routeName: (_) =>
-            const BusinessRegisterationScreen(),
-        MainScreen.routeName: (_) => const MainScreen(),
-      },
     );
   }
 }

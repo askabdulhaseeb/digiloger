@@ -53,6 +53,7 @@ class CustomTextFormFieldState extends State<CustomTextFormField> {
         controller: widget._controller,
         readOnly: widget.readOnly,
         keyboardType: widget.keyboardType,
+        textInputAction: TextInputAction.next,
         autofocus: widget.autoFocus,
         textAlign: widget.textAlign,
         validator: (String? value) => widget.validator!(value),

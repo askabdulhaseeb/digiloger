@@ -12,6 +12,7 @@ class UserLocalData {
   static const String _displayNameKey = 'DISPLAYNAMEKEY';
   static const String _emailKey = 'EMAILKEY';
   static const String _isBusinessKey = 'ISBUSINESSKEY';
+  static const String _isVerifiedKey = 'ISVERIFIEDKEY';
   static const String _imageUrlKey = 'IMAGEURLKEY';
   static const String _followersKey = 'FOLLOWERSKEY';
   static const String _followsKey = 'FOLLOWSKEY';
@@ -31,6 +32,9 @@ class UserLocalData {
 
   static Future<void> setIsBusiness(bool isBusiness) async =>
       _preferences!.setBool(_isBusinessKey, isBusiness);
+
+  static Future<void> setIsVerified(bool isVerified) async =>
+      _preferences!.setBool(_isVerifiedKey, isVerified);
 
   static Future<void> setImageUrl(String url) async =>
       _preferences!.setString(_imageUrlKey, url);
@@ -52,6 +56,8 @@ class UserLocalData {
   static String get getEmail => _preferences!.getString(_emailKey) ?? '';
   static bool get getIsBusiness =>
       _preferences!.getBool(_isBusinessKey) ?? false;
+  static bool get getIsVerified =>
+      _preferences!.getBool(_isVerifiedKey) ?? false;
   static String get getImageUrl => _preferences!.getString(_imageUrlKey) ?? '';
   static List<String> get getFollowers =>
       _preferences!.getStringList(_followersKey) ?? [];
@@ -65,6 +71,7 @@ class UserLocalData {
     setDisplayName(appUser.name);
     setEmail(appUser.email);
     setIsBusiness(appUser.isBuiness ?? false);
+    setIsVerified(appUser.isVerified ?? false);
     setImageUrl(appUser.imageURL ?? '');
     setFollowers(appUser.followers ?? []);
     setFollows(appUser.follows ?? []);

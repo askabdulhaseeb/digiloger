@@ -25,7 +25,7 @@ class CircularProfileImage extends StatelessWidget {
             imageURL,
             width: radious * 2,
             height: radious * 2,
-            fit: BoxFit.fill,
+            fit: BoxFit.cover,
             cache: true,
             shape: BoxShape.circle,
           ),

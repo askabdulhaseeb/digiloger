@@ -1,7 +1,7 @@
-import '../../providers/main_bottom_nav_bar_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../providers/main_bottom_nav_bar_provider.dart';
 
 class MainBottomNavigationBar extends StatelessWidget {
   const MainBottomNavigationBar({Key? key}) : super(key: key);

@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import '../../../utilities/custom_image.dart';
 import '../../../widgets/circular_profile_image.dart';
 import '../../../widgets/post_tile.dart';
+import '../../chat_dashboard_screen/chat_dashboard_screen.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -19,7 +20,9 @@ class HomePage extends StatelessWidget {
         ),
         actions: <Widget>[
           IconButton(
-            onPressed: () {},
+            splashRadius: 20,
+            onPressed: () =>
+                Navigator.of(context).pushNamed(ChatDashboardScreen.routeName),
             icon: const Icon(CupertinoIcons.chat_bubble_2),
           )
         ],

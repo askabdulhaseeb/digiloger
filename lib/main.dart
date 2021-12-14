@@ -1,14 +1,15 @@
-import 'package:digiloger/providers/main_bottom_nav_bar_provider.dart';
-import 'package:digiloger/screens/main_screen/main_screen.dart';
-import 'package:digiloger/services/user_local_data.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
+import 'package:digiloger/providers/main_bottom_nav_bar_provider.dart';
+import 'package:digiloger/screens/main_screen/main_screen.dart';
+import 'package:digiloger/services/user_local_data.dart';
 import 'screens/auth/business_registeration_screen.dart';
 import 'screens/auth/forget_password_screen.dart';
 import 'screens/auth/login_screen.dart';
 import 'screens/auth/personal_registeration_screen.dart';
 import 'screens/auth/registeration_type_screen.dart';
+import 'screens/chat_dashboard_screen/chat_dashboard_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -64,6 +65,7 @@ class MyApp extends StatelessWidget {
           BusinessRegisterationScreen.routeName: (_) =>
               const BusinessRegisterationScreen(),
           MainScreen.routeName: (_) => const MainScreen(),
+          ChatDashboardScreen.routeName: (_) => const ChatDashboardScreen(),
         },
       ),
     );

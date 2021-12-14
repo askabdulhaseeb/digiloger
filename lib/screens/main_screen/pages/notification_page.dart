@@ -1,5 +1,5 @@
-import 'package:digiloger/widgets/notification_tile.dart';
 import 'package:flutter/material.dart';
+import '../../../widgets/notification_tile.dart';
 
 class NotificationPage extends StatelessWidget {
   const NotificationPage({Key? key}) : super(key: key);

@@ -1,3 +1,4 @@
+import 'package:digiloger/screens/chat_screen/personal_screen.dart';
 import 'package:digiloger/utilities/custom_image.dart';
 import 'package:digiloger/utilities/utilities.dart';
 import 'package:extended_image/extended_image.dart';
@@ -39,7 +40,12 @@ class ChatDashboardScreen extends StatelessWidget {
               child: ListView.builder(
                 itemCount: 100,
                 itemBuilder: (BuildContext context, int index) => ListTile(
-                  onTap: () {},
+                  onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (BuildContext context) =>
+                          PersonalChatScreen(user: index),
+                    ),
+                  ),
                   contentPadding: EdgeInsets.zero,
                   leading: CircleAvatar(
                     backgroundColor: Theme.of(context).primaryColor,

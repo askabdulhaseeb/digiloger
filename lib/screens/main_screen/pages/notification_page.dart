@@ -5,8 +5,19 @@ class NotificationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Notification Page'),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'Notifications',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
+      body: ListView.builder(
+        itemCount: 100,
+        itemBuilder: (BuildContext context, int index) => const Text('data'),
+      ),
     );
   }
 }

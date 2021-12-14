@@ -23,6 +23,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
+      // ignore: always_specify_types
       providers: [
         ChangeNotifierProvider<MainBottomNavBarProvider>(
           create: (BuildContext context) => MainBottomNavBarProvider(),

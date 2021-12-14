@@ -1,9 +1,8 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
-
-import 'package:digiloger/services/user_local_data.dart';
-import 'package:digiloger/utilities/custom_image.dart';
-import 'package:digiloger/widgets/circular_profile_image.dart';
+import '../../../services/user_local_data.dart';
+import '../../../utilities/custom_image.dart';
+import '../../../widgets/circular_profile_image.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -26,7 +25,7 @@ class ProfilePage extends StatelessWidget {
           const SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
+            children: <Widget>[
               _NumInfoWidget(
                 number: UserLocalData.getPost.length,
                 title: 'Posts',
@@ -52,7 +51,8 @@ class ProfilePage extends StatelessWidget {
               ),
               shrinkWrap: true,
               itemCount: 1000,
-              itemBuilder: (context, index) => ExtendedImage.network(
+              itemBuilder: (BuildContext context, int index) =>
+                  ExtendedImage.network(
                 CustomImages.domeURL,
                 fit: BoxFit.cover,
               ),
@@ -73,7 +73,7 @@ class _NumInfoWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: [
+      children: <Widget>[
         Text(
           number.toString(),
           style: const TextStyle(fontWeight: FontWeight.bold),

@@ -1,8 +1,8 @@
-import 'package:digiloger/utilities/custom_image.dart';
-import 'package:digiloger/widgets/circular_profile_image.dart';
-import 'package:digiloger/widgets/post_tile.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import '../../../utilities/custom_image.dart';
+import '../../../widgets/circular_profile_image.dart';
+import '../../../widgets/post_tile.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -17,7 +17,7 @@ class HomePage extends StatelessWidget {
           height: 46,
           child: Image.asset(CustomImages.logo),
         ),
-        actions: [
+        actions: <Widget>[
           IconButton(
             onPressed: () {},
             icon: const Icon(CupertinoIcons.chat_bubble_2),
@@ -32,7 +32,7 @@ class HomePage extends StatelessWidget {
             child: ListView.builder(
               itemCount: 1000,
               scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) => SizedBox(
+              itemBuilder: (BuildContext context, int index) => SizedBox(
                 width: 64,
                 height: 64,
                 child: CircularProfileImage(imageURL: CustomImages.domeURL),
@@ -43,7 +43,8 @@ class HomePage extends StatelessWidget {
             child: ListView.builder(
               shrinkWrap: true,
               itemCount: 1000,
-              itemBuilder: (context, index) => const PostTile(),
+              itemBuilder: (BuildContext context, int index) =>
+                  const PostTile(),
             ),
           ),
         ],

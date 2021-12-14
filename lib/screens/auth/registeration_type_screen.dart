@@ -1,7 +1,7 @@
-import 'package:digiloger/screens/auth/business_registeration_screen.dart';
-import 'package:digiloger/screens/auth/personal_registeration_screen.dart';
-import 'package:digiloger/widgets/custom_text_button.dart';
 import 'package:flutter/material.dart';
+import '../../widgets/custom_text_button.dart';
+import 'business_registeration_screen.dart';
+import 'personal_registeration_screen.dart';
 
 class RegisterationTypeScreen extends StatelessWidget {
   const RegisterationTypeScreen({Key? key}) : super(key: key);

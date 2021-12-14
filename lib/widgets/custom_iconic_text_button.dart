@@ -1,5 +1,5 @@
-import 'package:digiloger/utilities/utilities.dart';
 import 'package:flutter/material.dart';
+import '../utilities/utilities.dart';
 
 class CustomImageTextButton extends StatelessWidget {
   const CustomImageTextButton({
@@ -26,7 +26,7 @@ class CustomImageTextButton extends StatelessWidget {
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
-          children: [
+          children: <Widget>[
             SizedBox(
               height: 30,
               width: 30,

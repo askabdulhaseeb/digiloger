@@ -60,11 +60,11 @@ class UserLocalData {
       _preferences!.getBool(_isVerifiedKey) ?? false;
   static String get getImageUrl => _preferences!.getString(_imageUrlKey) ?? '';
   static List<String> get getFollowers =>
-      _preferences!.getStringList(_followersKey) ?? [];
+      _preferences!.getStringList(_followersKey) ?? <String>[];
   static List<String> get getFollows =>
-      _preferences!.getStringList(_followsKey) ?? [];
+      _preferences!.getStringList(_followsKey) ?? <String>[];
   static List<String> get getPost =>
-      _preferences!.getStringList(_postKey) ?? [];
+      _preferences!.getStringList(_postKey) ?? <String>[];
 
   void storeAppUserData({required AppUser appUser}) {
     setUID(appUser.uid);
@@ -73,8 +73,8 @@ class UserLocalData {
     setIsBusiness(appUser.isBuiness ?? false);
     setIsVerified(appUser.isVerified ?? false);
     setImageUrl(appUser.imageURL ?? '');
-    setFollowers(appUser.followers ?? []);
-    setFollows(appUser.follows ?? []);
-    setPost(appUser.posts ?? []);
+    setFollowers(appUser.followers ?? <String>[]);
+    setFollows(appUser.follows ?? <String>[]);
+    setPost(appUser.posts ?? <String>[]);
   }
 }

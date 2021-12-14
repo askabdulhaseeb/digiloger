@@ -1,8 +1,8 @@
-import 'package:digiloger/utilities/custom_validator.dart';
-import 'package:digiloger/utilities/utilities.dart';
-import 'package:digiloger/widgets/circular_icon_button.dart';
-import 'package:digiloger/widgets/custom_textformfield.dart';
 import 'package:flutter/material.dart';
+import '../../utilities/custom_validator.dart';
+import '../../utilities/utilities.dart';
+import '../../widgets/circular_icon_button.dart';
+import '../../widgets/custom_textformfield.dart';
 
 class ForgetPasswordScreen extends StatelessWidget {
   ForgetPasswordScreen({Key? key}) : super(key: key);

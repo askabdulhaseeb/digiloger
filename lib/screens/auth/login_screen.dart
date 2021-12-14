@@ -1,18 +1,18 @@
-import 'package:digiloger/database/auth_methods.dart';
-import 'package:digiloger/screens/auth/forget_password_screen.dart';
-import 'package:digiloger/screens/auth/registeration_type_screen.dart';
-import 'package:digiloger/screens/main_screen/main_screen.dart';
-import 'package:digiloger/utilities/custom_image.dart';
-import 'package:digiloger/utilities/custom_validator.dart';
-import 'package:digiloger/utilities/utilities.dart';
-import 'package:digiloger/widgets/circular_icon_button.dart';
-import 'package:digiloger/widgets/custom_iconic_text_button.dart';
-import 'package:digiloger/widgets/custom_textformfield.dart';
-import 'package:digiloger/widgets/custom_toast.dart';
-import 'package:digiloger/widgets/password_textformfield.dart';
-import 'package:digiloger/widgets/show_loading.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import '../../database/auth_methods.dart';
+import '../../utilities/custom_image.dart';
+import '../../utilities/custom_validator.dart';
+import '../../utilities/utilities.dart';
+import '../../widgets/circular_icon_button.dart';
+import '../../widgets/custom_iconic_text_button.dart';
+import '../../widgets/custom_textformfield.dart';
+import '../../widgets/custom_toast.dart';
+import '../../widgets/password_textformfield.dart';
+import '../../widgets/show_loading.dart';
+import '../main_screen/main_screen.dart';
+import 'forget_password_screen.dart';
+import 'registeration_type_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -67,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   if (_user != null) {
                     Navigator.of(context).pushNamedAndRemoveUntil(
                       MainScreen.routeName,
-                      (route) => false,
+                      (Route<dynamic> route) => false,
                     );
                   } else {
                     Navigator.of(context).pop();

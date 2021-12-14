@@ -1,16 +1,16 @@
-import 'package:digiloger/database/auth_methods.dart';
-import 'package:digiloger/database/user_api.dart';
-import 'package:digiloger/models/app_user.dart';
-import 'package:digiloger/screens/auth/login_screen.dart';
-import 'package:digiloger/utilities/custom_validator.dart';
-import 'package:digiloger/utilities/utilities.dart';
-import 'package:digiloger/widgets/circular_icon_button.dart';
-import 'package:digiloger/widgets/custom_textformfield.dart';
-import 'package:digiloger/widgets/custom_toast.dart';
-import 'package:digiloger/widgets/password_textformfield.dart';
-import 'package:digiloger/widgets/show_loading.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import '../../database/auth_methods.dart';
+import '../../database/user_api.dart';
+import '../../models/app_user.dart';
+import '../../utilities/custom_validator.dart';
+import '../../utilities/utilities.dart';
+import '../../widgets/circular_icon_button.dart';
+import '../../widgets/custom_textformfield.dart';
+import '../../widgets/custom_toast.dart';
+import '../../widgets/password_textformfield.dart';
+import '../../widgets/show_loading.dart';
+import 'login_screen.dart';
 
 class PersonalRegisterationScreen extends StatefulWidget {
   const PersonalRegisterationScreen({Key? key}) : super(key: key);
@@ -32,10 +32,10 @@ class _PersonalRegisterationScreenState
   int? _date;
   int? _month;
   int? _year;
-  final List<int> _dateList = [for (var i = 1; i <= 31; i++) i];
-  final List<int> _monthList = [for (var i = 1; i <= 12; i++) i];
-  final List<int> _yearList = [
-    for (var i = DateTime.now().year; i >= 1900; i--) i
+  final List<int> _dateList = <int>[for (int i = 1; i <= 31; i++) i];
+  final List<int> _monthList = <int>[for (int i = 1; i <= 12; i++) i];
+  final List<int> _yearList = <int>[
+    for (int i = DateTime.now().year; i >= 1900; i--) i
   ];
   @override
   Widget build(BuildContext context) {
@@ -86,15 +86,24 @@ class _PersonalRegisterationScreenState
                       ' Date of Birth',
                       style: TextStyle(fontSize: 18, color: Colors.black54),
                     ),
-                    _dob_dropdown(context),
+                    _dobDropdown(context),
                     DropdownButton<String>(
                       underline: const SizedBox(),
                       hint: const Text("Select Gender"),
                       value: _gender,
                       items: const <DropdownMenuItem<String>>[
-                        DropdownMenuItem(child: Text('Male'), value: 'm'),
-                        DropdownMenuItem(child: Text('Female'), value: 'f'),
-                        DropdownMenuItem(child: Text('other'), value: 'o'),
+                        DropdownMenuItem<String>(
+                          child: Text('Male'),
+                          value: 'm',
+                        ),
+                        DropdownMenuItem<String>(
+                          child: Text('Female'),
+                          value: 'f',
+                        ),
+                        DropdownMenuItem<String>(
+                          child: Text('other'),
+                          value: 'o',
+                        ),
                       ],
                       onChanged: (String? value) {
                         setState(() {
@@ -122,14 +131,15 @@ class _PersonalRegisterationScreenState
                                 gender: _gender,
                                 dob: '$_date-$_month-$_year',
                               );
-                              final _okay = await UserAPI().addUser(_appUser);
+                              final bool _okay =
+                                  await UserAPI().addUser(_appUser);
                               if (_okay) {
                                 CustomToast.successToast(
                                   message: 'Register Successfully',
                                 );
                                 Navigator.of(context).pushNamedAndRemoveUntil(
                                   LoginScreen.routeName,
-                                  (route) => false,
+                                  (Route<dynamic> route) => false,
                                 );
                               } else {
                                 Navigator.of(context).pop();
@@ -173,9 +183,9 @@ class _PersonalRegisterationScreenState
     );
   }
 
-  Row _dob_dropdown(BuildContext context) {
+  Row _dobDropdown(BuildContext context) {
     return Row(
-      children: [
+      children: <Widget>[
         const SizedBox(width: 4),
         DropdownButton<int>(
           menuMaxHeight: MediaQuery.of(context).size.height * 0.7,
@@ -183,7 +193,7 @@ class _PersonalRegisterationScreenState
           hint: const Text("Date"),
           value: _date,
           items: _dateList
-              .map((e) => DropdownMenuItem<int>(
+              .map((int e) => DropdownMenuItem<int>(
                     value: e,
                     child: Text('$e'),
                   ))
@@ -200,7 +210,7 @@ class _PersonalRegisterationScreenState
           hint: const Text("Month"),
           value: _month,
           items: _monthList
-              .map((e) => DropdownMenuItem<int>(
+              .map((int e) => DropdownMenuItem<int>(
                     value: e,
                     child: Text('$e'),
                   ))
@@ -217,7 +227,7 @@ class _PersonalRegisterationScreenState
           hint: const Text("Date"),
           value: _year,
           items: _yearList
-              .map((e) => DropdownMenuItem<int>(
+              .map((int e) => DropdownMenuItem<int>(
                     value: e,
                     child: Text('$e'),
                   ))

@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:extended_image/extended_image.dart';
-import 'package:digiloger/utilities/custom_image.dart';
-import 'package:digiloger/widgets/circular_profile_image.dart';
+import '../utilities/custom_image.dart';
+import '../widgets/circular_profile_image.dart';
 
 class PostTile extends StatelessWidget {
   const PostTile({Key? key}) : super(key: key);
@@ -40,7 +40,7 @@ class PostTile extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Row(
-            children: [
+            children: <Widget>[
               IconButton(
                 splashRadius: 16,
                 padding: const EdgeInsets.all(0),
@@ -82,7 +82,7 @@ class PostTile extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
       child: Row(
-        children: [
+        children: <Widget>[
           CircularProfileImage(imageURL: CustomImages.domeURL, radious: 24),
           const SizedBox(width: 6),
           Column(

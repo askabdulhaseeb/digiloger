@@ -1,7 +1,7 @@
-import 'package:digiloger/utilities/utilities.dart';
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:intl_phone_field/phone_number.dart';
+import '../utilities/utilities.dart';
 
 class PhoneNumberField extends StatefulWidget {
   const PhoneNumberField({Key? key, required this.onChange}) : super(key: key);
@@ -27,7 +27,7 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
       ),
       initialCountryCode: 'PK',
       keyboardType: TextInputType.number,
-      onChanged: (phone) => widget.onChange!(phone),
+      onChanged: (PhoneNumber phone) => widget.onChange!(phone),
     );
   }
 }

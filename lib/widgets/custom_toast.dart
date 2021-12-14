@@ -22,7 +22,7 @@ class CustomToast {
     required BuildContext context,
     required String text,
   }) {
-    final snackBar =
+    final SnackBar snackBar =
         SnackBar(content: Text(text), backgroundColor: Colors.black);
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }

@@ -1,18 +1,17 @@
-import 'package:digiloger/database/auth_methods.dart';
-import 'package:digiloger/database/user_api.dart';
-import 'package:digiloger/models/app_user.dart';
-import 'package:digiloger/utilities/custom_validator.dart';
-import 'package:digiloger/utilities/utilities.dart';
-import 'package:digiloger/widgets/circular_icon_button.dart';
-import 'package:digiloger/widgets/custom_textformfield.dart';
-import 'package:digiloger/widgets/custom_toast.dart';
-import 'package:digiloger/widgets/password_textformfield.dart';
-import 'package:digiloger/widgets/phone_number_field.dart';
-import 'package:digiloger/widgets/show_loading.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl_phone_field/phone_number.dart';
-
+import '../../database/auth_methods.dart';
+import '../../database/user_api.dart';
+import '../../models/app_user.dart';
+import '../../utilities/custom_validator.dart';
+import '../../utilities/utilities.dart';
+import '../../widgets/circular_icon_button.dart';
+import '../../widgets/custom_textformfield.dart';
+import '../../widgets/custom_toast.dart';
+import '../../widgets/password_textformfield.dart';
+import '../../widgets/phone_number_field.dart';
+import '../../widgets/show_loading.dart';
 import 'login_screen.dart';
 
 class BusinessRegisterationScreen extends StatefulWidget {
@@ -30,7 +29,7 @@ class _BusinessRegisterationScreenState
   final TextEditingController _password = TextEditingController();
   final TextEditingController _confPassword = TextEditingController();
   final TextEditingController _location = TextEditingController();
-  final TextEditingController _contact = TextEditingController();
+  // final TextEditingController _contact = TextEditingController();
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
   String number = '';
   @override
@@ -46,21 +45,23 @@ class _BusinessRegisterationScreenState
         child: Form(
           key: _key,
           child: Column(
-            children: [
+            children: <Widget>[
               Expanded(
                 child: ListView(
                   shrinkWrap: true,
-                  children: [
+                  children: <Widget>[
                     CustomTextFormField(
                       title: 'Brand Name',
                       controller: _brandName,
-                      validator: (value) => CustomValidator.lessThen3(value),
+                      validator: (String? value) =>
+                          CustomValidator.lessThen3(value),
                     ),
                     CustomTextFormField(
                       title: 'Email',
                       hint: 'test@test.com',
                       controller: _email,
-                      validator: (value) => CustomValidator.email(value),
+                      validator: (String? value) =>
+                          CustomValidator.email(value),
                     ),
                     PasswordTextFormField(controller: _password),
                     PasswordTextFormField(
@@ -70,7 +71,8 @@ class _BusinessRegisterationScreenState
                     CustomTextFormField(
                       title: 'Location',
                       controller: _location,
-                      validator: (value) => CustomValidator.lessThen3(value),
+                      validator: (String? value) =>
+                          CustomValidator.lessThen3(value),
                     ),
                     PhoneNumberField(onChange: (PhoneNumber phone) {
                       number = phone.completeNumber;
@@ -95,14 +97,15 @@ class _BusinessRegisterationScreenState
                                 location: _location.text.trim(),
                                 phoneNumber: number.trim(),
                               );
-                              final _okay = await UserAPI().addUser(_appUser);
+                              final bool _okay =
+                                  await UserAPI().addUser(_appUser);
                               if (_okay) {
                                 CustomToast.successToast(
                                   message: 'Register Successfully',
                                 );
                                 Navigator.of(context).pushNamedAndRemoveUntil(
                                   LoginScreen.routeName,
-                                  (route) => false,
+                                  (Route<dynamic> route) => false,
                                 );
                               } else {
                                 Navigator.of(context).pop();

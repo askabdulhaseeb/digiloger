@@ -1,4 +1,3 @@
-import 'package:digiloger/utilities/utilities.dart';
 import 'package:flutter/material.dart';
 
 class CustomTextButton extends StatelessWidget {

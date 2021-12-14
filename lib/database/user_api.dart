@@ -27,11 +27,11 @@ class UserAPI {
   }
 
   Future<String> uploadImage(Uint8List? imageBytes, String uid) async {
-    var snapshot = await FirebaseStorage.instance
+    TaskSnapshot snapshot = await FirebaseStorage.instance
         .ref()
         .child('profile_images/$uid')
         .putData(imageBytes!);
-    var url = (await snapshot.ref.getDownloadURL()).toString();
+    String url = (await snapshot.ref.getDownloadURL()).toString();
     return url;
   }
 }

@@ -8,7 +8,6 @@ class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    // final Size _size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -28,13 +27,13 @@ class HomePage extends StatelessWidget {
       body: Column(
         children: <Widget>[
           SizedBox(
-            height: 60,
+            height: 61,
             width: double.infinity,
             child: ListView.builder(
               itemCount: 1000,
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) => SizedBox(
-                width: 66,
+                width: 64,
                 height: 64,
                 child: CircularProfileImage(imageURL: CustomImages.domeURL),
               ),

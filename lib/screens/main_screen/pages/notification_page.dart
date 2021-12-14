@@ -1,3 +1,4 @@
+import 'package:digiloger/widgets/notification_tile.dart';
 import 'package:flutter/material.dart';
 
 class NotificationPage extends StatelessWidget {
@@ -16,7 +17,8 @@ class NotificationPage extends StatelessWidget {
       ),
       body: ListView.builder(
         itemCount: 100,
-        itemBuilder: (BuildContext context, int index) => const Text('data'),
+        itemBuilder: (BuildContext context, int index) =>
+            const NotificationTile(),
       ),
     );
   }

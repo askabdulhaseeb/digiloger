@@ -1,16 +1,12 @@
 import 'package:digiloger/providers/main_bottom_nav_bar_provider.dart';
-import 'package:digiloger/screens/main_screen/pages/add_page.dart';
+import 'package:digiloger/screens/main_screen/pages/add_digilog_page.dart';
 import 'package:digiloger/screens/main_screen/pages/calendar_page.dart';
 import 'package:digiloger/screens/main_screen/pages/home_page.dart';
 import 'package:digiloger/screens/main_screen/pages/notification_page.dart';
 import 'package:digiloger/screens/main_screen/pages/profile_page.dart';
 import 'package:digiloger/screens/main_screen/pages/search_page.dart';
-import 'package:digiloger/services/user_local_data.dart';
-import 'package:digiloger/utilities/custom_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import 'main_bottom_navigation_bar.dart';
 
 class MainScreen extends StatelessWidget {
@@ -19,7 +15,7 @@ class MainScreen extends StatelessWidget {
   static const List<Widget> _pages = <Widget>[
     HomePage(),
     SearchPage(),
-    AddPage(),
+    AddDigilogPage(),
     CalendarPage(),
     NotificationPage(),
     ProfilePage(),

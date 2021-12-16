@@ -1,3 +1,7 @@
+import 'package:digiloger/screens/adddigilog_screen/add_details.dart';
+import 'package:digiloger/screens/adddigilog_screen/camerapage.dart';
+import 'package:digiloger/screens/adddigilog_screen/cameraview.dart';
+import 'package:digiloger/screens/adddigilog_screen/digilog_experiences.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
@@ -66,6 +70,10 @@ class MyApp extends StatelessWidget {
               const BusinessRegisterationScreen(),
           MainScreen.routeName: (_) => const MainScreen(),
           ChatDashboardScreen.routeName: (_) => const ChatDashboardScreen(),
+          AddDetails.routeName: (_) => const AddDetails(),
+          CameraScreen.routeName: (_) => const CameraScreen(),
+          CameraViewPage.routeName: (_) => const CameraViewPage(),
+          DigilogExperiences.routeName: (_) => const DigilogExperiences(),
         },
       ),
     );

@@ -23,9 +23,10 @@ dependencies:
   intl_phone_field: ^2.1.0
   image_picker: ^0.8.4+4
   extended_image: ^6.0.1
-
+  camera: ^0.9.4+5
   rename: ^2.0.1
-
+  hive: ^2.0.4
+  hive_flutter: ^1.1.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

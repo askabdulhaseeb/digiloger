@@ -1,5 +1,4 @@
 import 'package:extended_image/extended_image.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:digiloger/utilities/custom_image.dart';

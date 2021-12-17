@@ -1,4 +1,4 @@
-import 'package:digiloger/models/digilog_model.dart';
+import 'package:digiloger/models/digilog.dart';
 import 'package:digiloger/utilities/custom_image.dart';
 
 import 'package:extended_image/extended_image.dart';

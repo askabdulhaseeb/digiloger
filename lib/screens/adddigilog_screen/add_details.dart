@@ -1,10 +1,13 @@
+import 'package:digiloger/database/digilog_api.dart';
+import 'package:digiloger/models/digilog.dart';
+import 'package:digiloger/providers/digilog_provider.dart';
 import 'package:digiloger/screens/adddigilog_screen/camerapage.dart';
 import 'package:digiloger/utilities/custom_validator.dart';
 import 'package:digiloger/utilities/utilities.dart';
 import 'package:digiloger/widgets/circular_icon_button.dart';
 import 'package:digiloger/widgets/custom_textformfield.dart';
-import 'package:digiloger/widgets/show_loading.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class AddDetails extends StatefulWidget {
   const AddDetails({Key? key}) : super(key: key);
@@ -30,6 +33,7 @@ class _AddDetailsState extends State<AddDetails> {
 
   @override
   Widget build(BuildContext context) {
+    DigilogProvider _provider = Provider.of<DigilogProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -60,6 +64,13 @@ class _AddDetailsState extends State<AddDetails> {
               ),
               CircularIconButton(onTap: () async {
                 if (_key.currentState!.validate()) {
+                  Digilog digilog = Digilog(
+                      useruid: "",
+                      location: Location(lat: 0.00, long: 0.00),
+                      postedTime: DateTime.now().toString(),
+                      title: _digititle.text);
+                  int id = await DigilogAPI().adddigilog(digilog);
+                  _provider.onUpdate(id);
                   Navigator.of(context).pushNamed(CameraScreen.routeName);
                 }
               }),

@@ -1,4 +1,4 @@
-import 'package:digiloger/models/digilog_model.dart';
+import 'package:digiloger/models/digilog.dart';
 import 'package:flutter/material.dart';
 import 'digilog_cards.dart';
 

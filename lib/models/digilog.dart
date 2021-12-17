@@ -1,12 +1,14 @@
-class Digilog {
-  Digilog(
-      {required this.useruid,
-      required this.location,
-      required this.postedTime,
-      required this.experiences,
-      required this.title,
-      required this.comments,
-      required this.likes});
+import 'package:hive/hive.dart';
+part 'digilog.g.dart';
+
+@HiveType(typeId: 1)
+class Digilog extends HiveObject {
+  Digilog({
+    required this.useruid,
+    required this.location,
+    required this.postedTime,
+    required this.title,
+  });
 
   Digilog.fromJson(Map<String, dynamic> json) {
     useruid = json['useruid'];
@@ -29,12 +31,19 @@ class Digilog {
     }
     likes = json['likes'];
   }
+  @HiveField(0)
   String useruid = "";
+  @HiveField(1)
   late Location location;
+  @HiveField(2)
   String postedTime = "";
+  @HiveField(3)
   List<Experiences> experiences = <Experiences>[];
+  @HiveField(4)
   String title = "";
+  @HiveField(5)
   List<Comments> comments = <Comments>[];
+  @HiveField(6)
   int likes = 0;
 
   Map<String, dynamic> toJson() {
@@ -55,13 +64,16 @@ class Digilog {
   }
 }
 
+@HiveType(typeId: 2)
 class Location {
   Location({required this.lat, required this.long});
   Location.fromJson(Map<String, dynamic> json) {
     lat = json['lat'];
     long = json['long'];
   }
+  @HiveField(0)
   double lat = 0.00;
+  @HiveField(1)
   double long = 0.00;
 
   Map<String, dynamic> toJson() {
@@ -72,6 +84,7 @@ class Location {
   }
 }
 
+@HiveType(typeId: 3)
 class Experiences {
   Experiences(
       {required this.mediaUrl,
@@ -82,8 +95,11 @@ class Experiences {
     mediatype = json['mediatype'];
     description = json['description'];
   }
+  @HiveField(0)
   String mediaUrl = "";
+  @HiveField(1)
   String mediatype = "";
+  @HiveField(2)
   String description = "";
 
   Map<String, dynamic> toJson() {
@@ -95,6 +111,7 @@ class Experiences {
   }
 }
 
+@HiveType(typeId: 4)
 class Comments {
   Comments({required this.uid, required this.message, required this.likes});
   Comments.fromJson(Map<String, dynamic> json) {
@@ -102,8 +119,11 @@ class Comments {
     message = json['message'];
     likes = json['likes'];
   }
+  @HiveField(0)
   String uid = "";
+  @HiveField(1)
   String message = "";
+  @HiveField(2)
   int likes = 0;
 
   Map<String, dynamic> toJson() {

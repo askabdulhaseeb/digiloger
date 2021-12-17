@@ -1,13 +1,16 @@
+import 'package:digiloger/providers/digilog_provider.dart';
 import 'package:digiloger/screens/adddigilog_screen/add_details.dart';
 import 'package:digiloger/screens/adddigilog_screen/camerapage.dart';
 import 'package:digiloger/screens/adddigilog_screen/cameraview.dart';
 import 'package:digiloger/screens/adddigilog_screen/digilog_experiences.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:digiloger/providers/main_bottom_nav_bar_provider.dart';
 import 'package:digiloger/screens/main_screen/main_screen.dart';
 import 'package:digiloger/services/user_local_data.dart';
+import 'models/digilog.dart';
 import 'screens/auth/business_registeration_screen.dart';
 import 'screens/auth/forget_password_screen.dart';
 import 'screens/auth/login_screen.dart';
@@ -18,7 +21,12 @@ import 'screens/chat_dashboard_screen/chat_dashboard_screen.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await Hive.initFlutter();
   await UserLocalData.init();
+  Hive.registerAdapter(LocationAdapter());
+  Hive.registerAdapter(CommentsAdapter());
+  Hive.registerAdapter(ExperiencesAdapter());
+  Hive.registerAdapter(DigilogAdapter());
   runApp(const MyApp());
 }
 
@@ -32,6 +40,9 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider<MainBottomNavBarProvider>(
           create: (BuildContext context) => MainBottomNavBarProvider(),
+        ),
+        ChangeNotifierProvider<DigilogProvider>(
+          create: (BuildContext context) => DigilogProvider(),
         ),
       ],
       child: MaterialApp(

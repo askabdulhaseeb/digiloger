@@ -1,8 +1,13 @@
 import 'package:digiloger/models/digilog.dart';
+import 'package:digiloger/providers/digilog_provider.dart';
 import 'package:digiloger/utilities/custom_image.dart';
+import 'package:digiloger/widgets/show_loading.dart';
 
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'digilog_experiences.dart';
 
 class DigiLogCard extends StatefulWidget {
   const DigiLogCard({Key? key, required this.digilogs}) : super(key: key);
@@ -17,6 +22,7 @@ class _DigiLogCardState extends State<DigiLogCard> {
   String mediaUrl = "";
   @override
   Widget build(BuildContext context) {
+    final DigilogProvider _provider = Provider.of<DigilogProvider>(context);
     // ignore: avoid_unnecessary_containers
     return Container(
       child: ListView(
@@ -40,7 +46,12 @@ class _DigiLogCardState extends State<DigiLogCard> {
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: InkWell(
-                    onTap: () => {},
+                    onTap: () => {
+                      showLoadingDislog(context),
+                      _provider.onUpdatedigi(widget.digilogs[index]),
+                      Navigator.of(context)
+                          .pushNamed(DigilogExperiences.routeName),
+                    },
                     child: Column(
                       children: <Widget>[
                         SizedBox(
@@ -53,8 +64,8 @@ class _DigiLogCardState extends State<DigiLogCard> {
                             ),
                             elevation: 5,
                             margin: const EdgeInsets.all(5),
-                            child: ExtendedImage.network(
-                              CustomImages.domeURL,
+                            child: ExtendedImage.file(
+                              File(mediaUrl),
                               fit: BoxFit.fill,
                             ),
                           ),

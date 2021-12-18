@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:uuid/uuid.dart';
 part 'digilog.g.dart';
 
 @HiveType(typeId: 1)
@@ -8,10 +9,14 @@ class Digilog extends HiveObject {
     required this.location,
     required this.postedTime,
     required this.title,
-  });
+  }) {
+    Uuid uuid = const Uuid();
+    digilogid = uuid.v4();
+  }
 
   Digilog.fromJson(Map<String, dynamic> json) {
     useruid = json['useruid'];
+    digilogid = json['digilogid'];
     location = (json['location'] != null
         ? Location.fromJson(json['location'])
         : null)!;
@@ -34,21 +39,24 @@ class Digilog extends HiveObject {
   @HiveField(0)
   String useruid = "";
   @HiveField(1)
-  late Location location;
+  String digilogid = "";
   @HiveField(2)
-  String postedTime = "";
+  late Location location;
   @HiveField(3)
-  List<Experiences> experiences = <Experiences>[];
+  String postedTime = "";
   @HiveField(4)
-  String title = "";
+  List<Experiences> experiences = <Experiences>[];
   @HiveField(5)
-  List<Comments> comments = <Comments>[];
+  String title = "";
   @HiveField(6)
+  List<Comments> comments = <Comments>[];
+  @HiveField(7)
   int likes = 0;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['useruid'] = useruid;
+    data['digilogid'] = digilogid;
     data['location'] = location.toJson();
     data['postedTime'] = postedTime;
     if (data['experiences'] != null) {

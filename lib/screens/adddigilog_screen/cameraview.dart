@@ -98,7 +98,6 @@ class _CameraViewPageState extends State<CameraViewPage> {
     String appDocumentsPath = appDocumentsDirectory.path;
     String filePath = '$appDocumentsPath/$fileName';
     await file.copy(filePath);
-    print('Flutter|$filePath');
     return filePath;
   }
 
@@ -109,8 +108,9 @@ class _CameraViewPageState extends State<CameraViewPage> {
           mediaUrl: filepath,
           mediatype: "image",
           description: captionController.text);
-      int id = _provider.currentid;
-      DigilogAPI().addexperience(id, exp);
+      Digilog digilog = _provider.currentdigilog;
+      digilog.experiences.add(exp);
+      _provider.onUpdatedigi(digilog);
       Navigator.of(context).pushNamed(DigilogExperiences.routeName);
     }
   }

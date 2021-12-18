@@ -69,8 +69,8 @@ class _AddDetailsState extends State<AddDetails> {
                       location: Location(lat: 0.00, long: 0.00),
                       postedTime: DateTime.now().toString(),
                       title: _digititle.text);
-                  int id = await DigilogAPI().adddigilog(digilog);
-                  _provider.onUpdate(id);
+
+                  _provider.onUpdatedigi(digilog);
                   Navigator.of(context).pushNamed(CameraScreen.routeName);
                 }
               }),

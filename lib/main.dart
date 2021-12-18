@@ -6,6 +6,7 @@ import 'package:digiloger/screens/adddigilog_screen/digilog_experiences.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:digiloger/providers/main_bottom_nav_bar_provider.dart';
 import 'package:digiloger/screens/main_screen/main_screen.dart';
@@ -27,6 +28,7 @@ Future<void> main() async {
   Hive.registerAdapter(CommentsAdapter());
   Hive.registerAdapter(ExperiencesAdapter());
   Hive.registerAdapter(DigilogAdapter());
+  await Hive.openBox<Digilog>("digilog");
   runApp(const MyApp());
 }
 

@@ -12,7 +12,7 @@ class DigilogAdapter extends TypeAdapter<Digilog> {
 
   @override
   Digilog read(BinaryReader reader) {
-    final int numOfFields = reader.readByte();
+    final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
@@ -22,6 +22,7 @@ class DigilogAdapter extends TypeAdapter<Digilog> {
       postedTime: fields[2] as String,
       title: fields[4] as String,
     )
+      ..digilogid = fields[7] as String
       ..experiences = (fields[3] as List).cast<Experiences>()
       ..comments = (fields[5] as List).cast<Comments>()
       ..likes = fields[6] as int;
@@ -30,9 +31,11 @@ class DigilogAdapter extends TypeAdapter<Digilog> {
   @override
   void write(BinaryWriter writer, Digilog obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.useruid)
+      ..writeByte(7)
+      ..write(obj.digilogid)
       ..writeByte(1)
       ..write(obj.location)
       ..writeByte(2)

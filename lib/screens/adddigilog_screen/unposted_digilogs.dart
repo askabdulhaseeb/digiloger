@@ -1,3 +1,4 @@
+import 'package:digiloger/database/digilog_api.dart';
 import 'package:digiloger/models/digilog.dart';
 import 'package:flutter/material.dart';
 import 'digilog_cards.dart';
@@ -9,8 +10,6 @@ class Unposteddigilogs extends StatefulWidget {
 }
 
 class _UnposteddigilogsState extends State<Unposteddigilogs> {
-  late bool loading;
-  late List<Digilog> digilogs = <Digilog>[];
   @override
   void initState() {
     super.initState();
@@ -18,16 +17,30 @@ class _UnposteddigilogsState extends State<Unposteddigilogs> {
 
   @override
   Widget build(BuildContext context) {
-    if (digilogs.isEmpty) {
-      return Text(
-        "No Unposted Digilogs",
-        style: TextStyle(
-            color: Theme.of(context).colorScheme.primary, fontSize: 22),
-      );
-    } else {
-      return DigiLogCard(
-        digilogs: digilogs,
-      );
-    }
+    return FutureBuilder<List<Digilog>>(
+        future: getdigilogs(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            if (snapshot.data!.isEmpty) {
+              return Text(
+                "No Unposted Digilogs",
+                style: TextStyle(
+                    color: Theme.of(context).primaryColor, fontSize: 22),
+              );
+            } else {
+              return DigiLogCard(digilogs: snapshot.data!);
+            }
+          } else {
+            return Text(
+              "No Unposted Digilogs",
+              style: TextStyle(
+                  color: Theme.of(context).primaryColor, fontSize: 22),
+            );
+          }
+        });
+  }
+
+  Future<List<Digilog>> getdigilogs() async {
+    return await DigilogAPI().getalldigilog();
   }
 }

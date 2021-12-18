@@ -1,11 +1,13 @@
+import 'package:digiloger/models/digilog.dart';
 import 'package:flutter/material.dart';
 
 class DigilogProvider extends ChangeNotifier {
-  int _index = 0;
-  void onUpdate(int index) {
-    _index = index;
+  late Digilog _digilog;
+
+  void onUpdatedigi(Digilog digi) {
+    _digilog = digi;
     notifyListeners();
   }
 
-  int get currentid => _index;
+  Digilog get currentdigilog => _digilog;
 }

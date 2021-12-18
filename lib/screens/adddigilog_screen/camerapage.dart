@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:digiloger/screens/adddigilog_screen/cameraview.dart';
+import 'package:digiloger/widgets/show_loading.dart';
 import 'package:flutter/material.dart';
 
 class CameraScreen extends StatefulWidget {
@@ -151,6 +152,7 @@ class _CameraScreenState extends State<CameraScreen> {
   }
 
   Future<void> takePhoto(BuildContext context) async {
+    showLoadingDislog(context);
     final XFile file = await _cameraController.takePicture();
     Navigator.of(context)
         .pushNamed(CameraViewPage.routeName, arguments: file.path);

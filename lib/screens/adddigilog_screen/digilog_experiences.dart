@@ -122,16 +122,28 @@ class _DigilogExperiencesState extends State<DigilogExperiences> {
                           ),
                         );
                       } else {
+                        final uri =
+                            Uri.tryParse(_digiLog.experiences[index].mediaUrl);
+
+                        final bool isUrl = uri != null &&
+                            uri.hasAbsolutePath &&
+                            uri.scheme.startsWith('http');
                         return Card(
                           elevation: 1,
                           child: Center(
                             child: Padding(
                               padding:
                                   const EdgeInsets.fromLTRB(10.0, 0, 10.0, 0),
-                              child: ExtendedImage.file(
-                                File(_digiLog.experiences[index].mediaUrl),
-                                fit: BoxFit.fill,
-                              ),
+                              child: isUrl
+                                  ? ExtendedImage.network(
+                                      _digiLog.experiences[index].mediaUrl,
+                                      fit: BoxFit.fill,
+                                    )
+                                  : ExtendedImage.file(
+                                      File(
+                                          _digiLog.experiences[index].mediaUrl),
+                                      fit: BoxFit.fill,
+                                    ),
                             ),
                           ),
                         );

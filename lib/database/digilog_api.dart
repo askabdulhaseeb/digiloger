@@ -56,18 +56,6 @@ class DigilogAPI {
     return digilog;
   }
 
-//TODO:Check these please
-  Future<Digilog> getdigilog(int index) async {
-    Digilog digi = _digilogBox.getAt(index)!;
-    return digi;
-  }
-
-  Future<void> addexperience(int index, Experiences exp) async {
-    Digilog oldDigi = await getdigilog(index);
-    oldDigi.experiences.add(exp);
-    oldDigi.save();
-  }
-
   Future<void> deletedigilogfromhive(Digilog id) async {
     _digilogBox.delete(id.digilogid);
   }
@@ -89,7 +77,7 @@ class DigilogAPI {
 
   static const _chars =
       'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
-  Random _rnd = Random();
+  final Random _rnd = Random();
 
   String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
       length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));

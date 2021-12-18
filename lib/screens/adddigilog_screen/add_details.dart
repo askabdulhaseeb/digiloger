@@ -1,7 +1,7 @@
-import 'package:digiloger/database/digilog_api.dart';
 import 'package:digiloger/models/digilog.dart';
 import 'package:digiloger/providers/digilog_provider.dart';
 import 'package:digiloger/screens/adddigilog_screen/camerapage.dart';
+import 'package:digiloger/services/user_local_data.dart';
 import 'package:digiloger/utilities/custom_validator.dart';
 import 'package:digiloger/utilities/utilities.dart';
 import 'package:digiloger/widgets/circular_icon_button.dart';
@@ -24,8 +24,8 @@ class _AddDetailsState extends State<AddDetails> {
   //final List<dynamic> _placeList = [];
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    //TODO:Enable Location API
     /*locationController.addListener(() {
       _onChanged();
     });*/
@@ -65,7 +65,7 @@ class _AddDetailsState extends State<AddDetails> {
               CircularIconButton(onTap: () async {
                 if (_key.currentState!.validate()) {
                   Digilog digilog = Digilog(
-                      useruid: "",
+                      useruid: UserLocalData.getUID,
                       location: Location(lat: 0.00, long: 0.00),
                       postedTime: DateTime.now().toString(),
                       title: _digititle.text);

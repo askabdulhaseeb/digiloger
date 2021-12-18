@@ -1,7 +1,7 @@
 import 'package:digiloger/screens/adddigilog_screen/add_details.dart';
 import 'package:digiloger/widgets/custom_text_button.dart';
 import 'package:flutter/material.dart';
-import 'unposted_digilogs.dart';
+import '../../widgets/unposted_digilogs.dart';
 
 class AddNewDigilog extends StatefulWidget {
   const AddNewDigilog({Key? key}) : super(key: key);

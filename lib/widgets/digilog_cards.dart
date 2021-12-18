@@ -1,13 +1,11 @@
 import 'package:digiloger/models/digilog.dart';
 import 'package:digiloger/providers/digilog_provider.dart';
-import 'package:digiloger/utilities/custom_image.dart';
 import 'package:digiloger/widgets/show_loading.dart';
-
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'digilog_experiences.dart';
+import '../screens/adddigilog_screen/digilog_experiences.dart';
 
 class DigiLogCard extends StatefulWidget {
   const DigiLogCard({Key? key, required this.digilogs}) : super(key: key);

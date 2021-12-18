@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:digiloger/database/digilog_api.dart';
 import 'package:digiloger/models/digilog.dart';
 import 'package:digiloger/providers/digilog_provider.dart';
 import 'package:digiloger/screens/adddigilog_screen/digilog_experiences.dart';
@@ -92,7 +91,7 @@ class _CameraViewPageState extends State<CameraViewPage> {
   }
 
   Future<String> copyImage() async {
-    File file = new File(path);
+    File file = File(path);
     String fileName = file.path.split('/').last;
     Directory appDocumentsDirectory = await getApplicationDocumentsDirectory();
     String appDocumentsPath = appDocumentsDirectory.path;

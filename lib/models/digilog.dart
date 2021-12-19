@@ -74,20 +74,24 @@ class Digilog extends HiveObject {
 
 @HiveType(typeId: 2)
 class Location {
-  Location({required this.lat, required this.long});
+  Location({required this.lat, required this.long, required this.maintext});
   Location.fromJson(Map<String, dynamic> json) {
     lat = json['lat'];
     long = json['long'];
+    maintext = json['maintext'];
   }
   @HiveField(0)
   double lat = 0.00;
   @HiveField(1)
   double long = 0.00;
+  @HiveField(2)
+  String maintext = "";
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['lat'] = lat;
     data['long'] = long;
+    data['maintext'] = long;
     return data;
   }
 }

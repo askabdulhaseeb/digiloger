@@ -18,14 +18,14 @@ class DigilogAdapter extends TypeAdapter<Digilog> {
     };
     return Digilog(
       useruid: fields[0] as String,
-      location: fields[1] as Location,
-      postedTime: fields[2] as String,
-      title: fields[4] as String,
+      location: fields[2] as Location,
+      postedTime: fields[3] as String,
+      title: fields[5] as String,
     )
-      ..digilogid = fields[7] as String
-      ..experiences = (fields[3] as List).cast<Experiences>()
-      ..comments = (fields[5] as List).cast<Comments>()
-      ..likes = fields[6] as int;
+      ..digilogid = fields[1] as String
+      ..experiences = (fields[4] as List).cast<Experiences>()
+      ..comments = (fields[6] as List).cast<Comments>()
+      ..likes = fields[7] as int;
   }
 
   @override
@@ -34,19 +34,19 @@ class DigilogAdapter extends TypeAdapter<Digilog> {
       ..writeByte(8)
       ..writeByte(0)
       ..write(obj.useruid)
-      ..writeByte(7)
-      ..write(obj.digilogid)
       ..writeByte(1)
-      ..write(obj.location)
+      ..write(obj.digilogid)
       ..writeByte(2)
-      ..write(obj.postedTime)
+      ..write(obj.location)
       ..writeByte(3)
-      ..write(obj.experiences)
+      ..write(obj.postedTime)
       ..writeByte(4)
-      ..write(obj.title)
+      ..write(obj.experiences)
       ..writeByte(5)
-      ..write(obj.comments)
+      ..write(obj.title)
       ..writeByte(6)
+      ..write(obj.comments)
+      ..writeByte(7)
       ..write(obj.likes);
   }
 
@@ -74,17 +74,20 @@ class LocationAdapter extends TypeAdapter<Location> {
     return Location(
       lat: fields[0] as double,
       long: fields[1] as double,
+      maintext: fields[2] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, Location obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(0)
       ..write(obj.lat)
       ..writeByte(1)
-      ..write(obj.long);
+      ..write(obj.long)
+      ..writeByte(2)
+      ..write(obj.maintext);
   }
 
   @override

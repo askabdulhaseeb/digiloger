@@ -1,4 +1,6 @@
 import 'package:digiloger/database/auth_methods.dart';
+import 'package:digiloger/database/digilog_api.dart';
+import 'package:digiloger/models/digilog.dart';
 import 'package:digiloger/screens/auth/login_screen.dart';
 import 'package:digiloger/utilities/utilities.dart';
 import 'package:flutter/material.dart';
@@ -82,5 +84,9 @@ class _ProfilePageState extends State<ProfilePage> {
         ],
       ),
     );
+  }
+
+  Future<List<Digilog>> getdigilogs() async {
+    return await DigilogAPI().getallfirebasedigilogs(UserLocalData.getUID);
   }
 }

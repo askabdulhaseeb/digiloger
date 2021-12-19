@@ -31,7 +31,6 @@ class _AddDetailsState extends State<AddDetails> {
   @override
   void initState() {
     super.initState();
-    //TODO:Enable Location API
     _digilocation.addListener(() {
       _onChanged();
     });

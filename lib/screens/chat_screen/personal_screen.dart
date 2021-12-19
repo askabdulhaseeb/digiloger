@@ -5,7 +5,7 @@ import '../../utilities/utilities.dart';
 
 class PersonalChatScreen extends StatefulWidget {
   const PersonalChatScreen({required this.user, Key? key}) : super(key: key);
-  final int user;
+  final String user;
   @override
   State<PersonalChatScreen> createState() => _PersonalChatScreenState();
 }
@@ -39,7 +39,7 @@ class _PersonalChatScreenState extends State<PersonalChatScreen> {
               child: ListView.builder(
                 shrinkWrap: true,
                 reverse: true,
-                itemCount: widget.user + 2,
+                itemCount: 10,
                 itemBuilder: (BuildContext context, int index) {
                   return Material(
                     child: SizedBox(
@@ -113,27 +113,29 @@ class _PersonalChatScreenState extends State<PersonalChatScreen> {
             shape: BoxShape.circle,
           ),
           const SizedBox(width: 8),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                'Name of User ${widget.user}',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(color: Colors.white),
-              ),
-              // TODO: online/offline need to fix
-              const Text(
-                'online / offline',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w300,
-                  fontSize: 12,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  'Name of User ${widget.user}',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(color: Colors.white),
                 ),
-              ),
-            ],
+                // TODO: online/offline need to fix
+                const Text(
+                  'online / offline',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w300,
+                    fontSize: 12,
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),

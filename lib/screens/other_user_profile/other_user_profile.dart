@@ -1,5 +1,6 @@
 import 'package:digiloger/database/user_api.dart';
 import 'package:digiloger/models/app_user.dart';
+import 'package:digiloger/screens/chat_screen/personal_screen.dart';
 import 'package:digiloger/services/user_local_data.dart';
 import 'package:digiloger/widgets/circular_profile_image.dart';
 import 'package:digiloger/widgets/gridview_of_posts.dart';
@@ -148,7 +149,15 @@ class _OtherUserProfileState extends State<OtherUserProfile> {
           const SizedBox(width: 6),
           Flexible(
             child: InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute<PersonalChatScreen>(
+                    builder: (BuildContext context) => PersonalChatScreen(
+                      user: widget.uid,
+                    ),
+                  ),
+                );
+              },
               child: Container(
                 height: _height,
                 alignment: Alignment.center,
@@ -187,6 +196,7 @@ class _OtherUserProfileState extends State<OtherUserProfile> {
     return AppBar(
       backgroundColor: Colors.transparent,
       elevation: 0,
+      titleSpacing: 0,
       centerTitle: false,
       title: Text(widget.username),
       actions: <Widget>[

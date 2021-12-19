@@ -43,7 +43,7 @@ class ChatDashboardScreen extends StatelessWidget {
                   onTap: () => Navigator.of(context).push(
                     MaterialPageRoute<PersonalChatScreen>(
                       builder: (BuildContext context) =>
-                          PersonalChatScreen(user: index),
+                          PersonalChatScreen(user: index.toString()),
                     ),
                   ),
                   contentPadding: EdgeInsets.zero,

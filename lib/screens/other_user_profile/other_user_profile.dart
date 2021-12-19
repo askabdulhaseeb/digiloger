@@ -1,5 +1,7 @@
+import 'package:digiloger/database/digilog_api.dart';
 import 'package:digiloger/database/user_api.dart';
 import 'package:digiloger/models/app_user.dart';
+import 'package:digiloger/models/digilog.dart';
 import 'package:digiloger/screens/chat_screen/personal_screen.dart';
 import 'package:digiloger/services/user_local_data.dart';
 import 'package:digiloger/widgets/circular_profile_image.dart';
@@ -58,13 +60,35 @@ class _OtherUserProfileState extends State<OtherUserProfile> {
                       ),
                       _followAndMessage(_user!),
                       const Divider(),
-                      const Expanded(
-                        child: GridViewOfPosts(
-                          posts: <String>[
-                            'https://cdn.pixabay.com/photo/2015/10/30/20/13/sunrise-1014712_1280.jpg',
-                            'https://cdn.pixabay.com/photo/2017/01/20/00/30/maldives-1993704_1280.jpg',
-                          ],
-                        ),
+                      Expanded(
+                        child: FutureBuilder<List<Digilog>>(
+                            future: getdigilogs(_user),
+                            builder: (BuildContext context,
+                                AsyncSnapshot<List<Digilog>> snapshot) {
+                              switch (snapshot.connectionState) {
+                                case ConnectionState.waiting:
+                                  return const SizedBox(
+                                    height: double.infinity,
+                                    width: double.infinity,
+                                    child: CircularProgressIndicator.adaptive(),
+                                  );
+                                default:
+                                  if ((snapshot.hasError)) {
+                                    return _errorWidget();
+                                  } else {
+                                    if (snapshot.hasData) {
+                                      if (snapshot.data!.isNotEmpty) {
+                                        return GridViewOfPosts(
+                                            posts: snapshot.data!);
+                                      } else {
+                                        return const Text("NO DIGILOGS POSTED");
+                                      }
+                                    } else {
+                                      return const Text("NO DIGILOGS POSTED");
+                                    }
+                                  }
+                              }
+                            }),
                       )
                     ],
                   );
@@ -76,6 +100,10 @@ class _OtherUserProfileState extends State<OtherUserProfile> {
         },
       ),
     );
+  }
+
+  Future<List<Digilog>> getdigilogs(AppUser otherUser) async {
+    return await DigilogAPI().getallfirebasedigilogs(otherUser.uid);
   }
 
   Padding _followAndMessage(AppUser otherUser) {

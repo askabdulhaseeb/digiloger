@@ -1,4 +1,3 @@
-import 'package:digiloger/services/user_local_data.dart';
 import 'package:flutter/material.dart';
 
 class UserPostAndFollowersCount extends StatelessWidget {

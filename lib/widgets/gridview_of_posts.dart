@@ -1,9 +1,10 @@
+import 'package:digiloger/models/digilog.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 
 class GridViewOfPosts extends StatelessWidget {
   const GridViewOfPosts({required this.posts, Key? key}) : super(key: key);
-  final List<String> posts;
+  final List<Digilog> posts;
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,7 @@ class GridViewOfPosts extends StatelessWidget {
       shrinkWrap: true,
       itemCount: posts.length,
       itemBuilder: (BuildContext context, int index) => ExtendedImage.network(
-        posts[index],
+        posts[index].experiences.first.mediaUrl,
         fit: BoxFit.cover,
       ),
     );

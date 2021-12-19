@@ -23,14 +23,14 @@ class Digilog extends HiveObject {
     postedTime = json['postedTime'];
     if (json['experiences'] != null) {
       experiences = <Experiences>[];
-      json['experiences'].forEach((Map<String, dynamic> v) {
+      json['experiences'].forEach((v) {
         experiences.add(Experiences.fromJson(v));
       });
     }
     title = json['title'];
     if (json['comments'] != null) {
       comments = <Comments>[];
-      json['comments'].forEach((Map<String, dynamic> v) {
+      json['comments'].forEach((v) {
         comments.add(Comments.fromJson(v));
       });
     }
@@ -59,14 +59,11 @@ class Digilog extends HiveObject {
     data['digilogid'] = digilogid;
     data['location'] = location.toJson();
     data['postedTime'] = postedTime;
-    if (data['experiences'] != null) {
-      data['experiences'] =
-          experiences.map((Experiences v) => v.toJson()).toList();
-    }
+
+    data['experiences'] =
+        experiences.map((Experiences v) => v.toJson()).toList();
     data['title'] = title;
-    if (data['comments'] != null) {
-      data['comments'] = comments.map((Comments v) => v.toJson()).toList();
-    }
+    data['comments'] = comments.map((Comments v) => v.toJson()).toList();
     data['likes'] = likes;
     return data;
   }
@@ -91,7 +88,7 @@ class Location {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['lat'] = lat;
     data['long'] = long;
-    data['maintext'] = long;
+    data['maintext'] = maintext;
     return data;
   }
 }

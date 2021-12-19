@@ -68,18 +68,20 @@ class _ProfilePageState extends State<ProfilePage> {
           const SizedBox(height: 20),
           const Divider(),
           Expanded(
-            child: GridViewOfPosts(
-              posts: <String>[
-                CustomImages.domeURL,
-                CustomImages.domeURL,
-                CustomImages.domeURL,
-                CustomImages.domeURL,
-                CustomImages.domeURL,
-                CustomImages.domeURL,
-                CustomImages.domeURL,
-                CustomImages.domeURL,
-              ],
-            ),
+            child: FutureBuilder<List<Digilog>>(
+                future: getdigilogs(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<List<Digilog>> snapshot) {
+                  if (snapshot.hasData) {
+                    if (snapshot.data!.isNotEmpty) {
+                      return GridViewOfPosts(posts: snapshot.data!);
+                    } else {
+                      return Text("NO DIGILOGS POSTED");
+                    }
+                  } else {
+                    return Text("NO DIGILOGS POSTED");
+                  }
+                }),
           )
         ],
       ),

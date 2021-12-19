@@ -56,13 +56,29 @@ class DigilogAPI {
     return digilog;
   }
 
-  Future<List<Digilog>> getallfirebasedigilogs(String uid) async {
+  Future<List<Digilog>> getallfirebasedigilogsbyuid(String uid) async {
     List<Digilog> digilogs = <Digilog>[];
     QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore
         .instance
         .collection(_collection)
         .where('useruid', isEqualTo: uid)
         .get();
+
+    List<QueryDocumentSnapshot<Map<String, dynamic>?>> docs = snapshot.docs;
+    for (QueryDocumentSnapshot<Map<String, dynamic>?> doc in docs) {
+      if (doc.data() != null) {
+        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        Digilog digilog = Digilog.fromJson(data);
+        digilogs.add(digilog);
+      }
+    }
+    return digilogs;
+  }
+
+  Future<List<Digilog>> getallfirebasedigilogs() async {
+    List<Digilog> digilogs = <Digilog>[];
+    QuerySnapshot<Map<String, dynamic>> snapshot =
+        await FirebaseFirestore.instance.collection(_collection).get();
 
     List<QueryDocumentSnapshot<Map<String, dynamic>?>> docs = snapshot.docs;
     for (QueryDocumentSnapshot<Map<String, dynamic>?> doc in docs) {

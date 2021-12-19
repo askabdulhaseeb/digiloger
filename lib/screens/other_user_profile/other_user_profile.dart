@@ -103,7 +103,7 @@ class _OtherUserProfileState extends State<OtherUserProfile> {
   }
 
   Future<List<Digilog>> getdigilogs(AppUser otherUser) async {
-    return await DigilogAPI().getallfirebasedigilogs(otherUser.uid);
+    return await DigilogAPI().getallfirebasedigilogsbyuid(otherUser.uid);
   }
 
   Padding _followAndMessage(AppUser otherUser) {

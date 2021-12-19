@@ -72,14 +72,27 @@ class _ProfilePageState extends State<ProfilePage> {
                 future: getdigilogs(),
                 builder: (BuildContext context,
                     AsyncSnapshot<List<Digilog>> snapshot) {
-                  if (snapshot.hasData) {
-                    if (snapshot.data!.isNotEmpty) {
-                      return GridViewOfPosts(posts: snapshot.data!);
-                    } else {
-                      return Text("NO DIGILOGS POSTED");
-                    }
-                  } else {
-                    return Text("NO DIGILOGS POSTED");
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.waiting:
+                      return const SizedBox(
+                        height: double.infinity,
+                        width: double.infinity,
+                        child: CircularProgressIndicator.adaptive(),
+                      );
+                    default:
+                      if ((snapshot.hasError)) {
+                        return _errorWidget();
+                      } else {
+                        if (snapshot.hasData) {
+                          if (snapshot.data!.isNotEmpty) {
+                            return GridViewOfPosts(posts: snapshot.data!);
+                          } else {
+                            return const Text("NO DIGILOGS POSTED");
+                          }
+                        } else {
+                          return const Text("NO DIGILOGS POSTED");
+                        }
+                      }
                   }
                 }),
           )
@@ -88,7 +101,25 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  SizedBox _errorWidget() {
+    return SizedBox(
+      height: double.infinity,
+      width: double.infinity,
+      child: Center(
+        child: Column(
+          children: const <Widget>[
+            Icon(Icons.info, color: Colors.grey),
+            Text(
+              'Facing some issues',
+              style: TextStyle(color: Colors.grey),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Future<List<Digilog>> getdigilogs() async {
-    return await DigilogAPI().getallfirebasedigilogs(UserLocalData.getUID);
+    return await DigilogAPI().getallfirebasedigilogsbyuid(UserLocalData.getUID);
   }
 }

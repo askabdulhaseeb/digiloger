@@ -24,10 +24,10 @@ class _AddDetailsState extends State<AddDetails> {
   final TextEditingController _digititle = TextEditingController();
   final TextEditingController _digilocation = TextEditingController();
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
-  List<PlacesPredictions> _placeList = [];
   Uuid uuid = const Uuid();
   String? _sessionToken = "";
-
+  late Location _location;
+  List<PlacesPredictions> _placeList = [];
   @override
   void initState() {
     super.initState();
@@ -79,7 +79,9 @@ class _AddDetailsState extends State<AddDetails> {
                           padding: const EdgeInsets.all(0),
                           itemBuilder: (BuildContext context, int index) {
                             return PredictionTile(
-                                predictions: _placeList[index]);
+                              predictions: _placeList[index],
+                              getplace: getPlace,
+                            );
                           },
                           separatorBuilder: (BuildContext context, int index) {
                             return const Divider();
@@ -94,7 +96,7 @@ class _AddDetailsState extends State<AddDetails> {
                   if (_key.currentState!.validate()) {
                     Digilog digilog = Digilog(
                         useruid: UserLocalData.getUID,
-                        location: Location(lat: 0.00, long: 0.00),
+                        location: _location,
                         postedTime: DateTime.now().toString(),
                         title: _digititle.text);
 
@@ -141,53 +143,84 @@ class _AddDetailsState extends State<AddDetails> {
       throw Exception('Failed to load predictions');
     }
   }
+
+  Future<void> getPlace(String placeid) async {
+    const String kplacesApiKey = "AIzaSyA8_u99oNuNQPAzaq46GCvIBikYpUQABMA";
+    //const String type = '(regions)';
+    const String baseURL =
+        'https://maps.googleapis.com/maps/api/place/details/json';
+    final String request = '$baseURL?place_id=$placeid&key=$kplacesApiKey';
+    Dio dio = Dio();
+    final Response<Map<String, dynamic>> response =
+        await dio.getUri(Uri.parse(request));
+    if (response.statusCode == 200) {
+      Location location = Location(
+          lat: response.data!['result']['geometry']['location']['lat'],
+          long: response.data!['result']['geometry']['location']['lng'],
+          maintext: response.data!['result']['name']);
+      setState(() {
+        _location = location;
+        _placeList.clear();
+        _digilocation.text = _location.maintext;
+      });
+    } else {
+      print('Failed to load predictions');
+    }
+  }
 }
 
 class PredictionTile extends StatelessWidget {
-  const PredictionTile({Key? key, required this.predictions}) : super(key: key);
+  const PredictionTile(
+      {Key? key, required this.predictions, required this.getplace})
+      : super(key: key);
   final PlacesPredictions predictions;
-
+  final Function getplace;
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        const SizedBox(
-          width: 10,
-        ),
-        Row(
-          children: <Widget>[
-            const Icon(Icons.add_location),
-            const SizedBox(
-              width: 14.0,
-            ),
-            Expanded(
-                child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                const SizedBox(
-                  height: 8.0,
-                ),
-                Text(
-                  predictions.mainText,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(fontSize: 16.0),
-                ),
-                const SizedBox(
-                  height: 2.0,
-                ),
-                Text(
-                  predictions.secondaryText,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(fontSize: 12.0, color: Colors.grey),
-                ),
-                const SizedBox(
-                  height: 8.0,
-                ),
-              ],
-            ))
-          ],
-        )
-      ],
+    return TextButton(
+      onPressed: () async {
+        getplace(predictions.placeId);
+      },
+      child: Column(
+        children: <Widget>[
+          const SizedBox(
+            width: 10,
+          ),
+          Row(
+            children: <Widget>[
+              const Icon(Icons.add_location),
+              const SizedBox(
+                width: 14.0,
+              ),
+              Expanded(
+                  child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  const SizedBox(
+                    height: 8.0,
+                  ),
+                  Text(
+                    predictions.mainText,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(fontSize: 16.0),
+                  ),
+                  const SizedBox(
+                    height: 2.0,
+                  ),
+                  Text(
+                    predictions.secondaryText,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(fontSize: 12.0, color: Colors.grey),
+                  ),
+                  const SizedBox(
+                    height: 8.0,
+                  ),
+                ],
+              ))
+            ],
+          )
+        ],
+      ),
     );
   }
 }

@@ -1,6 +1,5 @@
 import 'package:digiloger/database/digilog_api.dart';
 import 'package:digiloger/models/digilog.dart';
-import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import '../../../services/user_local_data.dart';
 import '../../../utilities/custom_image.dart';

@@ -1,3 +1,5 @@
+import 'package:digiloger/database/digilog_api.dart';
+import 'package:digiloger/models/digilog.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import '../../../services/user_local_data.dart';
@@ -53,24 +55,66 @@ class _ProfilePageState extends State<ProfilePage> {
           const SizedBox(height: 20),
           const Divider(),
           Expanded(
-            child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                crossAxisSpacing: 2,
-                mainAxisSpacing: 2,
-              ),
-              shrinkWrap: true,
-              itemCount: 1000,
-              itemBuilder: (BuildContext context, int index) =>
-                  ExtendedImage.network(
-                CustomImages.domeURL,
-                fit: BoxFit.cover,
-              ),
-            ),
+            child: FutureBuilder<List<Digilog>>(
+                future: getdigilogs(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    List<Digilog> _digiLog = snapshot.data!;
+                    if (_digiLog.isNotEmpty) {
+                      return GridView.builder(
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            crossAxisSpacing: 2,
+                            mainAxisSpacing: 2,
+                          ),
+                          shrinkWrap: true,
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return /*isUrl
+                                ? ExtendedImage.network(
+                                    _digiLog[index].experiences[0].mediaUrl,
+                                    fit: BoxFit.fill,
+                                  )
+                                : ExtendedImage.file(
+                                    File(_digiLog[index]
+                                        .experiences[0]
+                                        .mediaUrl),
+                                    fit: BoxFit.fill,
+                                  );*/
+                                tile(_digiLog[index]);
+                          });
+                    } else {
+                      return Text(
+                        "No Posted Digilogs",
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontSize: 22),
+                      );
+                    }
+                  } else {
+                    return Text(
+                      "No Posted Digilogs",
+                      style: TextStyle(
+                          color: Theme.of(context).primaryColor, fontSize: 22),
+                    );
+                  }
+                }),
           )
         ],
       ),
     );
+  }
+
+  ExtendedImage tile(Digilog digiLog) {
+    return ExtendedImage.network(
+      digiLog.experiences.first.mediaUrl,
+      fit: BoxFit.fill,
+    );
+  }
+
+  Future<List<Digilog>> getdigilogs() async {
+    return await DigilogAPI().getallfirebasedigilogs(UserLocalData.getUID);
   }
 }
 

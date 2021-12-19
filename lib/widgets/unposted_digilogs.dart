@@ -41,6 +41,6 @@ class _UnposteddigilogsState extends State<Unposteddigilogs> {
   }
 
   Future<List<Digilog>> getdigilogs() async {
-    return await DigilogAPI().getalldigilog();
+    return await DigilogAPI().getalllocaldigilog();
   }
 }

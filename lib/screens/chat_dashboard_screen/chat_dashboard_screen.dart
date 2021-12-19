@@ -1,9 +1,9 @@
-import 'package:digiloger/screens/chat_screen/personal_screen.dart';
-import 'package:digiloger/utilities/custom_image.dart';
-import 'package:digiloger/utilities/utilities.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import '../chat_screen/personal_screen.dart';
+import '../../utilities/custom_image.dart';
+import '../../utilities/utilities.dart';
 
 class ChatDashboardScreen extends StatelessWidget {
   const ChatDashboardScreen({Key? key}) : super(key: key);
@@ -41,7 +41,7 @@ class ChatDashboardScreen extends StatelessWidget {
                 itemCount: 100,
                 itemBuilder: (BuildContext context, int index) => ListTile(
                   onTap: () => Navigator.of(context).push(
-                    MaterialPageRoute(
+                    MaterialPageRoute<PersonalChatScreen>(
                       builder: (BuildContext context) =>
                           PersonalChatScreen(user: index),
                     ),

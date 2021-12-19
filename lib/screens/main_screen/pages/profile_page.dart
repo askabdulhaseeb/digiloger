@@ -1,8 +1,9 @@
-import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import '../../../services/user_local_data.dart';
 import '../../../utilities/custom_image.dart';
 import '../../../widgets/circular_profile_image.dart';
+import '../../../widgets/gridview_of_posts.dart';
+import '../../../widgets/user_post_and_followers_count.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -33,63 +34,29 @@ class _ProfilePageState extends State<ProfilePage> {
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              _NumInfoWidget(
-                number: UserLocalData.getPost.length,
-                title: 'Posts',
-              ),
-              _NumInfoWidget(
-                number: UserLocalData.getFollowers.length,
-                title: 'Followers',
-              ),
-              _NumInfoWidget(
-                number: UserLocalData.getFollows.length,
-                title: 'Followings',
-              ),
-            ],
+          UserPostAndFollowersCount(
+            post: UserLocalData.getPost.length,
+            followers: UserLocalData.getFollowers.length,
+            followings: UserLocalData.getFollows.length,
           ),
           const SizedBox(height: 20),
           const Divider(),
           Expanded(
-            child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                crossAxisSpacing: 2,
-                mainAxisSpacing: 2,
-              ),
-              shrinkWrap: true,
-              itemCount: 1000,
-              itemBuilder: (BuildContext context, int index) =>
-                  ExtendedImage.network(
+            child: GridViewOfPosts(
+              posts: <String>[
                 CustomImages.domeURL,
-                fit: BoxFit.cover,
-              ),
+                CustomImages.domeURL,
+                CustomImages.domeURL,
+                CustomImages.domeURL,
+                CustomImages.domeURL,
+                CustomImages.domeURL,
+                CustomImages.domeURL,
+                CustomImages.domeURL,
+              ],
             ),
           )
         ],
       ),
-    );
-  }
-}
-
-class _NumInfoWidget extends StatelessWidget {
-  const _NumInfoWidget({required this.number, required this.title, Key? key})
-      : super(key: key);
-  final int number;
-  final String title;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Text(
-          number.toString(),
-          style: const TextStyle(fontWeight: FontWeight.bold),
-        ),
-        Text(title)
-      ],
     );
   }
 }

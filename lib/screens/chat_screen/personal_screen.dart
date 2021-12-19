@@ -1,8 +1,7 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
-
-import 'package:digiloger/utilities/custom_image.dart';
-import 'package:digiloger/utilities/utilities.dart';
+import '../../utilities/custom_image.dart';
+import '../../utilities/utilities.dart';
 
 class PersonalChatScreen extends StatefulWidget {
   const PersonalChatScreen({required this.user, Key? key}) : super(key: key);
@@ -190,8 +189,7 @@ class MessageTile extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        // User name
-                        (sendBy == null) ? '' : sendBy,
+                        sendBy,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 12,

@@ -1,10 +1,15 @@
+<<<<<<< HEAD
 import 'package:digiloger/database/digilog_api.dart';
 import 'package:digiloger/models/digilog.dart';
 import 'package:extended_image/extended_image.dart';
+=======
+>>>>>>> 0198e2264cb9b867f15183a1c1bea21c4c9dbc6a
 import 'package:flutter/material.dart';
 import '../../../services/user_local_data.dart';
 import '../../../utilities/custom_image.dart';
 import '../../../widgets/circular_profile_image.dart';
+import '../../../widgets/gridview_of_posts.dart';
+import '../../../widgets/user_post_and_followers_count.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -35,26 +40,15 @@ class _ProfilePageState extends State<ProfilePage> {
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              _NumInfoWidget(
-                number: UserLocalData.getPost.length,
-                title: 'Posts',
-              ),
-              _NumInfoWidget(
-                number: UserLocalData.getFollowers.length,
-                title: 'Followers',
-              ),
-              _NumInfoWidget(
-                number: UserLocalData.getFollows.length,
-                title: 'Followings',
-              ),
-            ],
+          UserPostAndFollowersCount(
+            post: UserLocalData.getPost.length,
+            followers: UserLocalData.getFollowers.length,
+            followings: UserLocalData.getFollows.length,
           ),
           const SizedBox(height: 20),
           const Divider(),
           Expanded(
+<<<<<<< HEAD
             child: FutureBuilder<List<Digilog>>(
                 future: getdigilogs(),
                 builder: (context, snapshot) {
@@ -100,6 +94,20 @@ class _ProfilePageState extends State<ProfilePage> {
                     );
                   }
                 }),
+=======
+            child: GridViewOfPosts(
+              posts: <String>[
+                CustomImages.domeURL,
+                CustomImages.domeURL,
+                CustomImages.domeURL,
+                CustomImages.domeURL,
+                CustomImages.domeURL,
+                CustomImages.domeURL,
+                CustomImages.domeURL,
+                CustomImages.domeURL,
+              ],
+            ),
+>>>>>>> 0198e2264cb9b867f15183a1c1bea21c4c9dbc6a
           )
         ],
       ),
@@ -115,25 +123,5 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<List<Digilog>> getdigilogs() async {
     return await DigilogAPI().getallfirebasedigilogs(UserLocalData.getUID);
-  }
-}
-
-class _NumInfoWidget extends StatelessWidget {
-  const _NumInfoWidget({required this.number, required this.title, Key? key})
-      : super(key: key);
-  final int number;
-  final String title;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Text(
-          number.toString(),
-          style: const TextStyle(fontWeight: FontWeight.bold),
-        ),
-        Text(title)
-      ],
-    );
   }
 }

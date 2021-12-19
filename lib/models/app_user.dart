@@ -15,7 +15,7 @@ class AppUser {
     this.location,
     this.imageURL = '',
     this.followers,
-    this.follows,
+    this.followings,
     this.posts,
     this.events,
   });
@@ -32,7 +32,7 @@ class AppUser {
   final String? location;
   final String? timestamp;
   final List<String>? followers;
-  final List<String>? follows;
+  final List<String>? followings;
   final List<String>? posts;
   final List<String>? events;
 
@@ -50,7 +50,7 @@ class AppUser {
         'imageURL': imageURL ?? '',
         'timestamp': timestamp ?? DateTime.now(),
         'followers': followers ?? <String>[],
-        'follows': follows ?? <String>[],
+        'followings': followings ?? <String>[],
         'posts': posts ?? <String>[],
         'events': events ?? <String>[],
       };
@@ -67,7 +67,7 @@ class AppUser {
         'gender': gender,
         'timestamp': timestamp ?? DateTime.now(),
         'followers': followers ?? <String>[],
-        'follows': follows ?? <String>[],
+        'followings': followings ?? <String>[],
         'posts': posts ?? <String>[],
       };
     }
@@ -75,7 +75,7 @@ class AppUser {
 
   // ignore: sort_constructors_first
   factory AppUser.fromDocument(DocumentSnapshot<Map<String, dynamic>> doc) {
-    if (doc.data()!['isBuiness'] == true) {
+    if (doc.data()!['isBuiness'] == true && doc.data() != null) {
       return AppUser(
         uid: doc.data()!['uid'].toString(),
         name: doc.data()!['name'].toString(),
@@ -88,7 +88,7 @@ class AppUser {
         imageURL: doc.data()!['imageURL'] ?? '',
         timestamp: doc.data()!['timestamp'].toString(),
         followers: List<String>.from(doc.data()!['followers']),
-        follows: List<String>.from(doc.data()!['follows']),
+        followings: List<String>.from(doc.data()!['followings']),
         posts: List<String>.from(doc.data()!['posts']),
         events: List<String>.from(doc.data()!['events']),
       );
@@ -105,7 +105,7 @@ class AppUser {
         gender: doc.data()!['gender'] ?? 'm',
         timestamp: doc.data()!['timestamp'].toString(),
         followers: List<String>.from(doc.data()!['followers']),
-        follows: List<String>.from(doc.data()!['follows']),
+        followings: List<String>.from(doc.data()!['followings']),
         posts: List<String>.from(doc.data()!['posts']),
       );
     }

@@ -1,3 +1,6 @@
+import 'package:digiloger/database/auth_methods.dart';
+import 'package:digiloger/screens/auth/login_screen.dart';
+import 'package:digiloger/utilities/utilities.dart';
 import 'package:flutter/material.dart';
 import '../../../services/user_local_data.dart';
 import '../../../utilities/custom_image.dart';
@@ -24,7 +27,28 @@ class _ProfilePageState extends State<ProfilePage> {
       width: double.infinity,
       child: Column(
         children: <Widget>[
-          const SizedBox(height: 60),
+          const SizedBox(height: 10),
+          Padding(
+            padding: EdgeInsets.all(Utilities.padding),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  UserLocalData.getEmail,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+                IconButton(
+                  splashRadius: 20,
+                  onPressed: () async {
+                    await AuthMethods().signOut();
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                        LoginScreen.routeName, (Route<dynamic> route) => false);
+                  },
+                  icon: const Icon(Icons.logout),
+                ),
+              ],
+            ),
+          ),
           CircularProfileImage(imageURL: CustomImages.domeURL, radious: 50),
           const SizedBox(height: 6),
           Text(
@@ -37,7 +61,7 @@ class _ProfilePageState extends State<ProfilePage> {
           UserPostAndFollowersCount(
             post: UserLocalData.getPost.length,
             followers: UserLocalData.getFollowers.length,
-            followings: UserLocalData.getFollows.length,
+            followings: UserLocalData.getFollowings.length,
           ),
           const SizedBox(height: 20),
           const Divider(),

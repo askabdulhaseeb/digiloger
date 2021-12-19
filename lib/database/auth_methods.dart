@@ -84,9 +84,7 @@ class AuthMethods {
         CustomToast.errorToast(message: obj.toString());
       });
       final User? user = result.user;
-      final DocumentSnapshot<Map<String, dynamic>> docs =
-          await UserAPI().getInfo(uid: user!.uid);
-      final AppUser appUser = AppUser.fromDocument(docs);
+      final AppUser appUser = await UserAPI().getInfo(uid: user!.uid);
       UserLocalData().storeAppUserData(appUser: appUser);
       return user;
     } catch (signUpError) {

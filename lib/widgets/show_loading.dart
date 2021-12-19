@@ -9,7 +9,7 @@ Future showLoadingDislog(BuildContext context) {
         child: SizedBox(
           height: 30,
           width: 30,
-          child: CircularProgressIndicator(),
+          child: CircularProgressIndicator.adaptive(),
         ),
       );
     },

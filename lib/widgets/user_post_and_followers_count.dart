@@ -18,15 +18,15 @@ class UserPostAndFollowersCount extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
         _NumInfoWidget(
-          number: UserLocalData.getPost.length,
+          number: post,
           title: 'Posts',
         ),
         _NumInfoWidget(
-          number: UserLocalData.getFollowers.length,
+          number: followers,
           title: 'Followers',
         ),
         _NumInfoWidget(
-          number: UserLocalData.getFollows.length,
+          number: followings,
           title: 'Followings',
         ),
       ],

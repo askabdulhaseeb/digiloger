@@ -1,3 +1,4 @@
+import 'package:digiloger/screens/other_user_profile/other_user_profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:extended_image/extended_image.dart';
@@ -17,7 +18,7 @@ class PostTile extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          _header(),
+          _header(context),
           AspectRatio(
             aspectRatio: 16 / 9,
             child: ExtendedImage.network(
@@ -78,18 +79,48 @@ class PostTile extends StatelessWidget {
     );
   }
 
-  Padding _header() {
+  Padding _header(BuildContext context) {
+    // TODO: username and location needs to update
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
       child: Row(
         children: <Widget>[
-          CircularProfileImage(imageURL: CustomImages.domeURL, radious: 24),
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute<OtherUserProfile>(
+                  builder: (BuildContext context) => const OtherUserProfile(
+                    uid: '4lwHhexJNFVAP78gJLdZUwA4mOw1',
+                    username: 'username',
+                  ),
+                ),
+              );
+            },
+            child: CircularProfileImage(
+              imageURL: CustomImages.domeURL,
+              radious: 24,
+            ),
+          ),
           const SizedBox(width: 6),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: const <Widget>[
-              Text('Username'),
-              Text(
+            children: <Widget>[
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute<OtherUserProfile>(
+                      builder: (BuildContext context) => const OtherUserProfile(
+                        // TODO: update uid
+                        uid: '4lwHhexJNFVAP78gJLdZUwA4mOw1',
+
+                        username: 'username',
+                      ),
+                    ),
+                  );
+                },
+                child: const Text('Username'),
+              ),
+              const Text(
                 'Location',
                 style: TextStyle(fontSize: 12, color: Colors.grey),
               ),

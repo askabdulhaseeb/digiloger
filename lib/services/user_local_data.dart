@@ -42,8 +42,8 @@ class UserLocalData {
   static Future<void> setFollowers(List<String> followers) async =>
       _preferences!.setStringList(_followersKey, followers);
 
-  static Future<void> setFollows(List<String> follows) async =>
-      _preferences!.setStringList(_followsKey, follows);
+  static Future<void> setFollowings(List<String> followings) async =>
+      _preferences!.setStringList(_followsKey, followings);
 
   static Future<void> setPost(List<String> post) async =>
       _preferences!.setStringList(_postKey, post);
@@ -61,7 +61,7 @@ class UserLocalData {
   static String get getImageUrl => _preferences!.getString(_imageUrlKey) ?? '';
   static List<String> get getFollowers =>
       _preferences!.getStringList(_followersKey) ?? <String>[];
-  static List<String> get getFollows =>
+  static List<String> get getFollowings =>
       _preferences!.getStringList(_followsKey) ?? <String>[];
   static List<String> get getPost =>
       _preferences!.getStringList(_postKey) ?? <String>[];
@@ -74,7 +74,7 @@ class UserLocalData {
     setIsVerified(appUser.isVerified ?? false);
     setImageUrl(appUser.imageURL ?? '');
     setFollowers(appUser.followers ?? <String>[]);
-    setFollows(appUser.follows ?? <String>[]);
+    setFollowings(appUser.followings ?? <String>[]);
     setPost(appUser.posts ?? <String>[]);
   }
 }

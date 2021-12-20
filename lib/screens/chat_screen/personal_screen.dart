@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:digiloger/database/chat_api.dart';
 import 'package:digiloger/models/app_user.dart';
 import 'package:digiloger/models/chats.dart';
@@ -20,19 +21,11 @@ class PersonalChatScreen extends StatefulWidget {
 
 class _PersonalChatScreenState extends State<PersonalChatScreen> {
   final TextEditingController _text = TextEditingController();
-  late String chatID;
-  // late Chat chat;
-  void _init() async {
-    chatID = ChatAPI.getChatID(othersUID: widget.otherUser.uid);
-    // await ChatAPI().fetchMessages(chatID);
-    // chat = await ChatAPI().fetchChat(chatID);
-  }
 
   void _onListener() => setState(() {});
   @override
   void initState() {
     _text.addListener(_onListener);
-    _init();
     super.initState();
   }
 
@@ -53,16 +46,26 @@ class _PersonalChatScreenState extends State<PersonalChatScreen> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
             Expanded(
-              child: StreamBuilder<List<Messages>>(
-                  stream: ChatAPI().fetchMessages(chatID).asStream(),
+              child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                  stream: FirebaseFirestore.instance
+                      .collection('chats')
+                      .doc(widget.chat.chatID)
+                      .collection('messages')
+                      .orderBy('timestamp', descending: true)
+                      .snapshots(),
                   builder: (BuildContext context,
-                      AsyncSnapshot<List<Messages>> snapshot) {
+                      AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
+                          snapshot) {
                     if (snapshot.hasData) {
-                      final List<Messages>? _messages = snapshot.data;
+                      List<Messages> _messages = <Messages>[];
+                      for (QueryDocumentSnapshot<Map<String, dynamic>> doc
+                          in snapshot.data!.docs) {
+                        _messages.add(Messages.fromDoc(doc));
+                      }
                       return ListView.builder(
                         shrinkWrap: true,
                         reverse: true,
-                        itemCount: _messages!.length,
+                        itemCount: _messages.length,
                         itemBuilder: (BuildContext context, int index) {
                           return Material(
                             child: SizedBox(
@@ -104,19 +107,20 @@ class _PersonalChatScreenState extends State<PersonalChatScreen> {
                   onPressed: () async {
                     await ChatAPI().sendMessage(
                       Chat(
-                          chatID: chatID,
-                          persons: [UserLocalData.getUID, widget.otherUser.uid],
-                          lastMessage: _text.text.trim(),
-                          time: DateTime.now().toString()),
+                        chatID: widget.chat.chatID,
+                        persons: [UserLocalData.getUID, widget.otherUser.uid],
+                        lastMessage: _text.text.trim(),
+                        time: DateTime.now().toString(),
+                      ),
                       Messages(
-                          messageID:
-                              DateTime.now().microsecondsSinceEpoch.toString(),
-                          message: _text.text.trim(),
-                          timestamp: DateTime.now().toString(),
-                          sendBy: UserLocalData.getUID),
+                        messageID:
+                            DateTime.now().microsecondsSinceEpoch.toString(),
+                        message: _text.text.trim(),
+                        timestamp: DateTime.now().toString(),
+                        sendBy: UserLocalData.getUID,
+                      ),
                     );
                     _text.clear();
-                    setState(() {});
                   },
                   icon: Icon(
                     Icons.send,

@@ -1,3 +1,5 @@
+import 'package:digiloger/models/app_user.dart';
+import 'package:digiloger/models/chats.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -5,10 +7,19 @@ import '../chat_screen/personal_screen.dart';
 import '../../utilities/custom_image.dart';
 import '../../utilities/utilities.dart';
 
-class ChatDashboardScreen extends StatelessWidget {
+class ChatDashboardScreen extends StatefulWidget {
   const ChatDashboardScreen({Key? key}) : super(key: key);
   static const String routeName = '/ChatDashboardScreen';
+  @override
+  State<ChatDashboardScreen> createState() => _ChatDashboardScreenState();
+}
 
+class _ChatDashboardScreenState extends State<ChatDashboardScreen> {
+  Chat chat = Chat(
+      chatID: 'chatID',
+      persons: ['persons'],
+      lastMessage: 'lastMessage',
+      time: 'time');
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,8 +53,14 @@ class ChatDashboardScreen extends StatelessWidget {
                 itemBuilder: (BuildContext context, int index) => ListTile(
                   onTap: () => Navigator.of(context).push(
                     MaterialPageRoute<PersonalChatScreen>(
-                      builder: (BuildContext context) =>
-                          PersonalChatScreen(user: index.toString()),
+                      builder: (BuildContext context) => PersonalChatScreen(
+                        otherUser: AppUser(
+                          uid: index.toString(),
+                          name: 'name',
+                          email: 'email',
+                        ),
+                        chat: chat,
+                      ),
                     ),
                   ),
                   contentPadding: EdgeInsets.zero,

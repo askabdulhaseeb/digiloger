@@ -231,31 +231,25 @@ class __FollowAndMessageButtonState extends State<_FollowAndMessageButton> {
           Flexible(
             child: InkWell(
               onTap: () async {
-                Chat chat = await ChatAPI().fetchChat(
+                Chat? chat = await ChatAPI().fetchChat(
                     ChatAPI.getChatID(othersUID: widget.otherUser.uid));
+
                 Navigator.of(context).push(
                   MaterialPageRoute<PersonalChatScreen>(
                     builder: (BuildContext context) => PersonalChatScreen(
-                      otherUser: widget.otherUser,
-                      chat: chat,
-                    ),
+                        otherUser: widget.otherUser,
+                        chat: chat ??
+                            Chat(
+                                chatID: ChatAPI.getChatID(
+                                    othersUID: widget.otherUser.uid),
+                                persons: <String>[
+                                  UserLocalData.getUID,
+                                  widget.otherUser.uid
+                                ],
+                                lastMessage: '',
+                                time: '')),
                   ),
                 );
-                // ChatAPI().sendMessage(
-                //   Chat(
-                //       chatID:
-                //           ChatAPI.getChatID(othersUID: widget.otherUser.uid),
-                //       persons: [UserLocalData.getUID, widget.otherUser.uid],
-                //       lastMessage: 'lastMessage',
-                //       time: DateTime.now().microsecondsSinceEpoch.toString()),
-                //   Messages(
-                //       messageID:
-                //           DateTime.now().microsecondsSinceEpoch.toString(),
-                //       message: 'Message',
-                //       timestamp:
-                //           DateTime.now().microsecondsSinceEpoch.toString(),
-                //       sendBy: UserLocalData.getUID),
-                // );
               },
               child: Container(
                 height: _height,

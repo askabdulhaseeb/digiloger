@@ -57,33 +57,69 @@ class _PersonalChatScreenState extends State<PersonalChatScreen> {
                   builder: (BuildContext context,
                       AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
                           snapshot) {
-                    if (snapshot.hasData) {
-                      List<Messages> _messages = <Messages>[];
-                      for (QueryDocumentSnapshot<Map<String, dynamic>> doc
-                          in snapshot.data!.docs) {
-                        _messages.add(Messages.fromDoc(doc));
-                      }
-                      return ListView.builder(
-                        shrinkWrap: true,
-                        reverse: true,
-                        itemCount: _messages.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Material(
-                            child: SizedBox(
-                              child: _MessageTile(
-                                boxWidth: _size.width * 0.65,
-                                message: _messages[index],
-                                displayName: (_messages[index].sendBy ==
-                                        UserLocalData.getUID)
-                                    ? UserLocalData.getName
-                                    : widget.otherUser.name,
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.waiting:
+                        return const Center(
+                          child: CircularProgressIndicator.adaptive(),
+                        );
+                      default:
+                        if (snapshot.hasData) {
+                          List<Messages> _messages = <Messages>[];
+                          for (QueryDocumentSnapshot<Map<String, dynamic>> doc
+                              in snapshot.data!.docs) {
+                            _messages.add(Messages.fromDoc(doc));
+                          }
+                          return (_messages.isEmpty)
+                              ? Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: const <Widget>[
+                                    Text(
+                                      'Say Hay!',
+                                      style: TextStyle(
+                                        color: Colors.grey,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Text(
+                                      'and start conversation',
+                                      style: TextStyle(color: Colors.grey),
+                                    ),
+                                  ],
+                                )
+                              : ListView.builder(
+                                  shrinkWrap: true,
+                                  reverse: true,
+                                  itemCount: _messages.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return Material(
+                                      child: SizedBox(
+                                        child: _MessageTile(
+                                          boxWidth: _size.width * 0.65,
+                                          message: _messages[index],
+                                          displayName:
+                                              (_messages[index].sendBy ==
+                                                      UserLocalData.getUID)
+                                                  ? UserLocalData.getName
+                                                  : widget.otherUser.name,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                );
+                        } else {
+                          return Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.max,
+                            children: const <Widget>[
+                              Icon(Icons.report, color: Colors.grey),
+                              Text(
+                                'Some issue found',
+                                style: TextStyle(color: Colors.grey),
                               ),
-                            ),
+                            ],
                           );
-                        },
-                      );
-                    } else {
-                      return const SizedBox();
+                        }
                     }
                   }),
             ),

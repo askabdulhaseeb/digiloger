@@ -30,9 +30,10 @@ class ChatAPI {
     ]);
   }
 
-  Future<Chat> fetchChat(String chatID) async {
+  Future<Chat?> fetchChat(String chatID) async {
     final DocumentSnapshot<Map<String, dynamic>> doc =
         await _instance.collection(_colloction).doc(chatID).get();
+    if (!doc.exists) return null;
     Chat _chat = Chat.fromDoc(doc);
     return _chat;
   }

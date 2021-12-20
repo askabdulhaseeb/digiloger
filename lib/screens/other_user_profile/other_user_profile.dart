@@ -2,7 +2,10 @@ import 'package:digiloger/database/chat_api.dart';
 import 'package:digiloger/database/digilog_api.dart';
 import 'package:digiloger/database/user_api.dart';
 import 'package:digiloger/models/app_user.dart';
+import 'package:digiloger/models/chats.dart';
 import 'package:digiloger/models/digilog.dart';
+import 'package:digiloger/models/messages.dart';
+import 'package:digiloger/screens/chat_screen/personal_screen.dart';
 import 'package:digiloger/services/user_local_data.dart';
 import 'package:digiloger/widgets/circular_profile_image.dart';
 import 'package:digiloger/widgets/gridview_of_posts.dart';
@@ -227,14 +230,31 @@ class __FollowAndMessageButtonState extends State<_FollowAndMessageButton> {
           const SizedBox(width: 6),
           Flexible(
             child: InkWell(
-              onTap: () {
-                print(ChatAPI.getChatID(othersUID: widget.otherUser.uid));
-                // Navigator.of(context).push(
-                //   MaterialPageRoute<PersonalChatScreen>(
-                //     builder: (BuildContext context) => PersonalChatScreen(
-                //       user: widget.uid,
-                //     ),
-                //   ),
+              onTap: () async {
+                Chat chat = await ChatAPI().fetchChat(
+                    ChatAPI.getChatID(othersUID: widget.otherUser.uid));
+                Navigator.of(context).push(
+                  MaterialPageRoute<PersonalChatScreen>(
+                    builder: (BuildContext context) => PersonalChatScreen(
+                      otherUser: widget.otherUser,
+                      chat: chat,
+                    ),
+                  ),
+                );
+                // ChatAPI().sendMessage(
+                //   Chat(
+                //       chatID:
+                //           ChatAPI.getChatID(othersUID: widget.otherUser.uid),
+                //       persons: [UserLocalData.getUID, widget.otherUser.uid],
+                //       lastMessage: 'lastMessage',
+                //       time: DateTime.now().microsecondsSinceEpoch.toString()),
+                //   Messages(
+                //       messageID:
+                //           DateTime.now().microsecondsSinceEpoch.toString(),
+                //       message: 'Message',
+                //       timestamp:
+                //           DateTime.now().microsecondsSinceEpoch.toString(),
+                //       sendBy: UserLocalData.getUID),
                 // );
               },
               child: Container(

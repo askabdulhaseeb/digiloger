@@ -1,21 +1,38 @@
+import 'package:digiloger/database/chat_api.dart';
+import 'package:digiloger/models/app_user.dart';
+import 'package:digiloger/models/chats.dart';
+import 'package:digiloger/models/messages.dart';
+import 'package:digiloger/services/user_local_data.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import '../../utilities/custom_image.dart';
 import '../../utilities/utilities.dart';
 
 class PersonalChatScreen extends StatefulWidget {
-  const PersonalChatScreen({required this.user, Key? key}) : super(key: key);
-  final String user;
+  const PersonalChatScreen(
+      {required this.otherUser, required this.chat, Key? key})
+      : super(key: key);
+  final AppUser otherUser;
+  final Chat chat;
   @override
   State<PersonalChatScreen> createState() => _PersonalChatScreenState();
 }
 
 class _PersonalChatScreenState extends State<PersonalChatScreen> {
   final TextEditingController _text = TextEditingController();
+  late String chatID;
+  // late Chat chat;
+  void _init() async {
+    chatID = ChatAPI.getChatID(othersUID: widget.otherUser.uid);
+    // await ChatAPI().fetchMessages(chatID);
+    // chat = await ChatAPI().fetchChat(chatID);
+  }
+
   void _onListener() => setState(() {});
   @override
   void initState() {
     _text.addListener(_onListener);
+    _init();
     super.initState();
   }
 
@@ -36,24 +53,35 @@ class _PersonalChatScreenState extends State<PersonalChatScreen> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
             Expanded(
-              child: ListView.builder(
-                shrinkWrap: true,
-                reverse: true,
-                itemCount: 10,
-                itemBuilder: (BuildContext context, int index) {
-                  return Material(
-                    child: SizedBox(
-                      child: MessageTile(
-                        boxWidth: _size.width * 0.65,
-                        message: 'Utilities.demoParagraph sad sdsa dsd sd sdd',
-                        sendBy: 'Send By',
-                        isMe: index % 2 == 0 ? true : false,
-                        displayTime: 'few seconds ago',
-                      ),
-                    ),
-                  );
-                },
-              ),
+              child: StreamBuilder<List<Messages>>(
+                  stream: ChatAPI().fetchMessages(chatID).asStream(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<List<Messages>> snapshot) {
+                    if (snapshot.hasData) {
+                      final List<Messages>? _messages = snapshot.data;
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        reverse: true,
+                        itemCount: _messages!.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Material(
+                            child: SizedBox(
+                              child: _MessageTile(
+                                boxWidth: _size.width * 0.65,
+                                message: _messages[index],
+                                displayName: (_messages[index].sendBy ==
+                                        UserLocalData.getUID)
+                                    ? UserLocalData.getName
+                                    : widget.otherUser.name,
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    } else {
+                      return const SizedBox();
+                    }
+                  }),
             ),
             _chatTextFormField(context),
             SizedBox(height: Utilities.padding),
@@ -73,7 +101,23 @@ class _PersonalChatScreenState extends State<PersonalChatScreen> {
           suffixIcon: (_text.text.isNotEmpty)
               ? IconButton(
                   splashRadius: 20,
-                  onPressed: () {},
+                  onPressed: () async {
+                    await ChatAPI().sendMessage(
+                      Chat(
+                          chatID: chatID,
+                          persons: [UserLocalData.getUID, widget.otherUser.uid],
+                          lastMessage: _text.text.trim(),
+                          time: DateTime.now().toString()),
+                      Messages(
+                          messageID:
+                              DateTime.now().microsecondsSinceEpoch.toString(),
+                          message: _text.text.trim(),
+                          timestamp: DateTime.now().toString(),
+                          sendBy: UserLocalData.getUID),
+                    );
+                    _text.clear();
+                    setState(() {});
+                  },
                   icon: Icon(
                     Icons.send,
                     color: Theme.of(context).primaryColor,
@@ -118,7 +162,7 @@ class _PersonalChatScreenState extends State<PersonalChatScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  'Name of User ${widget.user}',
+                  widget.otherUser.name,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(color: Colors.white),
@@ -143,22 +187,19 @@ class _PersonalChatScreenState extends State<PersonalChatScreen> {
   }
 }
 
-class MessageTile extends StatelessWidget {
-  const MessageTile({
+class _MessageTile extends StatelessWidget {
+  const _MessageTile({
     Key? key,
     required this.message,
-    required this.sendBy,
-    required this.displayTime,
+    required this.displayName,
     required this.boxWidth,
-    this.isMe = false,
   }) : super(key: key);
-  final String message;
-  final bool isMe;
-  final String sendBy;
-  final String displayTime;
+  final Messages message;
+  final String displayName;
   final double boxWidth;
   @override
   Widget build(BuildContext context) {
+    final bool isMe = UserLocalData.getUID == message.sendBy;
     return Row(
       mainAxisAlignment: isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
       children: <Widget>[
@@ -191,7 +232,7 @@ class MessageTile extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        sendBy,
+                        displayName,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 12,
@@ -202,7 +243,7 @@ class MessageTile extends StatelessWidget {
                       SizedBox(
                         width: boxWidth,
                         child: Text(
-                          message,
+                          message.message,
                           style: TextStyle(
                             color: (isMe) ? Colors.white : Colors.black,
                           ),
@@ -215,7 +256,7 @@ class MessageTile extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
                       Text(
-                        displayTime,
+                        message.timestamp,
                         style: TextStyle(
                           color: (isMe) ? Colors.white70 : Colors.black54,
                           fontSize: 12,

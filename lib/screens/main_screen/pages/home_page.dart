@@ -97,8 +97,12 @@ class HomePage extends StatelessWidget {
   }
 
   Future<List<Digilog>> getdigilogs() async {
-    return await DigilogAPI()
-        .getallfirebasedigilogsbylistuid(UserLocalData.getFollowings);
+    List<Digilog> digilog = [];
+    if (UserLocalData.getFollowings.isNotEmpty) {
+      digilog = await DigilogAPI()
+          .getallfirebasedigilogsbylistuid(UserLocalData.getFollowings);
+    }
+    return digilog;
   }
 
   SizedBox _errorWidget() {

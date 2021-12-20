@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:digiloger/database/user_api.dart';
 import 'package:digiloger/models/digilog.dart';
 import 'package:digiloger/widgets/custom_toast.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -40,6 +41,7 @@ class DigilogAPI {
       // ignore: invalid_return_type_for_catch_error
       return false;
     });
+    await UserAPI().addpostcount(digilog.digilogid);
     return true;
   }
 
@@ -86,6 +88,43 @@ class DigilogAPI {
         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
         Digilog digilog = Digilog.fromJson(data);
         digilogs.add(digilog);
+      }
+    }
+    return digilogs;
+  }
+
+  Future<List<Digilog>> getallfirebasedigilogsbytitle(String title) async {
+    List<Digilog> digilogs = <Digilog>[];
+    QuerySnapshot<Map<String, dynamic>> snapshot =
+        await FirebaseFirestore.instance.collection(_collection).get();
+
+    List<QueryDocumentSnapshot<Map<String, dynamic>?>> docs = snapshot.docs;
+    for (QueryDocumentSnapshot<Map<String, dynamic>?> doc in docs) {
+      if (doc.data() != null) {
+        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        Digilog digilog = Digilog.fromJson(data);
+        if (digilog.title.contains(title)) {
+          digilogs.add(digilog);
+        }
+      }
+    }
+    return digilogs;
+  }
+
+  Future<List<Digilog>> getallfirebasedigilogsbylocation(
+      String location) async {
+    List<Digilog> digilogs = <Digilog>[];
+    QuerySnapshot<Map<String, dynamic>> snapshot =
+        await FirebaseFirestore.instance.collection(_collection).get();
+
+    List<QueryDocumentSnapshot<Map<String, dynamic>?>> docs = snapshot.docs;
+    for (QueryDocumentSnapshot<Map<String, dynamic>?> doc in docs) {
+      if (doc.data() != null) {
+        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        Digilog digilog = Digilog.fromJson(data);
+        if (digilog.location.maintext.contains(location)) {
+          digilogs.add(digilog);
+        }
       }
     }
     return digilogs;

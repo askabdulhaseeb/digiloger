@@ -67,4 +67,28 @@ class UserAPI {
     String url = (await snapshot.ref.getDownloadURL()).toString();
     return url;
   }
+
+  Future<List<AppUser>> getallfirebaseusersbyname(String name) async {
+    List<AppUser> users = <AppUser>[];
+    QuerySnapshot<Map<String, dynamic>> snapshot =
+        await FirebaseFirestore.instance.collection(_collection).get();
+
+    List<DocumentSnapshot<Map<String, dynamic>>> docs = snapshot.docs;
+    for (DocumentSnapshot<Map<String, dynamic>> doc in docs) {
+      AppUser appUser = AppUser.fromDocument(doc);
+      if (appUser.name.contains(name)) {
+        users.add(appUser);
+      }
+    }
+    return users;
+  }
+
+  Future<void> addpostcount(String digilogId) async {
+    List<String> posts = UserLocalData.getPost;
+    posts.add(digilogId);
+    await _instance
+        .collection(_collection)
+        .doc(UserLocalData.getUID)
+        .update(<String, dynamic>{'posts': posts});
+  }
 }

@@ -1,3 +1,5 @@
+import 'package:digiloger/database/user_api.dart';
+import 'package:digiloger/models/app_user.dart';
 import 'package:digiloger/models/digilog.dart';
 import 'package:digiloger/providers/digilog_provider.dart';
 import 'package:digiloger/screens/digilog_view_screen/digilog_view.dart';
@@ -69,80 +71,244 @@ class PostTile extends StatelessWidget {
               ),
             ],
           ),
-          const Text(
-            '83 people hits in this post',
-            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w300),
-          ),
+          digilog.likes > 0
+              ? Text(
+                  digilog.likes.toString() + ' people hits in this post',
+                  style: const TextStyle(
+                      fontSize: 14, fontWeight: FontWeight.w300),
+                )
+              : const Text(
+                  'Be first to like this post',
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w300),
+                ),
           const SizedBox(height: 4),
-          const Text(
-            'Find Thesis Writing Services Uk. Search Faster, Better & Smarter at ZapMeta Now! Web, Images & Video. Information 24/7. Wiki, News & More. 100+ Million Visitors. Trusted by Millions. The Complete Overview. Types: pdf, doc, ppt, xls, txt',
+          Text(
+            'Title: ' + digilog.title,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(),
+            style: const TextStyle(),
           ),
           const SizedBox(height: 4),
-          const Text(
-            'View all 83 comments',
-            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w300),
-          ),
+          digilog.comments.isNotEmpty
+              ? Text(
+                  'View all' + digilog.comments.length.toString() + ' comments',
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w300),
+                )
+              : Container(),
           const SizedBox(height: 4),
         ],
       ),
     );
   }
 
-  Padding _header(BuildContext context) {
-    // TODO: username and location needs to update
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-      child: Row(
-        children: <Widget>[
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute<OtherUserProfile>(
-                  builder: (BuildContext context) => OtherUserProfile(
-                    uid: digilog.useruid,
-                    username: 'username',
-                  ),
-                ),
+  Widget _header(BuildContext context) {
+    return FutureBuilder<AppUser>(
+        future: UserAPI().getInfo(uid: digilog.useruid),
+        builder: (BuildContext context, AsyncSnapshot<AppUser> snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+              return const SizedBox(
+                height: double.infinity,
+                width: double.infinity,
+                child: CircularProgressIndicator.adaptive(),
               );
-            },
-            child: CircularProfileImage(
-              imageURL: CustomImages.domeURL,
-              radious: 24,
-            ),
-          ),
-          const SizedBox(width: 6),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              GestureDetector(
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute<OtherUserProfile>(
-                      builder: (BuildContext context) => OtherUserProfile(
-                        uid: digilog.useruid,
-                        username: 'username',
+            default:
+              if ((snapshot.hasError)) {
+                return _errorWidget();
+              } else {
+                if (snapshot.hasData) {
+                  if (snapshot.data != null) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 4, horizontal: 8),
+                      child: Row(
+                        children: <Widget>[
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute<OtherUserProfile>(
+                                  builder: (BuildContext context) =>
+                                      OtherUserProfile(
+                                    uid: digilog.useruid,
+                                    username: snapshot.data!.name,
+                                  ),
+                                ),
+                              );
+                            },
+                            child: CircularProfileImage(
+                              imageURL: CustomImages.domeURL,
+                              radious: 24,
+                            ),
+                          ),
+                          const SizedBox(width: 6),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute<OtherUserProfile>(
+                                      builder: (BuildContext context) =>
+                                          OtherUserProfile(
+                                        uid: digilog.useruid,
+                                        username: snapshot.data!.name,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: Text(snapshot.data!.name),
+                              ),
+                              Text(
+                                digilog.location.maintext,
+                                style: const TextStyle(
+                                    fontSize: 12, color: Colors.grey),
+                              ),
+                            ],
+                          ),
+                          const Spacer(),
+                          IconButton(
+                            splashRadius: 16,
+                            onPressed: () {},
+                            icon: const Icon(Icons.more_horiz),
+                          )
+                        ],
                       ),
+                    );
+                  } else {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 4, horizontal: 8),
+                      child: Row(
+                        children: <Widget>[
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute<OtherUserProfile>(
+                                  builder: (BuildContext context) =>
+                                      OtherUserProfile(
+                                    uid: digilog.useruid,
+                                    username: 'Anoynomous User',
+                                  ),
+                                ),
+                              );
+                            },
+                            child: CircularProfileImage(
+                              imageURL: CustomImages.domeURL,
+                              radious: 24,
+                            ),
+                          ),
+                          const SizedBox(width: 6),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute<OtherUserProfile>(
+                                      builder: (BuildContext context) =>
+                                          OtherUserProfile(
+                                        uid: digilog.useruid,
+                                        username: 'Anoynomous User',
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: const Text('Anoynomous User'),
+                              ),
+                              Text(
+                                digilog.location.maintext,
+                                style: const TextStyle(
+                                    fontSize: 12, color: Colors.grey),
+                              ),
+                            ],
+                          ),
+                          const Spacer(),
+                          IconButton(
+                            splashRadius: 16,
+                            onPressed: () {},
+                            icon: const Icon(Icons.more_horiz),
+                          )
+                        ],
+                      ),
+                    );
+                  }
+                } else {
+                  return Padding(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                    child: Row(
+                      children: <Widget>[
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute<OtherUserProfile>(
+                                builder: (BuildContext context) =>
+                                    OtherUserProfile(
+                                  uid: digilog.useruid,
+                                  username: 'Anoynomous User',
+                                ),
+                              ),
+                            );
+                          },
+                          child: CircularProfileImage(
+                            imageURL: CustomImages.domeURL,
+                            radious: 24,
+                          ),
+                        ),
+                        const SizedBox(width: 6),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute<OtherUserProfile>(
+                                    builder: (BuildContext context) =>
+                                        OtherUserProfile(
+                                      uid: digilog.useruid,
+                                      username: 'Anoynomous User',
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: const Text('Anoynomous User'),
+                            ),
+                            Text(
+                              digilog.location.maintext,
+                              style: const TextStyle(
+                                  fontSize: 12, color: Colors.grey),
+                            ),
+                          ],
+                        ),
+                        const Spacer(),
+                        IconButton(
+                          splashRadius: 16,
+                          onPressed: () {},
+                          icon: const Icon(Icons.more_horiz),
+                        )
+                      ],
                     ),
                   );
-                },
-                child: const Text('Username'),
-              ),
-              Text(
-                digilog.location.maintext,
-                style: const TextStyle(fontSize: 12, color: Colors.grey),
-              ),
-            ],
-          ),
-          const Spacer(),
-          IconButton(
-            splashRadius: 16,
-            onPressed: () {},
-            icon: const Icon(Icons.more_horiz),
-          )
-        ],
+                }
+              }
+          }
+        });
+  }
+
+  SizedBox _errorWidget() {
+    return SizedBox(
+      height: double.infinity,
+      width: double.infinity,
+      child: Center(
+        child: Column(
+          children: const <Widget>[
+            Icon(Icons.info, color: Colors.grey),
+            Text(
+              'Facing some issues',
+              style: TextStyle(color: Colors.grey),
+            ),
+          ],
+        ),
       ),
     );
   }

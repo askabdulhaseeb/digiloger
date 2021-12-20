@@ -1,11 +1,9 @@
 import 'package:digiloger/database/user_api.dart';
 import 'package:digiloger/models/app_user.dart';
 import 'package:digiloger/models/digilog.dart';
-import 'package:digiloger/providers/digilog_provider.dart';
 import 'package:digiloger/utilities/custom_image.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class DigilogScreen extends StatefulWidget {
   const DigilogScreen({Key? key, required this.digilog, required this.index})
@@ -195,7 +193,6 @@ class RightPanel extends StatelessWidget {
     required this.comments,
     required this.profileImg,
   }) : super(key: key);
-  static const String _fontFamily = 'TikTokIcons';
   final String likes;
   final String comments;
   final String profileImg;

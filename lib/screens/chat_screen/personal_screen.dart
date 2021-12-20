@@ -6,6 +6,7 @@ import 'package:digiloger/models/messages.dart';
 import 'package:digiloger/services/user_local_data.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../../utilities/custom_image.dart';
 import '../../utilities/utilities.dart';
 
@@ -110,13 +111,16 @@ class _PersonalChatScreenState extends State<PersonalChatScreen> {
                         chatID: widget.chat.chatID,
                         persons: [UserLocalData.getUID, widget.otherUser.uid],
                         lastMessage: _text.text.trim(),
-                        time: DateTime.now().toString(),
+                        time: DateFormat('hh:mm a').format(DateTime.now()),
                       ),
                       Messages(
                         messageID:
                             DateTime.now().microsecondsSinceEpoch.toString(),
                         message: _text.text.trim(),
-                        timestamp: DateTime.now().toString(),
+                        date: DateFormat('dd-MM-yyyy').format(DateTime.now()),
+                        time: DateFormat('hh:mm a').format(DateTime.now()),
+                        timestamp:
+                            DateTime.now().microsecondsSinceEpoch.toString(),
                         sendBy: UserLocalData.getUID,
                       ),
                     );
@@ -260,7 +264,7 @@ class _MessageTile extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
                       Text(
-                        message.timestamp,
+                        message.time,
                         style: TextStyle(
                           color: (isMe) ? Colors.white70 : Colors.black54,
                           fontSize: 12,

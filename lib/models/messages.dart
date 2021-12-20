@@ -6,12 +6,16 @@ class Messages {
   Messages({
     required this.messageID,
     required this.message,
+    required this.date,
+    required this.time,
     required this.timestamp,
     required this.sendBy,
   });
 
   final String messageID;
   final String message;
+  final String date;
+  final String time;
   final String timestamp;
   final String sendBy;
 
@@ -19,6 +23,8 @@ class Messages {
     return <String, dynamic>{
       'message_id': messageID,
       'message': message,
+      'date': date,
+      'time': time,
       'timestamp': timestamp,
       'send_by': sendBy,
     };
@@ -29,6 +35,8 @@ class Messages {
     return Messages(
       messageID: doc.data()!['message_id'] ?? '',
       message: doc.data()!['message'] ?? '',
+      date: doc.data()!['date'] ?? '',
+      time: doc.data()!['time'] ?? '',
       timestamp: doc.data()!['timestamp'] ?? '',
       sendBy: doc.data()!['send_by'] ?? '',
     );

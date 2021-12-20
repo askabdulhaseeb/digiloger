@@ -3,7 +3,6 @@ import 'package:digiloger/database/digilog_api.dart';
 import 'package:digiloger/database/user_api.dart';
 import 'package:digiloger/models/app_user.dart';
 import 'package:digiloger/models/digilog.dart';
-import 'package:digiloger/screens/chat_screen/personal_screen.dart';
 import 'package:digiloger/services/user_local_data.dart';
 import 'package:digiloger/widgets/circular_profile_image.dart';
 import 'package:digiloger/widgets/gridview_of_posts.dart';

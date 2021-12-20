@@ -91,6 +91,28 @@ class DigilogAPI {
     return digilogs;
   }
 
+  Future<List<Digilog>> getallfirebasedigilogsbylistuid(
+      List<String> uids) async {
+    List<Digilog> digilogs = <Digilog>[];
+
+    QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore
+        .instance
+        .collection(_collection)
+        .where('useruid', whereIn: uids)
+        .get();
+
+    List<QueryDocumentSnapshot<Map<String, dynamic>?>> docs = snapshot.docs;
+    for (QueryDocumentSnapshot<Map<String, dynamic>?> doc in docs) {
+      if (doc.data() != null) {
+        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        Digilog digilog = Digilog.fromJson(data);
+        digilogs.add(digilog);
+      }
+    }
+
+    return digilogs;
+  }
+
   Future<void> deletedigilogfromhive(Digilog id) async {
     _digilogBox.delete(id.digilogid);
   }

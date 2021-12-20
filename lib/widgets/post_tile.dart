@@ -1,15 +1,21 @@
+import 'package:digiloger/models/digilog.dart';
+import 'package:digiloger/providers/digilog_provider.dart';
+import 'package:digiloger/screens/digilog_view_screen/digilog_view.dart';
 import 'package:digiloger/screens/other_user_profile/other_user_profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:extended_image/extended_image.dart';
+import 'package:provider/provider.dart';
 import '../utilities/custom_image.dart';
 import '../widgets/circular_profile_image.dart';
 
 class PostTile extends StatelessWidget {
-  const PostTile({Key? key}) : super(key: key);
+  const PostTile({Key? key, required this.digilog}) : super(key: key);
+  final Digilog digilog;
 
   @override
   Widget build(BuildContext context) {
+    DigilogProvider _provider = Provider.of<DigilogProvider>(context);
     return Container(
       color: Colors.white,
       margin: const EdgeInsets.symmetric(vertical: 3),
@@ -19,11 +25,17 @@ class PostTile extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           _header(context),
-          AspectRatio(
-            aspectRatio: 16 / 9,
-            child: ExtendedImage.network(
-              CustomImages.domeURL,
-              fit: BoxFit.cover,
+          InkWell(
+            onTap: () {
+              _provider.onUpdatedigi(digilog);
+              Navigator.of(context).pushNamed(DigilogView.routeName);
+            },
+            child: AspectRatio(
+              aspectRatio: 16 / 9,
+              child: ExtendedImage.network(
+                digilog.experiences.first.mediaUrl,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
           _footer(),
@@ -89,8 +101,8 @@ class PostTile extends StatelessWidget {
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute<OtherUserProfile>(
-                  builder: (BuildContext context) => const OtherUserProfile(
-                    uid: '4lwHhexJNFVAP78gJLdZUwA4mOw1',
+                  builder: (BuildContext context) => OtherUserProfile(
+                    uid: digilog.useruid,
                     username: 'username',
                   ),
                 ),
@@ -109,10 +121,8 @@ class PostTile extends StatelessWidget {
                 onTap: () {
                   Navigator.of(context).push(
                     MaterialPageRoute<OtherUserProfile>(
-                      builder: (BuildContext context) => const OtherUserProfile(
-                        // TODO: update uid
-                        uid: '4lwHhexJNFVAP78gJLdZUwA4mOw1',
-
+                      builder: (BuildContext context) => OtherUserProfile(
+                        uid: digilog.useruid,
                         username: 'username',
                       ),
                     ),
@@ -120,9 +130,9 @@ class PostTile extends StatelessWidget {
                 },
                 child: const Text('Username'),
               ),
-              const Text(
-                'Location',
-                style: TextStyle(fontSize: 12, color: Colors.grey),
+              Text(
+                digilog.location.maintext,
+                style: const TextStyle(fontSize: 12, color: Colors.grey),
               ),
             ],
           ),

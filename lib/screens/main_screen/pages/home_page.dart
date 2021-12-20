@@ -1,3 +1,6 @@
+import 'package:digiloger/database/digilog_api.dart';
+import 'package:digiloger/models/digilog.dart';
+import 'package:digiloger/services/user_local_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import '../../../utilities/custom_image.dart';
@@ -43,14 +46,75 @@ class HomePage extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: 1000,
-              itemBuilder: (BuildContext context, int index) =>
-                  const PostTile(),
-            ),
+            child: FutureBuilder<List<Digilog>>(
+                future: getdigilogs(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<List<Digilog>> snapshot) {
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.waiting:
+                      return const SizedBox(
+                        height: double.infinity,
+                        width: double.infinity,
+                        child: CircularProgressIndicator.adaptive(),
+                      );
+                    default:
+                      if ((snapshot.hasError)) {
+                        return _errorWidget();
+                      } else {
+                        if (snapshot.hasData) {
+                          if (snapshot.data!.isNotEmpty) {
+                            return ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: snapshot.data!.length,
+                              itemBuilder: (BuildContext context, int index) =>
+                                  PostTile(digilog: snapshot.data![index]),
+                            );
+                          } else {
+                            return Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  "No Digilogs posted by your followers",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Theme.of(context).primaryColor,
+                                      fontSize: 14),
+                                ),
+                              ],
+                            );
+                          }
+                        } else {
+                          return const Text("No Digilogs posted");
+                        }
+                      }
+                  }
+                }),
           ),
         ],
+      ),
+    );
+  }
+
+  Future<List<Digilog>> getdigilogs() async {
+    return await DigilogAPI()
+        .getallfirebasedigilogsbylistuid(UserLocalData.getFollowings);
+  }
+
+  SizedBox _errorWidget() {
+    return SizedBox(
+      height: double.infinity,
+      width: double.infinity,
+      child: Center(
+        child: Column(
+          children: const <Widget>[
+            Icon(Icons.info, color: Colors.grey),
+            Text(
+              'Facing some issues',
+              style: TextStyle(color: Colors.grey),
+            ),
+          ],
+        ),
       ),
     );
   }

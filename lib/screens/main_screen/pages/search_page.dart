@@ -4,6 +4,7 @@ import 'package:digiloger/models/app_user.dart';
 import 'package:digiloger/models/digilog.dart';
 import 'package:digiloger/providers/digilog_provider.dart';
 import 'package:digiloger/screens/digilog_view_screen/digilog_view.dart';
+import 'package:digiloger/screens/other_user_profile/other_user_profile.dart';
 import 'package:digiloger/utilities/custom_image.dart';
 import 'package:digiloger/utilities/utilities.dart';
 
@@ -22,14 +23,19 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage>
     with SingleTickerProviderStateMixin {
   late FocusNode myFocusNode;
+  bool search = false;
   bool _focused = false;
   late TabController _controller;
+  final TextEditingController _searchController = TextEditingController();
   @override
   void initState() {
     super.initState();
     _controller = TabController(length: 3, vsync: this, initialIndex: 1);
     myFocusNode = FocusNode();
     myFocusNode.addListener(_handleFocusChange);
+    _searchController.addListener(() {
+      _onChanged();
+    });
   }
 
   @override
@@ -37,7 +43,6 @@ class _SearchPageState extends State<SearchPage>
     DigilogProvider _provider = Provider.of<DigilogProvider>(context);
     Size _screen = MediaQuery.of(context).size;
     return Scaffold(
-      //TODO:Implement search
       appBar: searchappbar(68),
       body: _focused
           ? TabBarView(
@@ -232,6 +237,7 @@ class _SearchPageState extends State<SearchPage>
                   topRight: Radius.circular(10),
                 )),
             child: TextField(
+              controller: _searchController,
               focusNode: myFocusNode,
               decoration: InputDecoration(
                 hintText: 'Search',
@@ -255,7 +261,7 @@ class _SearchPageState extends State<SearchPage>
 
   Widget getAccountsList() {
     return FutureBuilder<List<AppUser>>(
-        future: UserAPI().getallfirebaseusersbyname(),
+        future: UserAPI().getallfirebaseusersbyname(_searchController.text),
         builder: (BuildContext context, AsyncSnapshot<List<AppUser>> snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.waiting:
@@ -273,6 +279,16 @@ class _SearchPageState extends State<SearchPage>
                     return ListView.separated(
                         itemBuilder: (BuildContext context, int index) {
                           return ListTile(
+                            onTap: () {
+                              Navigator.of(context)
+                                  .push(MaterialPageRoute<OtherUserProfile>(
+                                builder: (BuildContext context) =>
+                                    OtherUserProfile(
+                                  uid: snapshot.data![index].uid,
+                                  username: snapshot.data![index].name,
+                                ),
+                              ));
+                            },
                             contentPadding: EdgeInsets.zero,
                             leading: CircleAvatar(
                               backgroundColor: Theme.of(context).primaryColor,
@@ -338,7 +354,8 @@ class _SearchPageState extends State<SearchPage>
 
   Widget getDigilogsList(DigilogProvider provider) {
     return FutureBuilder<List<Digilog>>(
-        future: DigilogAPI().getallfirebasedigilogs(),
+        future:
+            DigilogAPI().getallfirebasedigilogsbytitle(_searchController.text),
         builder: (BuildContext context, AsyncSnapshot<List<Digilog>> snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.waiting:
@@ -396,7 +413,7 @@ class _SearchPageState extends State<SearchPage>
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         Text(
-                          "No Users Found ",
+                          "No Digilogs Found ",
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Theme.of(context).primaryColor,
@@ -411,7 +428,7 @@ class _SearchPageState extends State<SearchPage>
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        "No Users Found",
+                        "No Digilogs Found",
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Theme.of(context).primaryColor,
@@ -427,7 +444,8 @@ class _SearchPageState extends State<SearchPage>
 
   Widget getDigilogsListbylocation(DigilogProvider provider) {
     return FutureBuilder<List<Digilog>>(
-        future: DigilogAPI().getallfirebasedigilogs(),
+        future: DigilogAPI()
+            .getallfirebasedigilogsbylocation(_searchController.text),
         builder: (BuildContext context, AsyncSnapshot<List<Digilog>> snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.waiting:
@@ -485,7 +503,7 @@ class _SearchPageState extends State<SearchPage>
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         Text(
-                          "No Users Found ",
+                          "No Digilogs Found ",
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Theme.of(context).primaryColor,
@@ -500,7 +518,7 @@ class _SearchPageState extends State<SearchPage>
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        "No Users Found",
+                        "No Digilogs Found",
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Theme.of(context).primaryColor,
@@ -512,5 +530,17 @@ class _SearchPageState extends State<SearchPage>
               }
           }
         });
+  }
+
+  void _onChanged() {
+    if (search) {
+      setState(() {
+        search = false;
+      });
+    } else {
+      setState(() {
+        search = true;
+      });
+    }
   }
 }

@@ -37,10 +37,6 @@ class MainBottomNavigationBar extends StatelessWidget {
           label: 'Calendar',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.notifications_none),
-          label: 'Notifications',
-        ),
-        BottomNavigationBarItem(
           icon: Icon(CupertinoIcons.person_alt_circle),
           label: 'Notifications',
         ),

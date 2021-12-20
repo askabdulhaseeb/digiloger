@@ -16,8 +16,8 @@ class MainScreen extends StatelessWidget {
     HomePage(),
     SearchPage(),
     AddDigilogPage(),
+    //TODO:Add Notifications Page if get time
     CalendarPage(),
-    NotificationPage(),
     ProfilePage(),
   ];
   @override

@@ -1,3 +1,4 @@
+import 'package:digiloger/database/chat_api.dart';
 import 'package:digiloger/database/digilog_api.dart';
 import 'package:digiloger/database/user_api.dart';
 import 'package:digiloger/models/app_user.dart';
@@ -58,7 +59,7 @@ class _OtherUserProfileState extends State<OtherUserProfile> {
                         followers: _user?.followers?.length ?? 0,
                         followings: _user?.followings?.length ?? 0,
                       ),
-                      _followAndMessage(_user!),
+                      _FollowAndMessageButton(otherUser: _user!),
                       const Divider(),
                       Expanded(
                         child: FutureBuilder<List<Digilog>>(
@@ -106,102 +107,6 @@ class _OtherUserProfileState extends State<OtherUserProfile> {
     return await DigilogAPI().getallfirebasedigilogsbyuid(otherUser.uid);
   }
 
-  Padding _followAndMessage(AppUser otherUser) {
-    const double _height = 32;
-    final BorderRadius _borderRadius = BorderRadius.circular(4);
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          Flexible(
-            child: (otherUser.followers!.contains(UserLocalData.getUID))
-                ? InkWell(
-                    onTap: () async {
-                      await UserAPI().followOrUnfollow(otherUser);
-                      setState(() {});
-                    },
-                    borderRadius: _borderRadius,
-                    child: Container(
-                      height: _height,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey.shade300),
-                        borderRadius: _borderRadius,
-                      ),
-                      child: const Text('Following'),
-                    ),
-                  )
-                : (!otherUser.followers!.contains(UserLocalData.getUID) &&
-                        otherUser.followings!.contains(UserLocalData.getUID))
-                    ? InkWell(
-                        onTap: () async {
-                          await UserAPI().followOrUnfollow(otherUser);
-                          setState(() {});
-                        },
-                        borderRadius: _borderRadius,
-                        child: Container(
-                          height: _height,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).primaryColor,
-                            borderRadius: _borderRadius,
-                          ),
-                          child: const Text(
-                            'Follow Back',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      )
-                    : InkWell(
-                        onTap: () async {
-                          await UserAPI().followOrUnfollow(otherUser);
-                          setState(() {});
-                        },
-                        borderRadius: _borderRadius,
-                        child: Container(
-                          height: _height,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey.shade300),
-                            color: Theme.of(context).primaryColor,
-                            borderRadius: _borderRadius,
-                          ),
-                          child: const Text(
-                            'Follow',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ),
-          ),
-          const SizedBox(width: 6),
-          Flexible(
-            child: InkWell(
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute<PersonalChatScreen>(
-                    builder: (BuildContext context) => PersonalChatScreen(
-                      user: widget.uid,
-                    ),
-                  ),
-                );
-              },
-              child: Container(
-                height: _height,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey.shade300),
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                child: const Text('Message'),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   SizedBox _errorWidget() {
     return SizedBox(
       height: double.infinity,
@@ -233,6 +138,118 @@ class _OtherUserProfileState extends State<OtherUserProfile> {
           icon: const Icon(Icons.more_vert_outlined),
         ),
       ],
+    );
+  }
+}
+
+class _FollowAndMessageButton extends StatefulWidget {
+  const _FollowAndMessageButton({required this.otherUser, Key? key})
+      : super(key: key);
+
+  final AppUser otherUser;
+  @override
+  __FollowAndMessageButtonState createState() =>
+      __FollowAndMessageButtonState();
+}
+
+class __FollowAndMessageButtonState extends State<_FollowAndMessageButton> {
+  static const double _height = 32;
+  final BorderRadius _borderRadius = BorderRadius.circular(4);
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          Flexible(
+            child: (widget.otherUser.followers!.contains(UserLocalData.getUID))
+                ? InkWell(
+                    onTap: () async {
+                      await UserAPI().followOrUnfollow(widget.otherUser);
+                      setState(() {});
+                    },
+                    borderRadius: _borderRadius,
+                    child: Container(
+                      height: _height,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey.shade300),
+                        borderRadius: _borderRadius,
+                      ),
+                      child: const Text('Following'),
+                    ),
+                  )
+                : (!widget.otherUser.followers!
+                            .contains(UserLocalData.getUID) &&
+                        widget.otherUser.followings!
+                            .contains(UserLocalData.getUID))
+                    ? InkWell(
+                        onTap: () async {
+                          await UserAPI().followOrUnfollow(widget.otherUser);
+                          setState(() {});
+                        },
+                        borderRadius: _borderRadius,
+                        child: Container(
+                          height: _height,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColor,
+                            borderRadius: _borderRadius,
+                          ),
+                          child: const Text(
+                            'Follow Back',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      )
+                    : InkWell(
+                        onTap: () async {
+                          await UserAPI().followOrUnfollow(widget.otherUser);
+                          setState(() {});
+                        },
+                        borderRadius: _borderRadius,
+                        child: Container(
+                          height: _height,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey.shade300),
+                            color: Theme.of(context).primaryColor,
+                            borderRadius: _borderRadius,
+                          ),
+                          child: const Text(
+                            'Follow',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+          ),
+          const SizedBox(width: 6),
+          Flexible(
+            child: InkWell(
+              onTap: () {
+                print(ChatAPI.getChatID(othersUID: widget.otherUser.uid));
+                // Navigator.of(context).push(
+                //   MaterialPageRoute<PersonalChatScreen>(
+                //     builder: (BuildContext context) => PersonalChatScreen(
+                //       user: widget.uid,
+                //     ),
+                //   ),
+                // );
+              },
+              child: Container(
+                height: _height,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey.shade300),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: const Text('Message'),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

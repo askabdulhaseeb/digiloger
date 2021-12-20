@@ -63,33 +63,34 @@ class _OtherUserProfileState extends State<OtherUserProfile> {
                       const Divider(),
                       Expanded(
                         child: FutureBuilder<List<Digilog>>(
-                            future: getdigilogs(_user),
-                            builder: (BuildContext context,
-                                AsyncSnapshot<List<Digilog>> snapshot) {
-                              switch (snapshot.connectionState) {
-                                case ConnectionState.waiting:
-                                  return const SizedBox(
-                                    height: double.infinity,
-                                    width: double.infinity,
-                                    child: CircularProgressIndicator.adaptive(),
-                                  );
-                                default:
-                                  if ((snapshot.hasError)) {
-                                    return _errorWidget();
-                                  } else {
-                                    if (snapshot.hasData) {
-                                      if (snapshot.data!.isNotEmpty) {
-                                        return GridViewOfPosts(
-                                            posts: snapshot.data!);
-                                      } else {
-                                        return const Text("NO DIGILOGS POSTED");
-                                      }
+                          future: getdigilogs(_user),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<List<Digilog>> snapshot) {
+                            switch (snapshot.connectionState) {
+                              case ConnectionState.waiting:
+                                return const SizedBox(
+                                  height: double.infinity,
+                                  width: double.infinity,
+                                  child: CircularProgressIndicator.adaptive(),
+                                );
+                              default:
+                                if ((snapshot.hasError)) {
+                                  return _errorWidget();
+                                } else {
+                                  if (snapshot.hasData) {
+                                    if (snapshot.data!.isNotEmpty) {
+                                      return GridViewOfPosts(
+                                          posts: snapshot.data!);
                                     } else {
                                       return const Text("NO DIGILOGS POSTED");
                                     }
+                                  } else {
+                                    return const Text("NO DIGILOGS POSTED");
                                   }
-                              }
-                            }),
+                                }
+                            }
+                          },
+                        ),
                       )
                     ],
                   );

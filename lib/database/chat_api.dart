@@ -6,8 +6,8 @@ class ChatAPI {
   static final FirebaseFirestore _instance = FirebaseFirestore.instance;
   // functions
   static String getChatID({required String othersUID}) {
-    bool _isGreaterThen = UserLocalData.getUID.compareTo(othersUID) as bool;
-    if (_isGreaterThen) {
+    int _isGreaterThen = UserLocalData.getUID.compareTo(othersUID);
+    if (_isGreaterThen > 0) {
       return '${UserLocalData.getUID}-chats-$othersUID';
     } else {
       return '$othersUID-chats-${UserLocalData.getUID}';

@@ -68,7 +68,7 @@ class _AddDetailsState extends State<AddDetails> {
                   hint: 'Digilog Location',
                   validator: (String? value) => CustomValidator.isEmpty(value),
                 ),
-                (_placeList.isNotEmpty)
+                (_placeList.isNotEmpty && _location.lat == 0.00)
                     ? Padding(
                         padding: const EdgeInsets.symmetric(
                           vertical: 8.0,

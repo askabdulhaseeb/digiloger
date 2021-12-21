@@ -3,7 +3,7 @@ import 'package:digiloger/models/digilog.dart';
 import 'package:digiloger/providers/digilog_provider.dart';
 import 'package:digiloger/providers/main_bottom_nav_bar_provider.dart';
 import 'package:digiloger/screens/adddigilog_screen/camerapage.dart';
-import 'package:digiloger/screens/main_screen/main_screen.dart';
+import 'package:digiloger/screens/main_screen_common/main_screen.dart';
 import 'package:digiloger/widgets/custom_toast.dart';
 import 'package:digiloger/widgets/show_loading.dart';
 import 'package:extended_image/extended_image.dart';

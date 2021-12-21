@@ -1,5 +1,10 @@
+import 'package:digiloger/providers/main_bottom_nav_bar_provider.dart';
+import 'package:digiloger/screens/main_screen_business/main_screen.dart';
+import 'package:digiloger/screens/main_screen_common/main_screen.dart';
+import 'package:digiloger/services/user_local_data.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
 import '../../database/auth_methods.dart';
 import '../../utilities/custom_image.dart';
 import '../../utilities/custom_validator.dart';
@@ -10,7 +15,6 @@ import '../../widgets/custom_textformfield.dart';
 import '../../widgets/custom_toast.dart';
 import '../../widgets/password_textformfield.dart';
 import '../../widgets/show_loading.dart';
-import '../main_screen/main_screen.dart';
 import 'forget_password_screen.dart';
 import 'registeration_type_screen.dart';
 
@@ -65,10 +69,19 @@ class _LoginScreenState extends State<LoginScreen> {
                     _password.text,
                   );
                   if (_user != null) {
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                      MainScreen.routeName,
-                      (Route<dynamic> route) => false,
-                    );
+                    Provider.of<MainBottomNavBarProvider>(context)
+                        .onTabTapped(0);
+                    if (UserLocalData.getIsBusiness) {
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                        MainScreenBusiness.routeName,
+                        (Route<dynamic> route) => false,
+                      );
+                    } else {
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                        MainScreen.routeName,
+                        (Route<dynamic> route) => false,
+                      );
+                    }
                   } else {
                     Navigator.of(context).pop();
                   }

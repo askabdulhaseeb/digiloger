@@ -224,7 +224,7 @@ class _PersonalRegisterationScreenState
         DropdownButton<int>(
           menuMaxHeight: MediaQuery.of(context).size.height * 0.7,
           underline: const SizedBox(),
-          hint: const Text("Date"),
+          hint: const Text("Year"),
           value: _year,
           items: _yearList
               .map((int e) => DropdownMenuItem<int>(

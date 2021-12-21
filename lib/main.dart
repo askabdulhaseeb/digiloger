@@ -1,4 +1,5 @@
 import 'package:digiloger/screens/digilog_view_screen/digilog_view.dart';
+import 'package:digiloger/screens/main_screen_business/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -6,8 +7,8 @@ import 'package:provider/provider.dart';
 import 'models/digilog.dart';
 import 'providers/digilog_provider.dart';
 import 'providers/main_bottom_nav_bar_provider.dart';
+import 'screens/main_screen_common/main_screen.dart';
 import 'services/user_local_data.dart';
-import 'screens/main_screen/main_screen.dart';
 import 'screens/adddigilog_screen/add_details.dart';
 import 'screens/adddigilog_screen/camerapage.dart';
 import 'screens/adddigilog_screen/cameraview.dart';
@@ -69,9 +70,7 @@ class MyApp extends StatelessWidget {
           iconTheme: const IconThemeData(color: _primary),
           splashColor: Colors.blue[300],
         ),
-        home: (UserLocalData.getUID.isEmpty)
-            ? const LoginScreen()
-            : const MainScreen(),
+        home: getbody(),
         routes: <String, WidgetBuilder>{
           LoginScreen.routeName: (_) => const LoginScreen(),
           ForgetPasswordScreen.routeName: (_) => ForgetPasswordScreen(),
@@ -88,9 +87,22 @@ class MyApp extends StatelessWidget {
           CameraViewPage.routeName: (_) => const CameraViewPage(),
           DigilogExperiences.routeName: (_) => const DigilogExperiences(),
           DigilogView.routeName: (_) => const DigilogView(),
+          MainScreenBusiness.routeName: (_) => const MainScreenBusiness(),
         },
       ),
     );
+  }
+
+  getbody() {
+    if (UserLocalData.getUID.isEmpty) {
+      return const LoginScreen();
+    } else {
+      if (UserLocalData.getIsBusiness) {
+        return const MainScreenBusiness();
+      } else {
+        return const MainScreen();
+      }
+    }
   }
 }
 

@@ -4,7 +4,6 @@ import '../../providers/main_bottom_nav_bar_provider.dart';
 import 'pages/add_digilog_page.dart';
 import 'pages/calendar_page.dart';
 import 'pages/home_page.dart';
-import 'pages/notification_page.dart';
 import 'pages/profile_page.dart';
 import 'pages/search_page.dart';
 import 'main_bottom_navigation_bar.dart';

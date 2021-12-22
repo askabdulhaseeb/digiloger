@@ -9,6 +9,7 @@ import 'package:digiloger/utilities/custom_image.dart';
 import 'package:digiloger/utilities/utilities.dart';
 
 import 'package:extended_image/extended_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:provider/provider.dart';
@@ -145,13 +146,21 @@ class _SearchPageState extends State<SearchPage>
     return AppBar(
       backgroundColor: Colors.white,
       elevation: 0,
-      title: Container(
-        height: height,
-        color: Colors.white,
-        child: Container(
-          margin: const EdgeInsets.only(top: 20),
-          height: height - 20,
-          child: _searchBarContainer(height),
+      title: TextFormField(
+        controller: _searchController,
+        scrollPadding: EdgeInsets.zero,
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.zero,
+          hintText: 'Search',
+          prefixIcon: const Icon(CupertinoIcons.search),
+          border: OutlineInputBorder(
+            borderSide: const BorderSide(color: Colors.grey),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: Colors.grey),
+            borderRadius: BorderRadius.circular(20),
+          ),
         ),
       ),
       bottom: _focused
@@ -177,12 +186,12 @@ class _SearchPageState extends State<SearchPage>
   }
 
   Widget _searchBarContainer(double height) {
-    double width = 335;
-    if (_focused) {
-      width = 300;
-    } else {
-      width = 335;
-    }
+    // double width = 335;
+    // if (_focused) {
+    //   width = 300;
+    // } else {
+    //   width = 335;
+    // }
     return SizedBox(
       height: (height - 20),
       child: Row(
@@ -229,7 +238,7 @@ class _SearchPageState extends State<SearchPage>
           ),
           Container(
             height: 40,
-            width: width,
+            width: double.infinity,
             decoration: BoxDecoration(
                 color: Colors.grey[200],
                 borderRadius: const BorderRadius.only(

@@ -26,7 +26,7 @@ class _AddDetailsState extends State<AddDetails> {
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
   Uuid uuid = const Uuid();
   String? _sessionToken = "";
-  late Location _location;
+  Location _location = Location(lat: 0.00, long: 0.00, maintext: "");
   List<PlacesPredictions> _placeList = [];
   @override
   void initState() {

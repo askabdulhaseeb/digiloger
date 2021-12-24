@@ -187,28 +187,41 @@ class _AddEventState extends State<AddEvent> {
                             loading = true;
                           });
                           if (_key.currentState!.validate()) {
-                            Event event = Event(
-                                name: eventNameController.text.trim(),
-                                description: descController.text.trim(),
-                                hostuid: UserLocalData.getUID,
-                                location: _location,
-                                coverimage: file!.path);
-                            await EventAPI().addEvent(event);
-                            CustomToast.successToast(message: "Event Added");
-                            setState(() {
-                              eventNameController.clear();
-                              descController.clear();
-                              locationController.clear();
-                              _location =
-                                  Location(lat: 0.00, long: 0.00, maintext: "");
-                              file = null;
-                              _date = null;
-                              _month = null;
-                              _year = null;
-                              loading = false;
-                            });
-                            Provider.of<MainBottomNavBarProvider>(context)
-                                .onTabTapped(0);
+                            if (file != null) {
+                              if (_date != null ||
+                                  _month != null ||
+                                  _year != null) {
+                                Event event = Event(
+                                    name: eventNameController.text.trim(),
+                                    description: descController.text.trim(),
+                                    hostuid: UserLocalData.getUID,
+                                    location: _location,
+                                    coverimage: file!.path);
+                                await EventAPI().addEvent(event);
+                                CustomToast.successToast(
+                                    message: "Event Added");
+                                setState(() {
+                                  eventNameController.clear();
+                                  descController.clear();
+                                  locationController.clear();
+                                  _location = Location(
+                                      lat: 0.00, long: 0.00, maintext: "");
+                                  file = null;
+                                  _date = null;
+                                  _month = null;
+                                  _year = null;
+                                  loading = false;
+                                });
+                                Provider.of<MainBottomNavBarProvider>(context)
+                                    .onTabTapped(0);
+                              } else {
+                                CustomToast.errorToast(
+                                    message: "Select Date first");
+                              }
+                            } else {
+                              CustomToast.errorToast(
+                                  message: "Select a picture first");
+                            }
                           }
                         }),
                         const SizedBox(

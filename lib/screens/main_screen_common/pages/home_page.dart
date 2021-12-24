@@ -85,7 +85,19 @@ class HomePage extends StatelessWidget {
                             );
                           }
                         } else {
-                          return const Text("No Digilogs posted");
+                          return Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Text(
+                                "No Digilogs posted by your followers",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Theme.of(context).primaryColor,
+                                    fontSize: 14),
+                              ),
+                            ],
+                          );
                         }
                       }
                   }

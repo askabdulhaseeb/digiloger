@@ -35,10 +35,29 @@ class EventAPI {
     return url;
   }
 
-  static const _chars =
+  static const String _chars =
       'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
   final Random _rnd = Random();
 
   String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
       length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
+
+  Future<List<Event>> geteventsbyuserid({required String userid}) async {
+    List<Event> digilogs = <Event>[];
+    QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore
+        .instance
+        .collection(_collection)
+        .where('hostuid', isEqualTo: userid)
+        .get();
+
+    List<QueryDocumentSnapshot<Map<String, dynamic>?>> docs = snapshot.docs;
+    for (QueryDocumentSnapshot<Map<String, dynamic>?> doc in docs) {
+      if (doc.data() != null) {
+        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        Event digilog = Event.fromJson(data);
+        digilogs.add(digilog);
+      }
+    }
+    return digilogs;
+  }
 }

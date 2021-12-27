@@ -1,5 +1,5 @@
 import 'package:digiloger/utilities/custom_image.dart';
-import 'package:digiloger/widgets/eventcards.dart';
+import 'package:digiloger/widgets/eventcardshosted.dart';
 import 'package:flutter/material.dart';
 
 class BusinessHome extends StatefulWidget {
@@ -40,7 +40,7 @@ class _BusinessHomeState extends State<BusinessHome> {
               height: 20,
             ),
             const Expanded(
-              child: EventCard(),
+              child: EventCardHosted(),
             ),
           ],
         ),

@@ -1,11 +1,17 @@
 import 'package:digiloger/database/event_api.dart';
 import 'package:digiloger/models/event_model.dart';
-import 'package:digiloger/services/user_local_data.dart';
+import 'package:digiloger/screens/main_screen_common/pages/eventdetailspage.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:location/location.dart';
 
 class EventCardNearYou extends StatefulWidget {
-  const EventCardNearYou({Key? key}) : super(key: key);
+  const EventCardNearYou(
+      {Key? key, required this.locationData, required this.thres})
+      : super(key: key);
+  final LocationData locationData;
+  final double thres;
+
   @override
   _EventCardNearYouState createState() => _EventCardNearYouState();
 }
@@ -25,8 +31,8 @@ class _EventCardNearYouState extends State<EventCardNearYou> {
           switch (snapshot.connectionState) {
             case ConnectionState.waiting:
               return const SizedBox(
-                height: double.infinity,
-                width: double.infinity,
+                height: 300,
+                width: 300,
                 child: CircularProgressIndicator.adaptive(),
               );
             default:
@@ -50,7 +56,16 @@ class _EventCardNearYouState extends State<EventCardNearYou> {
                               return Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: InkWell(
-                                  onTap: () => {},
+                                  onTap: () => {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            EventDetailPage(
+                                          event: snapshot.data![index],
+                                        ),
+                                      ),
+                                    )
+                                  },
                                   child: Column(
                                     children: <Widget>[
                                       SizedBox(
@@ -139,6 +154,7 @@ class _EventCardNearYouState extends State<EventCardNearYou> {
   }
 
   Future<List<Event>> getevents() async {
-    return await EventAPI().geteventsbyuserid(userid: UserLocalData.getUID);
+    return await EventAPI()
+        .geteventsnear(location: widget.locationData, thres: widget.thres);
   }
 }

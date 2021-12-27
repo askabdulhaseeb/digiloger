@@ -11,6 +11,7 @@ class Event {
       required this.coverimage}) {
     attendeeslist = <String>[];
     intrestedlist = <String>[];
+    reviews = <Comments>[];
     Uuid uuid = const Uuid();
     id = uuid.v4();
   }
@@ -24,6 +25,12 @@ class Event {
     intrestedlist = json['intrestedlist'].cast<String>();
     location = Location.fromJson(json['location']);
     coverimage = json['coverimage'];
+    if (json['comments'] != null) {
+      reviews = <Comments>[];
+      json['comments'].forEach((v) {
+        reviews.add(Comments.fromJson(v));
+      });
+    }
   }
   late String id;
   late String name;
@@ -33,6 +40,7 @@ class Event {
   late List<String> intrestedlist;
   late Location location;
   late String coverimage;
+  late List<Comments> reviews;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -44,6 +52,7 @@ class Event {
     data['intrestedlist'] = intrestedlist;
     data['location'] = location.toJson();
     data['coverimage'] = coverimage;
+    data['reviews'] = reviews.map((Comments v) => v.toJson()).toList();
     return data;
   }
 }

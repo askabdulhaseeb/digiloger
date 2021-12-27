@@ -6,6 +6,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:digiloger/models/event_model.dart';
 import 'package:digiloger/widgets/custom_toast.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:location/location.dart';
 
 class EventAPI {
   static const String _collection = 'events';
@@ -59,5 +61,65 @@ class EventAPI {
       }
     }
     return digilogs;
+  }
+
+  Future<List<Event>> geteventsnear(
+      {required LocationData location, required double thres}) async {
+    List<Event> digilogs = <Event>[];
+    QuerySnapshot<Map<String, dynamic>> snapshot =
+        await FirebaseFirestore.instance.collection(_collection).get();
+
+    List<QueryDocumentSnapshot<Map<String, dynamic>?>> docs = snapshot.docs;
+    for (QueryDocumentSnapshot<Map<String, dynamic>?> doc in docs) {
+      if (doc.data() != null) {
+        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        Event digilog = Event.fromJson(data);
+        double dis = Geolocator.distanceBetween(digilog.location.lat,
+            digilog.location.long, location.latitude!, location.longitude!);
+        dis = (dis / 1000).ceilToDouble();
+        if (dis < thres) {
+          digilogs.add(digilog);
+        }
+      }
+    }
+    return digilogs;
+  }
+
+  Future<bool> addgoing({required Event event, required String uid}) async {
+    if (event.attendeeslist.contains(uid)) {
+      event.attendeeslist.remove(uid);
+    } else {
+      event.attendeeslist.add(uid);
+    }
+    await _instance
+        .collection(_collection)
+        .doc(event.id)
+        .update(<String, dynamic>{'attendeeslist': event.attendeeslist});
+
+    return true;
+  }
+
+  Future<bool> addintrested({required Event event, required String uid}) async {
+    if (event.intrestedlist.contains(uid)) {
+      event.intrestedlist.remove(uid);
+    } else {
+      event.intrestedlist.add(uid);
+    }
+    await _instance
+        .collection(_collection)
+        .doc(event.id)
+        .update(<String, dynamic>{'intrestedlist': event.intrestedlist});
+
+    return true;
+  }
+
+  String getstatus({required Event event, required String uid}) {
+    if (event.intrestedlist.contains(uid)) {
+      return "i";
+    } else if (event.attendeeslist.contains(uid)) {
+      return "g";
+    } else {
+      return "n";
+    }
   }
 }

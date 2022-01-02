@@ -68,8 +68,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     _email.text,
                     _password.text,
                   );
+                  print('User: $_user');
                   if (_user != null) {
-                    Provider.of<MainBottomNavBarProvider>(context)
+                    Provider.of<MainBottomNavBarProvider>(context,listen: false)
                         .onTabTapped(0);
                     if (UserLocalData.getIsBusiness) {
                       Navigator.of(context).pushNamedAndRemoveUntil(

@@ -23,19 +23,6 @@ class PersonalChatScreen extends StatefulWidget {
 class _PersonalChatScreenState extends State<PersonalChatScreen> {
   final TextEditingController _text = TextEditingController();
 
-  void _onListener() => setState(() {});
-  @override
-  void initState() {
-    _text.addListener(_onListener);
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _text.removeListener(_onListener);
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     final Size _size = MediaQuery.of(context).size;
@@ -123,7 +110,12 @@ class _PersonalChatScreenState extends State<PersonalChatScreen> {
                     }
                   }),
             ),
-            _chatTextFormField(context),
+            // _chatTextFormField(context),
+            _TestFormField(
+              controller: _text,
+              chatID: widget.chat.chatID,
+              otherUID: widget.otherUser.uid,
+            ),
             SizedBox(height: Utilities.padding),
           ],
         ),
@@ -131,60 +123,60 @@ class _PersonalChatScreenState extends State<PersonalChatScreen> {
     );
   }
 
-  Padding _chatTextFormField(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: Utilities.padding),
-      child: TextFormField(
-        controller: _text,
-        decoration: InputDecoration(
-          hintText: 'Text Message',
-          suffixIcon: (_text.text.isNotEmpty)
-              ? IconButton(
-                  splashRadius: 20,
-                  onPressed: () async {
-                    await ChatAPI().sendMessage(
-                      Chat(
-                        chatID: widget.chat.chatID,
-                        persons: [UserLocalData.getUID, widget.otherUser.uid],
-                        lastMessage: _text.text.trim(),
-                        time: DateFormat('hh:mm a').format(DateTime.now()),
-                      ),
-                      Messages(
-                        messageID:
-                            DateTime.now().microsecondsSinceEpoch.toString(),
-                        message: _text.text.trim(),
-                        date: DateFormat('dd-MM-yyyy').format(DateTime.now()),
-                        time: DateFormat('hh:mm a').format(DateTime.now()),
-                        timestamp:
-                            DateTime.now().microsecondsSinceEpoch.toString(),
-                        sendBy: UserLocalData.getUID,
-                      ),
-                    );
-                    _text.clear();
-                  },
-                  icon: Icon(
-                    Icons.send,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                )
-              : IconButton(
-                  splashRadius: 20,
-                  onPressed: () {},
-                  icon: Icon(
-                    Icons.attachment,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(Utilities.borderRadius),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(Utilities.borderRadius),
-          ),
-        ),
-      ),
-    );
-  }
+  // Padding _chatTextFormField(BuildContext context) {
+  //   return Padding(
+  //     padding: EdgeInsets.symmetric(horizontal: Utilities.padding),
+  //     child: TextFormField(
+  //       controller: _text,
+  //       decoration: InputDecoration(
+  //         hintText: 'Text Message',
+  //         suffixIcon: (_text.text.isNotEmpty)
+  //             ? IconButton(
+  //                 splashRadius: 20,
+  //                 onPressed: () async {
+  //                   await ChatAPI().sendMessage(
+  //                     Chat(
+  //                       chatID: widget.chat.chatID,
+  //                       persons: [UserLocalData.getUID, widget.otherUser.uid],
+  //                       lastMessage: _text.text.trim(),
+  //                       time: DateFormat('hh:mm a').format(DateTime.now()),
+  //                     ),
+  //                     Messages(
+  //                       messageID:
+  //                           DateTime.now().microsecondsSinceEpoch.toString(),
+  //                       message: _text.text.trim(),
+  //                       date: DateFormat('dd-MM-yyyy').format(DateTime.now()),
+  //                       time: DateFormat('hh:mm a').format(DateTime.now()),
+  //                       timestamp:
+  //                           DateTime.now().microsecondsSinceEpoch.toString(),
+  //                       sendBy: UserLocalData.getUID,
+  //                     ),
+  //                   );
+  //                   _text.clear();
+  //                 },
+  //                 icon: Icon(
+  //                   Icons.send,
+  //                   color: Theme.of(context).primaryColor,
+  //                 ),
+  //               )
+  //             : IconButton(
+  //                 splashRadius: 20,
+  //                 onPressed: () {},
+  //                 icon: Icon(
+  //                   Icons.attachment,
+  //                   color: Theme.of(context).primaryColor,
+  //                 ),
+  //               ),
+  //         enabledBorder: OutlineInputBorder(
+  //           borderRadius: BorderRadius.circular(Utilities.borderRadius),
+  //         ),
+  //         focusedBorder: OutlineInputBorder(
+  //           borderRadius: BorderRadius.circular(Utilities.borderRadius),
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   AppBar _appBar() {
     return AppBar(
@@ -314,6 +306,92 @@ class _MessageTile extends StatelessWidget {
           ],
         ),
       ],
+    );
+  }
+}
+
+class _TestFormField extends StatefulWidget {
+  const _TestFormField({
+    required TextEditingController controller,
+    required this.chatID,
+    required this.otherUID,
+    Key? key,
+  })  : _text = controller,
+        super(key: key);
+  final TextEditingController _text;
+  final String chatID;
+  final String otherUID;
+  @override
+  __TestFormFieldState createState() => __TestFormFieldState();
+}
+
+class __TestFormFieldState extends State<_TestFormField> {
+  void _onListener() => setState(() {});
+  @override
+  void initState() {
+    widget._text.addListener(_onListener);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    widget._text.removeListener(_onListener);
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: Utilities.padding),
+      child: TextFormField(
+        controller: widget._text,
+        decoration: InputDecoration(
+          hintText: 'Text Message',
+          suffixIcon: (widget._text.text.isNotEmpty)
+              ? IconButton(
+                  splashRadius: 20,
+                  onPressed: () async {
+                    await ChatAPI().sendMessage(
+                      Chat(
+                        chatID: widget.chatID,
+                        persons: [UserLocalData.getUID, widget.otherUID],
+                        lastMessage: widget._text.text.trim(),
+                        time: DateFormat('hh:mm a').format(DateTime.now()),
+                      ),
+                      Messages(
+                        messageID:
+                            DateTime.now().microsecondsSinceEpoch.toString(),
+                        message: widget._text.text.trim(),
+                        date: DateFormat('dd-MM-yyyy').format(DateTime.now()),
+                        time: DateFormat('hh:mm a').format(DateTime.now()),
+                        timestamp:
+                            DateTime.now().microsecondsSinceEpoch.toString(),
+                        sendBy: UserLocalData.getUID,
+                      ),
+                    );
+                    widget._text.clear();
+                  },
+                  icon: Icon(
+                    Icons.send,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                )
+              : IconButton(
+                  splashRadius: 20,
+                  onPressed: () {},
+                  icon: Icon(
+                    Icons.attachment,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(Utilities.borderRadius),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(Utilities.borderRadius),
+          ),
+        ),
+      ),
     );
   }
 }

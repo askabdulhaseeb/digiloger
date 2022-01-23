@@ -5,7 +5,7 @@ class AppUser {
     required this.uid,
     required this.name,
     required this.email,
-    this.isVerified = false,
+    this.isVerified = true,
     this.status = true,
     this.isBuiness = false,
     this.phoneNumber,

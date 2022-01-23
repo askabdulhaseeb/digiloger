@@ -36,9 +36,10 @@ class Digilog extends HiveObject {
     }
     if (json['likes'] != null) {
       likes = <String>[];
-      json['likes'].forEach((v) {
-        comments.add(v);
-      });
+      // json['likes'].forEach((v) {
+      //   likes.add(v);
+      // });
+      likes = List<String>.from(json['likes'] ?? <String>[]);
     }
   }
   @HiveField(0)

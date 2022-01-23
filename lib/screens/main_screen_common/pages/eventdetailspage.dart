@@ -11,7 +11,6 @@ import 'package:digiloger/widgets/custom_text_button.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../main_screen.dart';
 
 class EventDetailPage extends StatefulWidget {
   const EventDetailPage({Key? key, required this.event}) : super(key: key);

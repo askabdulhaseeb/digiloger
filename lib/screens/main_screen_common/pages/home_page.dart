@@ -45,45 +45,35 @@ class HomePage extends StatelessWidget {
               ),
             ),
           ),
-          Expanded(
-            child: FutureBuilder<List<Digilog>>(
-              future: getdigilogs(),
-              builder: (BuildContext context,
-                  AsyncSnapshot<List<Digilog>> snapshot) {
-                switch (snapshot.connectionState) {
-                  case ConnectionState.waiting:
-                    return const SizedBox(
-                      height: 30,
-                      width: 30,
-                      child: CircularProgressIndicator.adaptive(),
-                    );
-                  default:
-                    if ((snapshot.hasError)) {
-                      return _errorWidget();
-                    } else {
-                      if (snapshot.hasData) {
-                        if (snapshot.data!.isNotEmpty) {
-                          return ListView.builder(
-                            shrinkWrap: true,
+          FutureBuilder<List<Digilog>>(
+            future: getdigilogs(),
+            builder:
+                (BuildContext context, AsyncSnapshot<List<Digilog>> snapshot) {
+              switch (snapshot.connectionState) {
+                case ConnectionState.waiting:
+                  return Column(
+                    children: const <Widget>[
+                      SizedBox(height: 20),
+                      SizedBox(
+                        height: 30,
+                        width: 30,
+                        child: CircularProgressIndicator.adaptive(),
+                      ),
+                    ],
+                  );
+                default:
+                  if ((snapshot.hasError)) {
+                    return _errorWidget();
+                  } else {
+                    if (snapshot.hasData) {
+                      if (snapshot.data!.isNotEmpty) {
+                        return Expanded(
+                          child: ListView.builder(
                             itemCount: snapshot.data!.length,
                             itemBuilder: (BuildContext context, int index) =>
                                 PostTile(digilog: snapshot.data![index]),
-                          );
-                        } else {
-                          return Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Text(
-                                "No Digilogs posted by your followers",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Theme.of(context).primaryColor,
-                                    fontSize: 14),
-                              ),
-                            ],
-                          );
-                        }
+                          ),
+                        );
                       } else {
                         return Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -99,10 +89,24 @@ class HomePage extends StatelessWidget {
                           ],
                         );
                       }
+                    } else {
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            "No Digilogs posted by your followers",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).primaryColor,
+                                fontSize: 14),
+                          ),
+                        ],
+                      );
                     }
-                }
-              },
-            ),
+                  }
+              }
+            },
           ),
         ],
       ),

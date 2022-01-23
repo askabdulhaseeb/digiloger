@@ -68,7 +68,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     _email.text,
                     _password.text,
                   );
-                  print('User: $_user');
                   if (_user != null) {
                     if (UserLocalData.getIsVerified) {
                       Provider.of<MainBottomNavBarProvider>(context,

@@ -31,7 +31,6 @@ class _MainScreenState extends State<MainScreen> {
   _init() async {
     final AppUser appUser = await UserAPI().getInfo(uid: UserLocalData.getUID);
     UserLocalData().storeAppUserData(appUser: appUser);
-    print('Print: ${appUser.email}');
   }
 
   @override

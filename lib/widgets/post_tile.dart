@@ -71,7 +71,7 @@ class PostTile extends StatelessWidget {
               ),
             ],
           ),
-          digilog.likes > 0
+          digilog.likes.length > 0
               ? Text(
                   digilog.likes.toString() + ' people hits in this post',
                   style: const TextStyle(

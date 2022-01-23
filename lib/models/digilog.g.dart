@@ -25,7 +25,7 @@ class DigilogAdapter extends TypeAdapter<Digilog> {
       ..digilogid = fields[1] as String
       ..experiences = (fields[4] as List).cast<Experiences>()
       ..comments = (fields[6] as List).cast<Comments>()
-      ..likes = fields[7] as int;
+      ..likes = (fields[7] as List).cast<String>();
   }
 
   @override

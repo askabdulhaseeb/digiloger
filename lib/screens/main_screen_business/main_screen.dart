@@ -1,4 +1,5 @@
 import 'package:digiloger/screens/main_screen_business/pages/add_event.dart';
+import 'package:digiloger/screens/main_screen_business/pages/businessProfile.dart';
 import 'package:digiloger/screens/main_screen_business/pages/bussinesshome.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,7 @@ class MainScreenBusiness extends StatelessWidget {
   static final List<Widget> _pages = <Widget>[
     BusinessHome(),
     const AddEvent(),
-    const Text("Profile"),
+    const BusinessProfile(),
   ];
   @override
   Widget build(BuildContext context) {

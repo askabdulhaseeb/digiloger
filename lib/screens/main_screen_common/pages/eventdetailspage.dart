@@ -371,7 +371,9 @@ class _EventDetailPageState extends State<EventDetailPage> {
 
   void addreview() {
     Comments comment = Comments(
-        likes: 0, message: _controller.text.trim(), uid: UserLocalData.getUID);
+        likes: <String>[],
+        message: _controller.text.trim(),
+        uid: UserLocalData.getUID);
     widget.event.reviews.add(comment);
 
     setState(() {});

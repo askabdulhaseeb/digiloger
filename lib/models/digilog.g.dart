@@ -154,20 +154,22 @@ class CommentsAdapter extends TypeAdapter<Comments> {
     return Comments(
       uid: fields[0] as String,
       message: fields[1] as String,
-      likes: fields[2] as int,
-    );
+      likes: (fields[2] as List).cast<String>(),
+    )..timestamp = fields[3] as String;
   }
 
   @override
   void write(BinaryWriter writer, Comments obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.uid)
       ..writeByte(1)
       ..write(obj.message)
       ..writeByte(2)
-      ..write(obj.likes);
+      ..write(obj.likes)
+      ..writeByte(3)
+      ..write(obj.timestamp);
   }
 
   @override

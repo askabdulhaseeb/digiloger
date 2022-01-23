@@ -138,7 +138,9 @@ class Comments {
   @HiveField(1)
   String message = "";
   @HiveField(2)
-  int likes = 0;
+  List<String> likes = <String>[];
+  @HiveField(3)
+  String timestamp = "";
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

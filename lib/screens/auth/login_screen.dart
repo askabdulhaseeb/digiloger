@@ -70,18 +70,27 @@ class _LoginScreenState extends State<LoginScreen> {
                   );
                   print('User: $_user');
                   if (_user != null) {
-                    Provider.of<MainBottomNavBarProvider>(context,listen: false)
-                        .onTabTapped(0);
-                    if (UserLocalData.getIsBusiness) {
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                        MainScreenBusiness.routeName,
-                        (Route<dynamic> route) => false,
-                      );
+                    if (UserLocalData.getIsVerified) {
+                      Provider.of<MainBottomNavBarProvider>(context,
+                              listen: false)
+                          .onTabTapped(0);
+                      if (UserLocalData.getIsBusiness) {
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                          MainScreenBusiness.routeName,
+                          (Route<dynamic> route) => false,
+                        );
+                      } else {
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                          MainScreen.routeName,
+                          (Route<dynamic> route) => false,
+                        );
+                      }
                     } else {
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                        MainScreen.routeName,
-                        (Route<dynamic> route) => false,
+                      CustomToast.showSnackBar(
+                        context: context,
+                        text: 'User Blocked',
                       );
+                      Navigator.of(context).pop();
                     }
                   } else {
                     Navigator.of(context).pop();

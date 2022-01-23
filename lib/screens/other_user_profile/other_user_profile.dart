@@ -1,13 +1,15 @@
 import 'package:digiloger/database/chat_api.dart';
 import 'package:digiloger/database/digilog_api.dart';
+import 'package:digiloger/database/event_api.dart';
 import 'package:digiloger/database/user_api.dart';
 import 'package:digiloger/models/app_user.dart';
 import 'package:digiloger/models/chats.dart';
 import 'package:digiloger/models/digilog.dart';
-import 'package:digiloger/models/messages.dart';
+import 'package:digiloger/models/event_model.dart';
 import 'package:digiloger/screens/chat_screen/personal_screen.dart';
 import 'package:digiloger/services/user_local_data.dart';
 import 'package:digiloger/widgets/circular_profile_image.dart';
+import 'package:digiloger/widgets/gridview_of_events.dart';
 import 'package:digiloger/widgets/gridview_of_posts.dart';
 import 'package:digiloger/widgets/user_post_and_followers_count.dart';
 import 'package:flutter/material.dart';
@@ -64,35 +66,69 @@ class _OtherUserProfileState extends State<OtherUserProfile> {
                       _FollowAndMessageButton(otherUser: _user!),
                       const Divider(),
                       Expanded(
-                        child: FutureBuilder<List<Digilog>>(
-                          future: getdigilogs(_user),
-                          builder: (BuildContext context,
-                              AsyncSnapshot<List<Digilog>> snapshot) {
-                            switch (snapshot.connectionState) {
-                              case ConnectionState.waiting:
-                                return const SizedBox(
-                                  height: double.infinity,
-                                  width: double.infinity,
-                                  child: CircularProgressIndicator.adaptive(),
-                                );
-                              default:
-                                if ((snapshot.hasError)) {
-                                  return _errorWidget();
-                                } else {
-                                  if (snapshot.hasData) {
-                                    if (snapshot.data!.isNotEmpty) {
-                                      return GridViewOfPosts(
-                                          posts: snapshot.data!);
-                                    } else {
-                                      return const Text("NO DIGILOGS POSTED");
-                                    }
-                                  } else {
-                                    return const Text("NO DIGILOGS POSTED");
+                        child: (_user.isBuiness!)
+                            ? FutureBuilder<List<Event>>(
+                                future: getevents(),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<List<Event>> snapshot) {
+                                  switch (snapshot.connectionState) {
+                                    case ConnectionState.waiting:
+                                      return const SizedBox(
+                                        height: double.infinity,
+                                        width: double.infinity,
+                                        child: CircularProgressIndicator
+                                            .adaptive(),
+                                      );
+                                    default:
+                                      if ((snapshot.hasError)) {
+                                        return _errorWidget();
+                                      } else {
+                                        if (snapshot.hasData) {
+                                          if (snapshot.data!.isNotEmpty) {
+                                            return GridViewEvents(
+                                                posts: snapshot.data!);
+                                          } else {
+                                            return const Text(
+                                                "NO Events POSTED");
+                                          }
+                                        } else {
+                                          return const Text("NO Events POSTED");
+                                        }
+                                      }
                                   }
-                                }
-                            }
-                          },
-                        ),
+                                })
+                            : FutureBuilder<List<Digilog>>(
+                                future: getdigilogs(_user),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<List<Digilog>> snapshot) {
+                                  switch (snapshot.connectionState) {
+                                    case ConnectionState.waiting:
+                                      return const SizedBox(
+                                        height: double.infinity,
+                                        width: double.infinity,
+                                        child: CircularProgressIndicator
+                                            .adaptive(),
+                                      );
+                                    default:
+                                      if ((snapshot.hasError)) {
+                                        return _errorWidget();
+                                      } else {
+                                        if (snapshot.hasData) {
+                                          if (snapshot.data!.isNotEmpty) {
+                                            return GridViewOfPosts(
+                                                posts: snapshot.data!);
+                                          } else {
+                                            return const Text(
+                                                "NO DIGILOGS POSTED");
+                                          }
+                                        } else {
+                                          return const Text(
+                                              "NO DIGILOGS POSTED");
+                                        }
+                                      }
+                                  }
+                                },
+                              ),
                       )
                     ],
                   );
@@ -126,6 +162,10 @@ class _OtherUserProfileState extends State<OtherUserProfile> {
         ),
       ),
     );
+  }
+
+  Future<List<Event>> getevents() async {
+    return await EventAPI().geteventsbyuserid(userid: UserLocalData.getUID);
   }
 
   AppBar _appbar() {

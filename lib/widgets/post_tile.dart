@@ -1,9 +1,11 @@
+import 'package:digiloger/database/digilog_api.dart';
 import 'package:digiloger/database/user_api.dart';
 import 'package:digiloger/models/app_user.dart';
 import 'package:digiloger/models/digilog.dart';
 import 'package:digiloger/providers/digilog_provider.dart';
 import 'package:digiloger/screens/digilog_view_screen/digilog_view.dart';
 import 'package:digiloger/screens/other_user_profile/other_user_profile.dart';
+import 'package:digiloger/services/user_local_data.dart';
 import 'package:digiloger/widgets/comment.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -340,8 +342,24 @@ class __FooterButtonsState extends State<_FooterButtons> {
               IconButton(
                 splashRadius: 16,
                 padding: const EdgeInsets.all(0),
-                onPressed: () {},
-                icon: const Icon(CupertinoIcons.star, color: Colors.grey),
+                onPressed: () async {
+                  if (widget.digilog.likes.contains(UserLocalData.getUID)) {
+                    widget.digilog.likes.remove(UserLocalData.getUID);
+                  } else {
+                    widget.digilog.likes.add(UserLocalData.getUID);
+                  }
+                  setState(() {});
+                  await DigilogAPI().updateLikes(
+                    pid: widget.digilog.digilogid,
+                    likes: widget.digilog.likes,
+                  );
+                },
+                icon: (widget.digilog.likes.contains(UserLocalData.getUID))
+                    ? const Icon(Icons.star)
+                    : const Icon(
+                        Icons.star_border,
+                        color: Colors.grey,
+                      ),
               ),
               IconButton(
                 splashRadius: 16,

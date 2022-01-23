@@ -178,6 +178,13 @@ class DigilogAPI {
     });
   }
 
+  Future<void> updateLikes(
+      {required String pid, required List<String> likes}) async {
+    await _instance.collection(_collection).doc(pid).update({
+      'likes': likes,
+    });
+  }
+
   static const String _chars =
       'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
   final Random _rnd = Random();

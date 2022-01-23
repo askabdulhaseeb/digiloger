@@ -77,8 +77,8 @@ class _CalendarPageState extends State<CalendarPage> {
                       );
                     } else {
                       return const SizedBox(
-                        height: 300,
-                        width: 300,
+                        height: 30,
+                        width: 30,
                         child: CircularProgressIndicator.adaptive(),
                       );
                     }

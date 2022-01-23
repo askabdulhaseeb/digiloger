@@ -1,48 +1,21 @@
-import 'package:digiloger/database/event_api.dart';
 import 'package:digiloger/database/user_api.dart';
 import 'package:digiloger/models/app_user.dart';
 import 'package:digiloger/models/digilog.dart';
 import 'package:digiloger/models/event_model.dart';
-import 'package:digiloger/providers/main_bottom_nav_bar_provider.dart';
-import 'package:digiloger/services/user_local_data.dart';
 import 'package:digiloger/utilities/custom_image.dart';
-import 'package:digiloger/utilities/utilities.dart';
-import 'package:digiloger/widgets/custom_text_button.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../main_screen.dart';
 
-class EventDetailPage extends StatefulWidget {
-  const EventDetailPage({Key? key, required this.event}) : super(key: key);
+class EventDetails extends StatefulWidget {
+  const EventDetails({Key? key, required this.event}) : super(key: key);
   final Event event;
-
   @override
-  _EventDetailPageState createState() => _EventDetailPageState();
+  _EventDetailsState createState() => _EventDetailsState();
 }
 
-class _EventDetailPageState extends State<EventDetailPage> {
-  bool isgoing = false;
-  bool isintres = false;
-  bool _iskeyboard = false;
-  final TextEditingController _controller = TextEditingController();
-  @override
-  void initState() {
-    super.initState();
-  }
-
+class _EventDetailsState extends State<EventDetails> {
   @override
   Widget build(BuildContext context) {
-    _iskeyboard = MediaQuery.of(context).viewInsets.bottom != 0;
-    setstatus();
-    MainBottomNavBarProvider _navBar =
-        Provider.of<MainBottomNavBarProvider>(context);
-    String mediaUrl = "";
-    if (widget.event.coverimage == "") {
-      mediaUrl = "https://i.ibb.co/qmJq2kQ/fotografu-wrhh-CD6jpj8-unsplash.jpg";
-    } else {
-      mediaUrl = widget.event.coverimage;
-    }
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(backgroundColor: Colors.transparent, elevation: 0),
@@ -79,8 +52,22 @@ class _EventDetailPageState extends State<EventDetailPage> {
                 ),
               ),
             ),
-            const SizedBox(height: 16),
-            buttons(widget.event),
+            SizedBox(
+              height: 32,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                _NumInfoWidget(
+                  number: widget.event.attendeeslist.length,
+                  title: 'Going',
+                ),
+                _NumInfoWidget(
+                  number: widget.event.intrestedlist.length,
+                  title: 'Interested',
+                ),
+              ],
+            ),
             const SizedBox(height: 16),
             Text(
               widget.event.description,
@@ -142,146 +129,10 @@ class _EventDetailPageState extends State<EventDetailPage> {
                         color: Theme.of(context).primaryColor,
                         fontSize: 14),
                   ),
-            const SizedBox(height: 30),
-            (isgoing)
-                ? TextField(
-                    controller: _controller,
-                    decoration: InputDecoration(
-                      labelText: "Review",
-                      hintText: "Write a review",
-                      suffixIcon: IconButton(
-                        splashRadius: Utilities.padding,
-                        onPressed: addreview,
-                        icon: const Icon(Icons.arrow_forward_ios, size: 18),
-                      ),
-                      focusColor: Theme.of(context).primaryColor,
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Colors.grey),
-                        borderRadius:
-                            BorderRadius.circular(Utilities.borderRadius),
-                      ),
-                      border: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Theme.of(context).primaryColor),
-                        borderRadius:
-                            BorderRadius.circular(Utilities.borderRadius),
-                      ),
-                    ),
-                  )
-                : const SizedBox(),
           ],
         ),
       ),
     );
-  }
-
-  Widget buttons(Event event) {
-    if (isgoing == true) {
-      return CustomTextButton(
-          text: 'Going'.toUpperCase(),
-          onTap: () => notgoing(event),
-          hollowButton: false);
-    } else if (isintres) {
-      return CustomTextButton(
-          text: 'Intrested'.toUpperCase(),
-          onTap: () => notinter(event),
-          hollowButton: false);
-    } else {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          CustomTextButton(
-            text: 'Going'.toUpperCase(),
-            onTap: () => going(event),
-          ),
-          CustomTextButton(
-              text: 'Interested'.toUpperCase(), onTap: () => intrested(event)),
-        ],
-      );
-    }
-  }
-
-  void going(Event event) async {
-    bool t = await EventAPI().addgoing(event: event, uid: UserLocalData.getUID);
-    if (t) {
-      if (isgoing) {
-        setState(() {
-          isgoing = false;
-        });
-      } else {
-        setState(() {
-          isgoing = true;
-        });
-      }
-    }
-  }
-
-  void notgoing(Event event) async {
-    bool t = await EventAPI().addgoing(event: event, uid: UserLocalData.getUID);
-    if (t) {
-      if (isgoing) {
-        setState(() {
-          isgoing = false;
-        });
-      } else {
-        setState(() {
-          isgoing = true;
-        });
-      }
-    }
-  }
-
-  void notinter(Event event) async {
-    bool t =
-        await EventAPI().addintrested(event: event, uid: UserLocalData.getUID);
-    if (t) {
-      if (isintres) {
-        setState(() {
-          isintres = false;
-        });
-      } else {
-        setState(() {
-          isintres = true;
-        });
-      }
-    }
-  }
-
-  void intrested(Event event) async {
-    bool t =
-        await EventAPI().addintrested(event: event, uid: UserLocalData.getUID);
-    if (t) {
-      if (isintres) {
-        setState(() {
-          isintres = false;
-        });
-      } else {
-        setState(() {
-          isintres = true;
-        });
-      }
-    }
-  }
-
-  void setstatus() {
-    String s =
-        EventAPI().getstatus(event: widget.event, uid: UserLocalData.getUID);
-    if (s == "i") {
-      setState(() {
-        isintres = true;
-        isgoing = false;
-      });
-    } else if (s == "g") {
-      setState(() {
-        isintres = false;
-        isgoing = true;
-      });
-    } else if (s == "n") {
-      setState(() {
-        isintres = false;
-        isgoing = false;
-      });
-    }
   }
 
   Widget listtile(Comments review, AppUser? user) {
@@ -369,12 +220,24 @@ class _EventDetailPageState extends State<EventDetailPage> {
       ),
     );
   }
+}
 
-  void addreview() {
-    Comments comment = Comments(
-        likes: 0, message: _controller.text.trim(), uid: UserLocalData.getUID);
-    widget.event.reviews.add(comment);
+class _NumInfoWidget extends StatelessWidget {
+  const _NumInfoWidget({required this.number, required this.title, Key? key})
+      : super(key: key);
+  final int number;
+  final String title;
 
-    setState(() {});
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        Text(
+          number.toString(),
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
+        Text(title)
+      ],
+    );
   }
 }

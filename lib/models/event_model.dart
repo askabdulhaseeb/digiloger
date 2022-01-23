@@ -40,7 +40,7 @@ class Event {
   late List<String> intrestedlist;
   late Location location;
   late String coverimage;
-  late List<Comments> reviews;
+  List<Comments> reviews = <Comments>[];
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

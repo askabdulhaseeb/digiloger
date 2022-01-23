@@ -1,5 +1,6 @@
 import 'package:digiloger/database/event_api.dart';
 import 'package:digiloger/models/event_model.dart';
+import 'package:digiloger/screens/main_screen_business/pages/event_details.dart';
 import 'package:digiloger/services/user_local_data.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
@@ -50,7 +51,16 @@ class _EventCardHostedState extends State<EventCardHosted> {
                               return Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: InkWell(
-                                  onTap: () => {},
+                                  onTap: () => {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            EventDetails(
+                                          event: snapshot.data![index],
+                                        ),
+                                      ),
+                                    )
+                                  },
                                   child: Column(
                                     children: <Widget>[
                                       SizedBox(

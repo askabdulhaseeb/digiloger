@@ -30,8 +30,9 @@ class Digilog extends HiveObject {
     title = json['title'];
     if (json['comments'] != null) {
       comments = <Comments>[];
+      List<dynamic> _list = json['comments'];
       json['comments'].forEach((v) {
-        comments.add(Comments.fromJson(v));
+        comments.add(Comments.fromJson(v as Map<String, dynamic>));
       });
     }
     if (json['likes'] != null) {
@@ -132,7 +133,7 @@ class Comments {
   Comments.fromJson(Map<String, dynamic> json) {
     uid = json['uid'];
     message = json['message'];
-    likes = json['likes'];
+    likes = List<String>.from(json['likes'] ?? <String>[]);
   }
   @HiveField(0)
   String uid = "";

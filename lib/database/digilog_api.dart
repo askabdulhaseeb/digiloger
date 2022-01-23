@@ -171,7 +171,14 @@ class DigilogAPI {
     return;
   }
 
-  static const _chars =
+  Future<void> updateComment(
+      {required String pid, required List<Comments> comments}) async {
+    await _instance.collection(_collection).doc(pid).update({
+      'comments': comments.map((Comments e) => e.toJson()).toList(),
+    });
+  }
+
+  static const String _chars =
       'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
   final Random _rnd = Random();
 

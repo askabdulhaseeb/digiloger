@@ -4,6 +4,7 @@ import 'package:digiloger/models/digilog.dart';
 import 'package:digiloger/providers/digilog_provider.dart';
 import 'package:digiloger/screens/digilog_view_screen/digilog_view.dart';
 import 'package:digiloger/screens/other_user_profile/other_user_profile.dart';
+import 'package:digiloger/widgets/comment.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:extended_image/extended_image.dart';
@@ -40,66 +41,68 @@ class PostTile extends StatelessWidget {
               ),
             ),
           ),
-          _footer(),
+          // _footer(),
+          _FooterButtons(digilog: digilog),
         ],
       ),
     );
   }
 
-  Padding _footer() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              IconButton(
-                splashRadius: 16,
-                padding: const EdgeInsets.all(0),
-                onPressed: () {},
-                icon: const Icon(CupertinoIcons.star, color: Colors.grey),
-              ),
-              IconButton(
-                splashRadius: 16,
-                padding: const EdgeInsets.all(0),
-                onPressed: () {},
-                icon:
-                    const Icon(CupertinoIcons.chat_bubble, color: Colors.grey),
-              ),
-            ],
-          ),
-          digilog.likes.length > 0
-              ? Text(
-                  digilog.likes.toString() + ' people hits in this post',
-                  style: const TextStyle(
-                      fontSize: 14, fontWeight: FontWeight.w300),
-                )
-              : const Text(
-                  'Be first to like this post',
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w300),
-                ),
-          const SizedBox(height: 4),
-          Text(
-            'Title: ' + digilog.title,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(),
-          ),
-          const SizedBox(height: 4),
-          digilog.comments.isNotEmpty
-              ? Text(
-                  'View all' + digilog.comments.length.toString() + ' comments',
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w300),
-                )
-              : Container(),
-          const SizedBox(height: 4),
-        ],
-      ),
-    );
-  }
+  // Padding _footer() {
+  //   return Padding(
+  //     padding: const EdgeInsets.symmetric(horizontal: 8),
+  //     child: Column(
+  //       mainAxisAlignment: MainAxisAlignment.start,
+  //       crossAxisAlignment: CrossAxisAlignment.start,
+  //       mainAxisSize: MainAxisSize.min,
+  //       children: <Widget>[
+  //         Row(
+  //           children: <Widget>[
+  //             IconButton(
+  //               splashRadius: 16,
+  //               padding: const EdgeInsets.all(0),
+  //               onPressed: () {},
+  //               icon: const Icon(CupertinoIcons.star, color: Colors.grey),
+  //             ),
+  //             IconButton(
+  //               splashRadius: 16,
+  //               padding: const EdgeInsets.all(0),
+  //               onPressed: () {},
+  //               icon:
+  //                   const Icon(CupertinoIcons.chat_bubble, color: Colors.grey),
+  //             ),
+  //           ],
+  //         ),
+  //         digilog.likes.length > 0
+  //             ? Text(
+  //                 digilog.likes.toString() + ' people hits in this post',
+  //                 style: const TextStyle(
+  //                     fontSize: 14, fontWeight: FontWeight.w300),
+  //               )
+  //             : const Text(
+  //                 'Be first to like this post',
+  //                 style: TextStyle(fontSize: 14, fontWeight: FontWeight.w300),
+  //               ),
+  //         const SizedBox(height: 4),
+  //         Text(
+  //           'Title: ' + digilog.title,
+  //           maxLines: 2,
+  //           overflow: TextOverflow.ellipsis,
+  //           style: const TextStyle(),
+  //         ),
+  //         const SizedBox(height: 4),
+  //         digilog.comments.isNotEmpty
+  //             ? Text(
+  //                 'View all' + digilog.comments.length.toString() + ' comments',
+  //                 style: const TextStyle(
+  //                     fontSize: 14, fontWeight: FontWeight.w300),
+  //               )
+  //             : Container(),
+  //         const SizedBox(height: 4),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget _header(BuildContext context) {
     return FutureBuilder<AppUser>(
@@ -309,6 +312,80 @@ class PostTile extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _FooterButtons extends StatefulWidget {
+  const _FooterButtons({required this.digilog, Key? key}) : super(key: key);
+  final Digilog digilog;
+
+  @override
+  __FooterButtonsState createState() => __FooterButtonsState();
+}
+
+class __FooterButtonsState extends State<_FooterButtons> {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              IconButton(
+                splashRadius: 16,
+                padding: const EdgeInsets.all(0),
+                onPressed: () {},
+                icon: const Icon(CupertinoIcons.star, color: Colors.grey),
+              ),
+              IconButton(
+                splashRadius: 16,
+                padding: const EdgeInsets.all(0),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) => CommentPopup(
+                      digilog: widget.digilog,
+                    ),
+                  );
+                },
+                icon:
+                    const Icon(CupertinoIcons.chat_bubble, color: Colors.grey),
+              ),
+            ],
+          ),
+          widget.digilog.likes.isNotEmpty
+              ? Text(
+                  '${widget.digilog.likes.length} people hits in this post',
+                  style: const TextStyle(
+                      fontSize: 14, fontWeight: FontWeight.w300),
+                )
+              : const Text(
+                  'Be first to like this post',
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w300),
+                ),
+          const SizedBox(height: 4),
+          Text(
+            'Title: ' + widget.digilog.title,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(),
+          ),
+          const SizedBox(height: 4),
+          widget.digilog.comments.isNotEmpty
+              ? Text(
+                  'View all ${widget.digilog.comments.length} comments',
+                  style: const TextStyle(
+                      fontSize: 14, fontWeight: FontWeight.w300),
+                )
+              : Container(),
+          const SizedBox(height: 4),
+        ],
       ),
     );
   }

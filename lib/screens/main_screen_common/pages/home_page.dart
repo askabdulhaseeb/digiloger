@@ -1,10 +1,9 @@
 import 'package:digiloger/database/digilog_api.dart';
 import 'package:digiloger/models/digilog.dart';
-import 'package:digiloger/services/user_local_data.dart';
+import 'package:digiloger/widgets/show_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import '../../../utilities/custom_image.dart';
-import '../../../widgets/circular_profile_image.dart';
 import '../../../widgets/post_tile.dart';
 import '../../chat_dashboard_screen/chat_dashboard_screen.dart';
 
@@ -30,112 +29,49 @@ class HomePage extends StatelessWidget {
           )
         ],
       ),
-      body: Column(
-        children: <Widget>[
-          SizedBox(
-            height: 62,
-            width: MediaQuery.of(context).size.width,
-            child: ListView.builder(
-              itemCount: 1000,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (BuildContext context, int index) => SizedBox(
-                width: 64,
-                height: 64,
-                child: CircularProfileImage(imageURL: CustomImages.domeURL),
-              ),
-            ),
-          ),
-          FutureBuilder<List<Digilog>>(
-            future: getdigilogs(),
-            builder:
-                (BuildContext context, AsyncSnapshot<List<Digilog>> snapshot) {
-              switch (snapshot.connectionState) {
-                case ConnectionState.waiting:
-                  return Column(
-                    children: const <Widget>[
-                      SizedBox(height: 20),
-                      SizedBox(
-                        height: 30,
-                        width: 30,
-                        child: CircularProgressIndicator.adaptive(),
-                      ),
-                    ],
-                  );
-                default:
-                  if ((snapshot.hasError)) {
-                    return _errorWidget();
-                  } else {
-                    if (snapshot.hasData) {
-                      if (snapshot.data!.isNotEmpty) {
-                        return Expanded(
-                          child: ListView.builder(
-                            itemCount: snapshot.data!.length,
-                            itemBuilder: (BuildContext context, int index) =>
-                                PostTile(digilog: snapshot.data![index]),
-                          ),
-                        );
-                      } else {
-                        return Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Text(
-                              "No Digilogs posted by your followers",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Theme.of(context).primaryColor,
-                                  fontSize: 14),
-                            ),
-                          ],
-                        );
-                      }
-                    } else {
-                      return Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Text(
-                            "No Digilogs posted by your followers",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Theme.of(context).primaryColor,
-                                fontSize: 14),
-                          ),
-                        ],
-                      );
-                    }
-                  }
-              }
-            },
-          ),
-        ],
+      body: FutureBuilder<List<Digilog>>(
+        future: DigilogAPI().getallfirebasedigilogs(),
+        builder: (BuildContext context, AsyncSnapshot<List<Digilog>> snapshot) {
+          if (snapshot.hasError) {
+            return const _ErrorWidget();
+          } else {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const ShowLoading();
+            } else {
+              List<Digilog> _digilog = snapshot.data!;
+              return ListView.separated(
+                itemCount: _digilog.length,
+                separatorBuilder: (BuildContext context, int index) => Divider(
+                  color: Colors.grey[200],
+                  thickness: 4,
+                ),
+                itemBuilder: (BuildContext context, int index) {
+                  return PostTile(digilog: _digilog[index]);
+                },
+              );
+            }
+          }
+        },
       ),
     );
   }
+}
 
-  Future<List<Digilog>> getdigilogs() async {
-    List<Digilog> digilog = [];
-    if (UserLocalData.getFollowings.isNotEmpty) {
-      digilog = await DigilogAPI()
-          .getallfirebasedigilogsbylistuid(UserLocalData.getFollowings);
-    }
-    return digilog;
-  }
+class _ErrorWidget extends StatelessWidget {
+  const _ErrorWidget({
+    Key? key,
+  }) : super(key: key);
 
-  SizedBox _errorWidget() {
-    return SizedBox(
-      height: double.infinity,
-      width: double.infinity,
-      child: Center(
-        child: Column(
-          children: const <Widget>[
-            Icon(Icons.info, color: Colors.grey),
-            Text(
-              'Facing some issues',
-              style: TextStyle(color: Colors.grey),
-            ),
-          ],
-        ),
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        children: const <Widget>[
+          Text(
+            'Some thing goes wrong',
+            style: TextStyle(color: Colors.grey),
+          ),
+        ],
       ),
     );
   }

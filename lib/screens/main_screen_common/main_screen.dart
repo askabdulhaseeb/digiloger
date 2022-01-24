@@ -18,7 +18,6 @@ class MainScreen extends StatefulWidget {
     HomePage(),
     SearchPage(),
     AddDigilogPage(),
-    //TODO:Add Notifications Page if get time
     CalendarPage(),
     ProfilePage(),
   ];

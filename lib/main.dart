@@ -1,5 +1,6 @@
 import 'package:digiloger/screens/digilog_view_screen/digilog_view.dart';
 import 'package:digiloger/screens/main_screen_business/main_screen.dart';
+import 'package:digiloger/screens/search_screen/search_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -80,6 +81,7 @@ class MyApp extends StatelessWidget {
               const PersonalRegisterationScreen(),
           BusinessRegisterationScreen.routeName: (_) =>
               const BusinessRegisterationScreen(),
+          SearchScreen.routeName: (_) => const SearchScreen(),
           MainScreen.routeName: (_) => const MainScreen(),
           ChatDashboardScreen.routeName: (_) => const ChatDashboardScreen(),
           AddDetails.routeName: (_) => const AddDetails(),

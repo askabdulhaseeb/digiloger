@@ -4,9 +4,10 @@ import '../utilities/utilities.dart';
 
 class CustomTextFormField extends StatefulWidget {
   const CustomTextFormField({
-    required this.title,
+    this.title='',
     required TextEditingController controller,
     this.keyboardType = TextInputType.text,
+    this.onChanged,
     this.validator,
     this.initialValue,
     this.hint,
@@ -19,6 +20,7 @@ class CustomTextFormField extends StatefulWidget {
   final TextEditingController _controller;
   final TextInputType? keyboardType;
   final String? Function(String? value)? validator;
+  final void Function(String)? onChanged;
   final String? initialValue;
   final String title;
   final String? hint;
@@ -50,6 +52,7 @@ class CustomTextFormFieldState extends State<CustomTextFormField> {
       child: TextFormField(
         initialValue: widget.initialValue,
         controller: widget._controller,
+        onChanged: widget.onChanged,
         readOnly: widget.readOnly,
         keyboardType: widget.keyboardType,
         textInputAction: TextInputAction.next,

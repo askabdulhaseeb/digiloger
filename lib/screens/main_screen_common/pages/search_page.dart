@@ -5,6 +5,7 @@ import 'package:digiloger/models/digilog.dart';
 import 'package:digiloger/providers/digilog_provider.dart';
 import 'package:digiloger/screens/digilog_view_screen/digilog_view.dart';
 import 'package:digiloger/screens/other_user_profile/other_user_profile.dart';
+import 'package:digiloger/screens/search_screen/search_screen.dart';
 import 'package:digiloger/utilities/custom_image.dart';
 import 'package:digiloger/utilities/utilities.dart';
 
@@ -45,70 +46,65 @@ class _SearchPageState extends State<SearchPage>
     Size _screen = MediaQuery.of(context).size;
     return Scaffold(
       appBar: searchappbar(68),
-      body: _focused
-          ? TabBarView(
-              controller: _controller,
-              children: <Widget>[
-                getAccountsList(),
-                getDigilogsList(_provider),
-                getDigilogsListbylocation(_provider),
-              ],
-            )
-          : Container(
-              height: _screen.height,
-              width: _screen.width,
-              color: Colors.white,
+      body: Column(
+        children: <Widget>[
+          Container(
+            height: _screen.height,
+            width: _screen.width,
+            color: Colors.white,
+            child: Expanded(
               child: FutureBuilder<List<Digilog>>(
-                  future: getdigilogs(),
-                  builder: (BuildContext context,
-                      AsyncSnapshot<List<Digilog>> snapshot) {
-                    switch (snapshot.connectionState) {
-                      case ConnectionState.waiting:
-                        return const SizedBox(
-                          height: double.infinity,
-                          width: double.infinity,
-                          child: CircularProgressIndicator.adaptive(),
-                        );
-                      default:
-                        if ((snapshot.hasError)) {
-                          return _errorWidget();
-                        } else {
-                          if (snapshot.hasData) {
-                            if (snapshot.data!.isNotEmpty) {
-                              return StaggeredGridView.countBuilder(
-                                crossAxisCount: 4,
-                                itemCount: snapshot.data!.length,
-                                itemBuilder:
-                                    (BuildContext context, int index) =>
-                                        InkWell(
-                                  onTap: () {
-                                    _provider
-                                        .onUpdatedigi(snapshot.data![index]);
-                                    Navigator.of(context)
-                                        .pushNamed(DigilogView.routeName);
-                                  },
-                                  child: ExtendedImage.network(
-                                    snapshot.data![index].experiences.first
-                                        .mediaUrl,
-                                    fit: BoxFit.cover,
-                                  ),
+                future: getdigilogs(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<List<Digilog>> snapshot) {
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.waiting:
+                      return const SizedBox(
+                        height: double.infinity,
+                        width: double.infinity,
+                        child: CircularProgressIndicator.adaptive(),
+                      );
+                    default:
+                      if ((snapshot.hasError)) {
+                        return _errorWidget();
+                      } else {
+                        if (snapshot.hasData) {
+                          if (snapshot.data!.isNotEmpty) {
+                            return StaggeredGridView.countBuilder(
+                              crossAxisCount: 4,
+                              itemCount: snapshot.data!.length,
+                              itemBuilder: (BuildContext context, int index) =>
+                                  InkWell(
+                                onTap: () {
+                                  _provider.onUpdatedigi(snapshot.data![index]);
+                                  Navigator.of(context)
+                                      .pushNamed(DigilogView.routeName);
+                                },
+                                child: ExtendedImage.network(
+                                  snapshot
+                                      .data![index].experiences.first.mediaUrl,
+                                  fit: BoxFit.cover,
                                 ),
-                                staggeredTileBuilder: (int index) =>
-                                    StaggeredTile.count(
-                                        2, index.isEven ? 2 : 1),
-                                mainAxisSpacing: 1,
-                                crossAxisSpacing: 1,
-                              );
-                            } else {
-                              return const Text("NO DIGILOGS POSTED");
-                            }
+                              ),
+                              staggeredTileBuilder: (int index) =>
+                                  StaggeredTile.count(2, index.isEven ? 2 : 1),
+                              mainAxisSpacing: 1,
+                              crossAxisSpacing: 1,
+                            );
                           } else {
                             return const Text("NO DIGILOGS POSTED");
                           }
+                        } else {
+                          return const Text("NO DIGILOGS POSTED");
                         }
-                    }
-                  }),
+                      }
+                  }
+                },
+              ),
             ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -146,42 +142,28 @@ class _SearchPageState extends State<SearchPage>
     return AppBar(
       backgroundColor: Colors.white,
       elevation: 0,
-      title: TextFormField(
-        controller: _searchController,
-        scrollPadding: EdgeInsets.zero,
-        decoration: InputDecoration(
-          contentPadding: EdgeInsets.zero,
-          hintText: 'Search',
-          prefixIcon: const Icon(CupertinoIcons.search),
-          border: OutlineInputBorder(
-            borderSide: const BorderSide(color: Colors.grey),
+      title: GestureDetector(
+        onTap: () => Navigator.of(context).pushNamed(SearchScreen.routeName),
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(8),
+          margin: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey),
             borderRadius: BorderRadius.circular(20),
           ),
-          enabledBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: Colors.grey),
-            borderRadius: BorderRadius.circular(20),
+          child: Row(
+            children: const <Widget>[
+              Icon(CupertinoIcons.search),
+              SizedBox(width: 10),
+              Text(
+                'Search',
+                style: TextStyle(fontSize: 18),
+              ),
+            ],
           ),
         ),
       ),
-      bottom: _focused
-          ? TabBar(
-              controller: _controller,
-              indicatorColor: Theme.of(context).primaryColor,
-              tabs: const <Tab>[
-                Tab(
-                  text: "Accounts",
-                ),
-                Tab(
-                  text: "Digilogs",
-                ),
-                Tab(
-                  text: "Locations",
-                )
-              ],
-              labelColor: Theme.of(context).primaryColor,
-              unselectedLabelColor: Colors.grey,
-            )
-          : null,
     );
   }
 

@@ -1,5 +1,8 @@
 import 'package:digiloger/database/digilog_api.dart';
+import 'package:digiloger/database/user_api.dart';
+import 'package:digiloger/models/app_user.dart';
 import 'package:digiloger/models/digilog.dart';
+import 'package:digiloger/screens/other_user_profile/other_user_profile.dart';
 import 'package:digiloger/services/user_local_data.dart';
 import 'package:flutter/material.dart';
 
@@ -130,31 +133,52 @@ class _CommentTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(
-          comment.uid,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Theme.of(context).primaryColor,
-          ),
-        ),
-        const SizedBox(height: 4),
-        Text(comment.message),
-        const SizedBox(height: 2),
-        Row(
-          children: <Widget>[
-            const Spacer(),
-            Text(
-              comment.timestamp,
-              textAlign: TextAlign.end,
-              style: const TextStyle(color: Colors.grey),
-            ),
-          ],
-        )
-      ],
-    );
+    return FutureBuilder<AppUser>(
+        future: UserAPI().getInfo(uid: comment.uid),
+        builder: (BuildContext context, AsyncSnapshot<AppUser> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: SizedBox(
+                height: 30,
+                width: 30,
+                child: CircularProgressIndicator.adaptive(),
+              ),
+            );
+          } else {
+            if (snapshot.hasError) {
+              return const Center(
+                child: Text('Facing some issues'),
+              );
+            } else {
+              final AppUser _user = snapshot.data!;
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  GestureDetector(
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute<OtherUserProfile>(
+                        builder: (BuildContext context) => OtherUserProfile(
+                          username: _user.email,
+                          uid: _user.uid,
+                        ),
+                      ),
+                    ),
+                    child: Text(
+                      _user.name,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(comment.message),
+                  const SizedBox(height: 2),
+                ],
+              );
+            }
+          }
+        });
   }
 }

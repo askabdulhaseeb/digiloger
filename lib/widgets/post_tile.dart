@@ -6,7 +6,7 @@ import 'package:digiloger/providers/digilog_provider.dart';
 import 'package:digiloger/screens/digilog_view_screen/digilog_view.dart';
 import 'package:digiloger/screens/other_user_profile/other_user_profile.dart';
 import 'package:digiloger/services/user_local_data.dart';
-import 'package:digiloger/widgets/comment.dart';
+import 'package:digiloger/widgets/comment_popup.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:extended_image/extended_image.dart';
